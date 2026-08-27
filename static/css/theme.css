@@ -1063,6 +1063,16 @@ textarea.form-control {
     color: var(--color-text-dark) !important;
 }
 
+.badge-role-admin {
+    background: var(--color-secondary);
+    color: var(--color-on-secondary);
+}
+
+.badge-role-client {
+    background: var(--color-grey-mid);
+    color: var(--color-text-dark);
+}
+
 .table {
     --bs-table-bg: var(--color-text-white);
 }

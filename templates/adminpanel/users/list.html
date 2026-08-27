@@ -1,0 +1,95 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Comptes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h1 class="h4 mb-0">Comptes</h1>
+  <a class="btn-cta" href="{% url 'adminpanel:user_create' %}">Créer un compte</a>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4">
+    <select class="form-select" name="role" aria-label="Filtrer par rôle">
+      <option value="">Tous les rôles</option>
+      {% for code, label in roles %}
+        <option value="{{ code }}" {% if role == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-outline-success" type="submit">Filtrer</button>
+  </div>
+</form>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table align-middle mb-0">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Téléphone</th>
+        <th>Rôle</th>
+        <th>Statut</th>
+        <th>Créé le</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td>{{ u.nom }}</td>
+          <td>{{ u.telephone }}</td>
+          <td>
+            {% if u.role == "ADMIN" %}
+              <span class="badge badge-role-admin">Admin</span>
+            {% else %}
+              <span class="badge badge-role-client">Client</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.telephoneVerifie %}
+              <span class="badge text-bg-success">Vérifié</span>
+            {% else %}
+              <span class="badge text-bg-secondary">Non vérifié</span>
+            {% endif %}
+            {% if u.actif %}
+              <span class="badge text-bg-light">Actif</span>
+            {% else %}
+              <span class="badge text-bg-secondary">Bloqué</span>
+            {% endif %}
+          </td>
+          <td class="small muted">{{ u.createdAt }}</td>
+          <td class="text-nowrap">
+            {% if u.id != current_user_id %}
+              <form class="d-inline" method="post" action="{% url 'adminpanel:user_toggle_role' u.id %}" onsubmit="return confirm('Changer le rôle de {{ u.nom }} ?');">
+                {% csrf_token %}
+                <input type="hidden" name="current_role" value="{{ u.role }}">
+                <button class="btn btn-sm btn-outline-primary" type="submit">
+                  {% if u.role == "ADMIN" %}Passer client{% else %}Passer admin{% endif %}
+                </button>
+              </form>
+              <form class="d-inline" method="post" action="{% url 'adminpanel:user_toggle_status' u.id %}" onsubmit="return confirm('{% if u.actif %}Bloquer{% else %}Débloquer{% endif %} {{ u.nom }} ?');">
+                {% csrf_token %}
+                <input type="hidden" name="actif" value="{% if u.actif %}1{% else %}0{% endif %}">
+                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                  {% if u.actif %}Bloquer{% else %}Débloquer{% endif %}
+                </button>
+              </form>
+              <form class="d-inline" method="post" action="{% url 'adminpanel:user_delete' u.id %}" onsubmit="return confirm('Supprimer définitivement le compte de {{ u.nom }} ?');">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+              </form>
+            {% else %}
+              <span class="small muted">Vous</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6" class="muted">Aucun compte.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "includes/pagination.html" %}
+{% endblock %}

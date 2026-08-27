@@ -349,3 +349,30 @@ def admin_update_publication(token: str, publication_id: int | str, payload: dic
 
 def admin_delete_publication(token: str, publication_id: int | str) -> ApiResult:
     return call("DELETE", f"/admin/publications/{publication_id}", token=token)
+
+
+# ---------------------------------------------------------------------------
+# Admin — comptes utilisateurs
+# ---------------------------------------------------------------------------
+
+def admin_get_users(token: str, role: str | None = None, page: int = 0, size: int = 20) -> ApiResult:
+    params: dict[str, Any] = {"page": page, "size": size}
+    if role:
+        params["role"] = role
+    return call("GET", "/admin/users", token=token, params=params)
+
+
+def admin_create_user(token: str, payload: dict) -> ApiResult:
+    return call("POST", "/admin/users", token=token, json=payload)
+
+
+def admin_update_user_role(token: str, user_id: int | str, role: str) -> ApiResult:
+    return call("PATCH", f"/admin/users/{user_id}/role", token=token, json={"role": role})
+
+
+def admin_update_user_status(token: str, user_id: int | str, actif: bool) -> ApiResult:
+    return call("PATCH", f"/admin/users/{user_id}/status", token=token, json={"actif": actif})
+
+
+def admin_delete_user(token: str, user_id: int | str) -> ApiResult:
+    return call("DELETE", f"/admin/users/{user_id}", token=token)

@@ -21,5 +21,8 @@
   <a class="admin-nav-link {% if 'notification' in url_name %}active{% endif %}" href="{% url 'adminpanel:notification_list' %}">
     <i class="bi bi-bell"></i> Notifications
   </a>
+  <a class="admin-nav-link {% if 'user' in url_name %}active{% endif %}" href="{% url 'adminpanel:user_list' %}">
+    <i class="bi bi-people"></i> Comptes
+  </a>
 </nav>
 {% endwith %}

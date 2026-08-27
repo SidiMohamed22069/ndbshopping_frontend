@@ -648,3 +648,126 @@ def notification_read(request, notification_id):
     if next_url.startswith("/") and not next_url.startswith("//"):
         return redirect(next_url)
     return redirect("adminpanel:notification_list")
+
+
+# ---------------------------------------------------------------------------
+# Comptes utilisateurs
+# ---------------------------------------------------------------------------
+
+USER_ROLES = [("ADMIN", "Admin"), ("CLIENT", "Client")]
+
+
+@admin_required_api
+@require_http_methods(["GET"])
+def user_list(request):
+    page = page_from_request(request)
+    role = request.GET.get("role") or ""
+    if role not in {"ADMIN", "CLIENT"}:
+        role = ""
+    result = api_client.admin_get_users(
+        _token(request),
+        role=role or None,
+        page=page - 1,
+        size=20,
+    )
+    users, pagination = [], None
+    if result.ok and isinstance(result.data, dict):
+        users = result.data.get("content") or []
+        pagination = result.data
+    else:
+        messages.error(request, result.error or api_client.UNAVAILABLE)
+    return render(
+        request,
+        "adminpanel/users/list.html",
+        {
+            "users": users,
+            "pagination": pagination,
+            "page": page,
+            "role": role,
+            "roles": USER_ROLES,
+            "current_user_id": request.user_id,
+        },
+    )
+
+
+@admin_required_api
+@require_http_methods(["GET", "POST"])
+def user_create(request):
+    form = {
+        "nom": "",
+        "telephone": "",
+        "role": "CLIENT",
+    }
+    if request.method == "POST":
+        form["nom"] = (request.POST.get("nom") or "").strip()
+        form["telephone"] = (request.POST.get("telephone") or "").strip()
+        form["role"] = request.POST.get("role") or "CLIENT"
+        password = request.POST.get("password") or ""
+        if form["role"] not in {"ADMIN", "CLIENT"}:
+            messages.error(request, "Rôle invalide.")
+        elif not form["nom"] or not form["telephone"] or not password:
+            messages.error(request, "Nom, téléphone et mot de passe sont obligatoires.")
+        else:
+            result = api_client.admin_create_user(
+                _token(request),
+                {
+                    "nom": form["nom"],
+                    "telephone": form["telephone"],
+                    "password": password,
+                    "role": form["role"],
+                },
+            )
+            if result.ok:
+                messages.success(request, "Compte créé.")
+                return redirect("adminpanel:user_list")
+            messages.error(request, result.error or "Création impossible.")
+    return render(
+        request,
+        "adminpanel/users/form.html",
+        {"form": form, "roles": USER_ROLES},
+    )
+
+
+@admin_required_api
+@require_POST
+def user_toggle_role(request, user_id):
+    if str(user_id) == str(request.user_id):
+        messages.error(request, "Vous ne pouvez pas modifier votre propre rôle.")
+        return redirect("adminpanel:user_list")
+    current = request.POST.get("current_role") or ""
+    new_role = "CLIENT" if current == "ADMIN" else "ADMIN"
+    result = api_client.admin_update_user_role(_token(request), user_id, new_role)
+    if result.ok:
+        messages.success(request, "Rôle mis à jour.")
+    else:
+        messages.error(request, result.error or "Mise à jour du rôle impossible.")
+    return redirect("adminpanel:user_list")
+
+
+@admin_required_api
+@require_POST
+def user_toggle_status(request, user_id):
+    if str(user_id) == str(request.user_id):
+        messages.error(request, "Vous ne pouvez pas modifier le statut de votre propre compte.")
+        return redirect("adminpanel:user_list")
+    actuel = request.POST.get("actif") == "1"
+    result = api_client.admin_update_user_status(_token(request), user_id, not actuel)
+    if result.ok:
+        messages.success(request, "Compte bloqué." if actuel else "Compte débloqué.")
+    else:
+        messages.error(request, result.error or "Mise à jour du statut impossible.")
+    return redirect("adminpanel:user_list")
+
+
+@admin_required_api
+@require_POST
+def user_delete(request, user_id):
+    if str(user_id) == str(request.user_id):
+        messages.error(request, "Vous ne pouvez pas supprimer votre propre compte.")
+        return redirect("adminpanel:user_list")
+    result = api_client.admin_delete_user(_token(request), user_id)
+    if result.ok:
+        messages.success(request, "Compte supprimé.")
+    else:
+        messages.error(request, result.error or "Suppression impossible.")
+    return redirect("adminpanel:user_list")

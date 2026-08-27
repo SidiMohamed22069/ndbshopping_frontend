@@ -1,0 +1,34 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'adminpanel:user_list' %}">← Comptes</a></p>
+<h1 class="h4 mb-3">Créer un compte</h1>
+<form method="post" class="form-panel form-narrow">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label" for="nom">Nom</label>
+    <input class="form-control" id="nom" name="nom" required maxlength="120" value="{{ form.nom }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="telephone">Téléphone</label>
+    <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="ex. 2xxxxxxx" value="{{ form.telephone }}">
+    <div class="form-text">8 chiffres, commence par 2, 3 ou 4.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="password">Mot de passe</label>
+    <input class="form-control" id="password" name="password" type="password" required minlength="6" maxlength="72">
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="role">Rôle</label>
+    <select class="form-select" id="role" name="role" required>
+      {% for code, label in roles %}
+        <option value="{{ code }}" {% if form.role == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button class="btn-cta" type="submit">Créer</button>
+  <a class="btn btn-link" href="{% url 'adminpanel:user_list' %}">Annuler</a>
+</form>
+{% endblock %}
