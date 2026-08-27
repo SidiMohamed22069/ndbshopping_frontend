@@ -3,10 +3,10 @@
 {% block title %}Livraison{% endblock %}
 
 {% block content %}
-<section class="container pb-5" style="max-width: 36rem;">
-  <h1 class="h3 mb-3">Finaliser la commande</h1>
-  <p class="text-muted">Choisissez la ville de livraison et précisez l'adresse. Le paiement se fait à la livraison.</p>
-  <form method="post" class="bg-white p-4 rounded shadow-sm">
+<section class="container page-wrap form-narrow">
+  <h1 class="page-title">Finaliser la commande</h1>
+  <p class="muted">Choisissez la ville de livraison et précisez l'adresse. Le paiement se fait à la livraison.</p>
+  <form method="post" class="form-panel">
     {% csrf_token %}
     <div class="mb-3">
       <label class="form-label" for="villeLivraison">Ville</label>
@@ -21,7 +21,7 @@
       <label class="form-label" for="adresseDetails">Adresse / précisions</label>
       <textarea class="form-control" id="adresseDetails" name="adresseDetails" rows="3" required></textarea>
     </div>
-    <button class="btn btn-warning w-100" type="submit">Confirmer la commande</button>
+    <button class="btn-cta w-100" type="submit">Confirmer la commande</button>
   </form>
 </section>
 {% endblock %}

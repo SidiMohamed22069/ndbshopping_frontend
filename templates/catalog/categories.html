@@ -4,26 +4,19 @@
 {% block title %}Catégories{% endblock %}
 
 {% block content %}
-<section class="container pb-5">
-  <h1 class="h3 mb-4">Catégories</h1>
-  {% for cat in categories %}
-    <div class="card mb-3 shadow-sm">
-      <div class="card-body">
-        <h2 class="h5">
-          <a href="{% url 'catalog:category_products' cat.id %}">{{ cat.nom }}</a>
-          <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
-        </h2>
-        {% if cat.children %}
-          <ul class="mb-0">
-            {% for child in cat.children %}
-              <li><a href="{% url 'catalog:category_products' child.id %}">{{ child.nom }}</a></li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+<section class="container page-wrap">
+  <div class="section-heading">
+    <h1 class="page-title">Catégories</h1>
+    <p>Tous les univers du marketplace</p>
+  </div>
+  <div class="row g-4 cat-grid">
+    {% for cat in categories %}
+      <div class="col-12 col-md-6 col-lg-3">
+        {% include "includes/category_card.html" %}
       </div>
-    </div>
-  {% empty %}
-    <p class="text-muted">Aucune catégorie.</p>
-  {% endfor %}
+    {% empty %}
+      <p class="muted">Aucune catégorie.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

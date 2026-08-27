@@ -21,7 +21,7 @@
   {% endfor %}
 </ul>
 
-<form method="post" class="bg-white p-4 rounded shadow-sm" style="max-width: 28rem;">
+<form method="post" class="form-panel form-narrow">
   {% csrf_token %}
   <h2 class="h6">Ajouter un attribut</h2>
   <div class="mb-3">
@@ -36,6 +36,6 @@
       {% endfor %}
     </select>
   </div>
-  <button class="btn btn-success" type="submit">Ajouter</button>
+  <button class="btn-cta" type="submit">Ajouter</button>
 </form>
 {% endblock %}

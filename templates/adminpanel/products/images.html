@@ -21,10 +21,10 @@
   {% endfor %}
 </div>
 
-<form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm" style="max-width: 28rem;">
+<form method="post" enctype="multipart/form-data" class="form-panel form-narrow">
   {% csrf_token %}
   <label class="form-label" for="file">Ajouter une image (jpg, png, webp — 5 Mo max)</label>
   <input class="form-control mb-3" type="file" id="file" name="file" accept="image/jpeg,image/png,image/webp" required>
-  <button class="btn btn-success" type="submit">Téléverser</button>
+  <button class="btn-cta" type="submit">Téléverser</button>
 </form>
 {% endblock %}

@@ -4,13 +4,13 @@
 {% block title %}Panier{% endblock %}
 
 {% block content %}
-<section class="container pb-5">
-  <h1 class="h3 mb-4">Votre panier</h1>
+<section class="container page-wrap">
+  <h1 class="page-title">Votre panier</h1>
   {% if not lines %}
-    <p class="text-muted">Le panier est vide.</p>
-    <a class="btn btn-success" href="{% url 'catalog:product_list' %}">Parcourir les produits</a>
+    <p class="muted">Le panier est vide.</p>
+    <a class="btn-cta" href="{% url 'catalog:product_list' %}">Parcourir les produits</a>
   {% else %}
-    <div class="table-responsive bg-white rounded shadow-sm">
+    <div class="table-responsive surface-card">
       <table class="table align-middle mb-0">
         <thead>
           <tr>
@@ -32,8 +32,8 @@
                 <form class="d-flex gap-1" method="post" action="{% url 'cart:update' %}">
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ line.product_id }}">
-                  <input class="form-control form-control-sm" style="width:5rem;" type="number" name="quantite" value="{{ line.quantite }}" min="1">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">OK</button>
+                  <input class="form-control form-control-sm qty-input" type="number" name="quantite" value="{{ line.quantite }}" min="1">
+                  <button class="btn-ghost btn-sm" type="submit">OK</button>
                 </form>
               </td>
               <td>{{ line.sous_total|mru }}</td>
@@ -41,7 +41,7 @@
                 <form method="post" action="{% url 'cart:remove' %}">
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ line.product_id }}">
-                  <button class="btn btn-sm btn-outline-danger" type="submit">Retirer</button>
+                  <button class="btn-danger-outline btn-sm" type="submit">Retirer</button>
                 </form>
               </td>
             </tr>
@@ -49,11 +49,11 @@
         </tbody>
       </table>
     </div>
-    <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
       <p class="h5 mb-0">Total : {{ total|mru }}</p>
-      <a class="btn btn-warning btn-lg" href="{% url 'accounts:checkout' %}">Commander</a>
+      <a class="btn-cta btn-cta-lg" href="{% url 'accounts:checkout' %}">Commander</a>
     </div>
-    <p class="small text-muted mt-2">Les prix sont recalculés à partir du catalogue (jamais depuis le panier local).</p>
+    <p class="muted small mt-2">Les prix sont recalculés à partir du catalogue (jamais depuis le panier local).</p>
   {% endif %}
 </section>
 {% endblock %}

@@ -4,18 +4,18 @@
 {% block title %}{% if product %}{{ product.nom }}{% else %}Produit{% endif %}{% endblock %}
 
 {% block content %}
-<section class="container pb-5">
+<section class="container page-wrap">
   {% if not product %}
-    <p class="text-muted">Produit indisponible pour le moment.</p>
+    <p class="muted">Produit indisponible pour le moment.</p>
   {% else %}
     <div class="row g-4">
       <div class="col-lg-6">
         {% if product.images %}
-          <div id="productCarousel" class="carousel slide shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
+          <div id="productCarousel" class="carousel slide surface-card overflow-hidden product-gallery" data-bs-ride="carousel">
             <div class="carousel-inner">
               {% for img in product.images %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                  <img src="{{ img.url|media_url }}" class="d-block w-100" alt="{{ product.nom }}" style="max-height:420px;object-fit:cover;">
+                  <img src="{{ img.url|media_url }}" class="d-block w-100" alt="{{ product.nom }}">
                 </div>
               {% endfor %}
             </div>
@@ -29,17 +29,17 @@
             {% endif %}
           </div>
         {% else %}
-          <div class="bg-white rounded d-flex align-items-center justify-content-center" style="height:280px;">
-            <i class="bi bi-image fs-1 text-muted"></i>
+          <div class="product-placeholder">
+            <i class="bi bi-image"></i>
           </div>
         {% endif %}
       </div>
       <div class="col-lg-6">
-        <p class="small text-muted mb-1">{{ product.categoryNom }}</p>
-        <h1 class="h3">{{ product.nom }}</h1>
-        <p class="h4 ndb-price">{{ product.prix|mru }}</p>
+        <p class="muted mb-1">{{ product.categoryNom }}</p>
+        <h1 class="page-title">{{ product.nom }}</h1>
+        <p class="listing-price">{{ product.prix|mru }}</p>
         {% if product.stock is not None %}
-          <p class="small {% if product.stock < 1 %}text-danger{% else %}text-muted{% endif %}">
+          <p class="small {% if product.stock < 1 %}text-danger{% else %}muted{% endif %}">
             {% if product.stock < 1 %}Rupture de stock{% else %}Stock : {{ product.stock }}{% endif %}
           </p>
         {% endif %}
@@ -52,10 +52,10 @@
             <input type="hidden" name="next" value="{{ request.path }}">
             <div class="col-auto">
               <label class="form-label" for="qty">Quantité</label>
-              <input class="form-control" id="qty" type="number" name="quantite" value="1" min="1" max="{{ product.stock }}">
+              <input class="form-control qty-input" id="qty" type="number" name="quantite" value="1" min="1" max="{{ product.stock }}">
             </div>
             <div class="col-auto">
-              <button class="btn btn-warning" type="submit"><i class="bi bi-bag-plus"></i> Ajouter au panier</button>
+              <button class="btn-cta" type="submit"><i class="bi bi-bag-plus"></i> Ajouter au panier</button>
             </div>
           </form>
         {% endif %}
@@ -64,8 +64,8 @@
 
     {% if product.attributs %}
       <h2 class="h5 mt-5">Caractéristiques</h2>
-      <div class="table-responsive">
-        <table class="table bg-white attr-table">
+      <div class="table-responsive surface-card">
+        <table class="table attr-table mb-0">
           <tbody>
             {% for attr in product.attributs %}
               <tr>

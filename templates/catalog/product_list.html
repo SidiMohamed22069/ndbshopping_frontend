@@ -4,37 +4,27 @@
 {% block title %}Produits{% endblock %}
 
 {% block content %}
-<section class="container pb-5">
-  <h1 class="h3 mb-3">{% if selected_category %}{{ selected_category.nom }}{% else %}Catalogue{% endif %}</h1>
+<section class="container page-wrap">
+  <h1 class="page-title">{% if selected_category %}{{ selected_category.nom }}{% else %}Catalogue{% endif %}</h1>
 
-  <form class="row g-2 mb-4" method="get" action="{% url 'catalog:product_list' %}">
-    <div class="col-md-4">
-      <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Recherche…">
-    </div>
-    <div class="col-md-3">
-      <select class="form-select" name="category">
-        <option value="">Toutes les catégories</option>
-        {% for cat in nav_categories_flat %}
-          <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-6 col-md-2">
-      <input class="form-control" type="number" name="min_prix" value="{{ min_prix }}" placeholder="Prix min" min="0">
-    </div>
-    <div class="col-6 col-md-2">
-      <input class="form-control" type="number" name="max_prix" value="{{ max_prix }}" placeholder="Prix max" min="0">
-    </div>
-    <div class="col-md-1 d-grid">
-      <button class="btn btn-success" type="submit">OK</button>
-    </div>
+  <form class="search-bar mb-4" method="get" action="{% url 'catalog:product_list' %}" role="search">
+    <button class="search-submit" type="submit" aria-label="Rechercher"><i class="bi bi-search"></i></button>
+    <select class="form-select" name="category" aria-label="Catégorie">
+      <option value="">Toutes les catégories</option>
+      {% for cat in nav_categories_flat %}
+        <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
+      {% endfor %}
+    </select>
+    <input class="form-control" type="number" name="min_prix" value="{{ min_prix }}" placeholder="Prix min" min="0" aria-label="Prix minimum">
+    <input class="form-control" type="number" name="max_prix" value="{{ max_prix }}" placeholder="Prix max" min="0" aria-label="Prix maximum">
+    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Recherche…">
   </form>
 
-  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 product-grid">
     {% for product in products %}
       {% include "includes/product_card.html" %}
     {% empty %}
-      <p class="text-muted">Aucun produit ne correspond à votre recherche.</p>
+      <p class="muted">Aucun produit ne correspond à votre recherche.</p>
     {% endfor %}
   </div>
   {% include "includes/pagination.html" %}

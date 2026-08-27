@@ -4,26 +4,26 @@
 {% block title %}Mes commandes{% endblock %}
 
 {% block content %}
-<section class="container pb-5">
-  <h1 class="h3 mb-4">Mes commandes</h1>
+<section class="container page-wrap">
+  <h1 class="page-title">Mes commandes</h1>
   {% for order in orders %}
-    <article class="card mb-3 shadow-sm">
-      <div class="card-body">
+    <article class="listing-card mb-3">
+      <div class="listing-card-body">
         <div class="d-flex justify-content-between flex-wrap gap-2">
           <h2 class="h6 mb-0">Commande #{{ order.id }}</h2>
           <span class="badge text-bg-{{ order.statut|statut_badge }}">{{ order.statut|statut_label }}</span>
         </div>
-        <p class="small text-muted mb-2">{{ order.createdAt }} · {{ order.villeLivraison|ville_label }}</p>
+        <p class="muted small mb-2">{{ order.createdAt }} · {{ order.villeLivraison|ville_label }}</p>
         <ul class="small mb-2">
           {% for item in order.items %}
             <li>{{ item.productNom }} × {{ item.quantite }} — {{ item.sousTotal|mru }}</li>
           {% endfor %}
         </ul>
-        <p class="fw-bold mb-0">Total {{ order.total|mru }}</p>
+        <p class="listing-price mb-0">Total {{ order.total|mru }}</p>
       </div>
     </article>
   {% empty %}
-    <p class="text-muted">Vous n'avez pas encore de commande.</p>
+    <p class="muted">Vous n'avez pas encore de commande.</p>
   {% endfor %}
   {% include "includes/pagination.html" %}
 </section>

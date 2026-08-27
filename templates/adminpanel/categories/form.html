@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1 class="h4 mb-3">{% if category %}Modifier {{ category.nom }}{% else %}Nouvelle catégorie{% endif %}</h1>
-<form method="post" class="bg-white p-4 rounded shadow-sm" style="max-width: 36rem;">
+<form method="post" class="form-panel form-narrow">
   {% csrf_token %}
   <div class="mb-3">
     <label class="form-label" for="nom">Nom</label>
@@ -31,7 +31,7 @@
     <label class="form-label" for="imageUrl">URL d'image (optionnel)</label>
     <input class="form-control" id="imageUrl" name="imageUrl" value="{{ category.imageUrl }}">
   </div>
-  <button class="btn btn-success" type="submit">Enregistrer</button>
+  <button class="btn-cta" type="submit">Enregistrer</button>
   <a class="btn btn-link" href="{% url 'adminpanel:category_list' %}">Annuler</a>
 </form>
 {% endblock %}

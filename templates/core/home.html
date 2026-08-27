@@ -3,54 +3,158 @@
 
 {% block title %}Accueil{% endblock %}
 
-{% block content %}
-<section class="container pb-4">
-  <div class="ndb-hero p-4 p-md-5 mb-4">
-    <h1 class="display-6 fw-bold">NDB SHOPPING</h1>
-    <p class="lead mb-3">Produits, hôtels, voitures et services — livrés à Nouadhibou, Zouérat et Nouakchott.</p>
-    <a class="btn btn-warning" href="{% url 'catalog:product_list' %}">Voir le catalogue</a>
-    <a class="btn btn-outline-light" href="{% url 'catalog:categories' %}">Catégories</a>
-  </div>
-
-  <h2 class="h4 mb-3">Catégories</h2>
-  <div class="row g-3 mb-5">
-    {% for cat in nav_categories %}
-      <div class="col-6 col-md-4 col-lg-3">
-        <a class="card h-100 text-decoration-none text-dark shadow-sm" href="{% url 'catalog:category_products' cat.id %}">
-          <div class="card-body">
-            <h3 class="h6 mb-1">{{ cat.nom }}</h3>
-            <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
-          </div>
-        </a>
+{% block hero %}
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <h1 class="hero-title">Tout acheter, à <span class="hero-accent">Nouadhibou</span> et au-delà</h1>
+        <p class="hero-lead">Produits, hôtels, voitures et services — livrés à Nouadhibou, Zouérat et Nouakchott.</p>
+        <a class="btn-cta btn-cta-lg" href="{% url 'catalog:product_list' %}">Voir le catalogue</a>
       </div>
-    {% empty %}
-      <p class="text-muted">Aucune catégorie pour le moment.</p>
-    {% endfor %}
+      <div class="col-lg-6">
+        <div class="trust-panel">
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-truck"></i></span>
+            <div>
+              <h3>Livraison locale</h3>
+              <p>Nouadhibou, Zouérat et Nouakchott.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-phone"></i></span>
+            <div>
+              <h3>Commande par SMS</h3>
+              <p>Nom, téléphone, puis code OTP.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-cash-stack"></i></span>
+            <div>
+              <h3>Paiement à la livraison</h3>
+              <p>Vous réglez en recevant votre commande.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span>
+            <div>
+              <h3>Catalogue varié</h3>
+              <p>Produits, hôtels, voitures et services.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <h2 class="h4 mb-3">Derniers produits</h2>
-  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-5">
-    {% for product in products %}
-      {% include "includes/product_card.html" %}
-    {% empty %}
-      <p class="text-muted">Aucun produit publié.</p>
-    {% endfor %}
+<div class="container search-overlap">
+  <form class="search-bar" action="{% url 'catalog:product_list' %}" method="get" role="search">
+    <button class="search-submit" type="submit" aria-label="Rechercher">
+      <i class="bi bi-search"></i>
+    </button>
+    <select class="form-select" name="category" aria-label="Catégorie">
+      <option value="">Toutes les catégories</option>
+      {% for cat in nav_categories_flat %}
+        <option value="{{ cat.id }}">{{ cat.nom }}</option>
+      {% endfor %}
+    </select>
+    <input class="form-control" type="search" name="q" placeholder="Que recherchez-vous ?" value="{{ request.GET.q }}" aria-label="Recherche">
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="section-block pt-2">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Catégories</h2>
+      <p>Parcourez le catalogue par univers</p>
+    </div>
+    <div class="row g-4 cat-grid">
+      {% for cat in nav_categories %}
+        <div class="col-12 col-md-6 col-lg-3">
+          {% include "includes/category_card.html" %}
+        </div>
+      {% empty %}
+        <p class="muted">Aucune catégorie pour le moment.</p>
+      {% endfor %}
+    </div>
   </div>
+</section>
 
-  {% if publications %}
-    <h2 class="h4 mb-3">Actualités</h2>
-    <div class="row g-3">
+<section class="section-block section-block--light">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="perk">
+          <div class="perk-icon"><i class="bi bi-geo-alt"></i></div>
+          <h3>3 villes</h3>
+          <p>Nouadhibou, Zouérat, Nouakchott.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="perk">
+          <div class="perk-icon"><i class="bi bi-bag"></i></div>
+          <h3>Panier libre</h3>
+          <p>Ajoutez des articles sans créer de compte.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="perk">
+          <div class="perk-icon"><i class="bi bi-shield-check"></i></div>
+          <h3>Compte vérifié</h3>
+          <p>Connexion sécurisée par code SMS.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="perk">
+          <div class="perk-icon"><i class="bi bi-receipt"></i></div>
+          <h3>Suivi simple</h3>
+          <p>Retrouvez l'historique de vos commandes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Derniers produits</h2>
+      <p>Les nouveautés du catalogue</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 product-grid">
+      {% for product in products %}
+        {% include "includes/product_card.html" %}
+      {% empty %}
+        <p class="muted">Aucun produit publié.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if publications %}
+<section class="section-block section-block--light">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Actualités</h2>
+      <p>Les dernières publications</p>
+    </div>
+    <div class="row g-4">
       {% for pub in publications %}
         <div class="col-md-4">
-          <article class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h3 class="h6"><a href="{% url 'catalog:publication_detail' pub.id %}">{{ pub.titre }}</a></h3>
-              <p class="small text-muted mb-0">{{ pub.contenu|truncatewords:24 }}</p>
+          <article class="listing-card">
+            <div class="listing-card-body">
+              <h3><a href="{% url 'catalog:publication_detail' pub.id %}">{{ pub.titre }}</a></h3>
+              <p class="mb-3">{{ pub.contenu|truncatewords:24 }}</p>
+              <a class="btn-cta" href="{% url 'catalog:publication_detail' pub.id %}">Lire</a>
             </div>
           </article>
         </div>
       {% endfor %}
     </div>
-  {% endif %}
+  </div>
 </section>
+{% endif %}
 {% endblock %}

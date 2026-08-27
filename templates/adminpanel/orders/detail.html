@@ -32,7 +32,7 @@
 </table>
 <p class="h5">Total {{ order.total|mru }}</p>
 
-<form method="post" class="row g-2 align-items-end" style="max-width: 28rem;">
+<form method="post" class="row g-2 align-items-end form-narrow">
   {% csrf_token %}
   <div class="col">
     <label class="form-label" for="statut">Changer le statut</label>
@@ -43,7 +43,7 @@
     </select>
   </div>
   <div class="col-auto">
-    <button class="btn btn-success" type="submit">Enregistrer</button>
+    <button class="btn-cta" type="submit">Enregistrer</button>
   </div>
 </form>
 {% endblock %}

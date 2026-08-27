@@ -7,7 +7,7 @@
 
 <div class="row g-4">
   <div class="col-lg-6">
-    <form method="post" class="bg-white p-4 rounded shadow-sm h-100">
+    <form method="post" class="form-panel h-100">
       {% csrf_token %}
       <input type="hidden" name="action" value="url">
       <h2 class="h6">Depuis une URL (stub)</h2>
@@ -25,11 +25,11 @@
           {% endfor %}
         </select>
       </div>
-      <button class="btn btn-success" type="submit">Importer l'URL</button>
+      <button class="btn-cta" type="submit">Importer l'URL</button>
     </form>
   </div>
   <div class="col-lg-6">
-    <form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm h-100">
+    <form method="post" enctype="multipart/form-data" class="form-panel h-100">
       {% csrf_token %}
       <input type="hidden" name="action" value="csv">
       <h2 class="h6">Fichier CSV</h2>
@@ -38,7 +38,7 @@
         <label class="form-label" for="file">Fichier</label>
         <input class="form-control" type="file" id="file" name="file" accept=".csv,text/csv" required>
       </div>
-      <button class="btn btn-success" type="submit">Importer le CSV</button>
+      <button class="btn-cta" type="submit">Importer le CSV</button>
     </form>
   </div>
 </div>

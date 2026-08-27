@@ -4,22 +4,18 @@
 {% block title %}Tableau de bord{% endblock %}
 
 {% block content %}
-<h1 class="h4 mb-4">Tableau de bord</h1>
+<h1 class="page-title">Tableau de bord</h1>
 <div class="row g-3 mb-4">
   <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <p class="text-muted small mb-1">Commandes en attente</p>
-        <p class="display-6 mb-0">{{ pending_count }}</p>
-      </div>
+    <div class="admin-stat card-body p-4">
+      <p class="muted small mb-1">Commandes en attente</p>
+      <p class="display-6 mb-0">{{ pending_count }}</p>
     </div>
   </div>
   <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <p class="text-muted small mb-1">Notifications non lues</p>
-        <p class="display-6 mb-0">{{ unread_count }}</p>
-      </div>
+    <div class="admin-stat card-body p-4">
+      <p class="muted small mb-1">Notifications non lues</p>
+      <p class="display-6 mb-0">{{ unread_count }}</p>
     </div>
   </div>
 </div>
@@ -34,7 +30,7 @@
           <span>{{ order.total|mru }}</span>
         </li>
       {% empty %}
-        <li class="list-group-item text-muted">Aucune commande en attente.</li>
+        <li class="list-group-item muted">Aucune commande en attente.</li>
       {% endfor %}
     </ul>
   </div>
@@ -47,7 +43,7 @@
           {{ n.message }}
         </li>
       {% empty %}
-        <li class="list-group-item text-muted">Rien de nouveau.</li>
+        <li class="list-group-item muted">Rien de nouveau.</li>
       {% endfor %}
     </ul>
   </div>
