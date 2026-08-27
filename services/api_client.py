@@ -102,10 +102,20 @@ def call(
 # Auth
 # ---------------------------------------------------------------------------
 
-def register_or_login(nom: str, telephone: str, password: str, lang: str = "fr") -> ApiResult:
+def register_or_login(telephone: str, password: str, lang: str = "fr") -> ApiResult:
+    """Connexion : JWT si le compte est vérifié, sinon 202 needsVerification."""
     return call(
         "POST",
         "/auth/register-or-login",
+        json={"telephone": telephone, "password": password, "lang": lang},
+    )
+
+
+def register(nom: str, telephone: str, password: str, lang: str = "fr") -> ApiResult:
+    """Inscription CLIENT : envoie un OTP (pas de JWT tant que le téléphone n'est pas vérifié)."""
+    return call(
+        "POST",
+        "/auth/register",
         json={"nom": nom, "telephone": telephone, "password": password, "lang": lang},
     )
 

@@ -1,22 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}Créer un compte{% endblock %}
 
 {% block content %}
 <section class="container page-wrap form-narrow">
-  <h1 class="page-title">Se connecter</h1>
-  <p class="muted">Entrez votre numéro mauritanien et votre mot de passe.</p>
+  <h1 class="page-title">Créer un compte</h1>
+  <p class="muted">Indiquez votre nom, votre numéro mauritanien et un mot de passe. Un code SMS vous sera envoyé pour vérifier le téléphone.</p>
 
-  {% if unknown_account %}
+  {% if account_exists %}
     <div class="alert alert-warning" role="alert">
-      Aucun compte n'existe pour ce numéro.
-      <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Créer un compte</a>
+      Ce numéro de téléphone est déjà utilisé.
+      <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">Se connecter</a>
     </div>
   {% endif %}
 
   <form method="post" class="form-panel">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">
+    <div class="mb-3">
+      <label class="form-label" for="nom">Nom</label>
+      <input class="form-control" id="nom" name="nom" required maxlength="120" value="{{ request.POST.nom }}">
+    </div>
     <div class="mb-3">
       <label class="form-label" for="telephone">Téléphone</label>
       <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="ex. 2xxxxxxx" value="{{ request.POST.telephone }}">
@@ -26,11 +30,11 @@
       <label class="form-label" for="password">Mot de passe</label>
       <input class="form-control" id="password" name="password" type="password" required minlength="6" maxlength="72">
     </div>
-    <button class="btn-cta w-100" type="submit">Se connecter</button>
+    <button class="btn-cta w-100" type="submit">Créer un compte</button>
   </form>
   <p class="text-center mt-3 mb-0">
-    Pas encore de compte ?
-    <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Créer un compte</a>
+    Déjà un compte ?
+    <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">Se connecter</a>
   </p>
 </section>
 {% endblock %}

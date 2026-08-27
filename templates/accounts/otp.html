@@ -14,6 +14,10 @@
     </div>
     <button class="btn-cta w-100" type="submit">Valider</button>
   </form>
-  <p class="small mt-3"><a href="{% url 'accounts:login' %}">Modifier le numéro</a></p>
+  <p class="small mt-3 mb-0">
+    <a href="{% url 'accounts:login' %}">Retour à la connexion</a>
+    ·
+    <a href="{% url 'accounts:register' %}">Créer un compte</a>
+  </p>
 </section>
 {% endblock %}
