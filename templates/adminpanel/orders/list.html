@@ -14,14 +14,6 @@
       {% endfor %}
     </select>
   </div>
-  <div class="col-md-4">
-    <select class="form-select" name="ville">
-      <option value="">{% trans "Toutes les villes" %}</option>
-      {% for code, label in cities %}
-        <option value="{{ code }}" {% if ville == code %}selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-  </div>
   <div class="col-md-2 d-grid">
     <button class="btn btn-outline-success" type="submit">{% trans "Filtrer" %}</button>
   </div>

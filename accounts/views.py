@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_http_methods
 
 from cart.utils import clear_cart, sync_if_authenticated, to_sync_payload
@@ -10,11 +9,7 @@ from core.decorators import login_required_api
 from core.utils import page_from_request, safe_next_url
 from services import api_client
 
-CITIES = [
-    ("NOUADHIBOU", _lazy("Nouadhibou")),
-    ("ZOUERAT", _lazy("Zouérat")),
-    ("NOUAKCHOTT", _lazy("Nouakchott")),
-]
+VILLE_LIVRAISON = "NOUADHIBOU"
 
 
 def _establish_session(request, token: str, user: dict, next_url: str | None):
@@ -149,20 +144,19 @@ def checkout(request):
         return redirect("cart:detail")
 
     if request.method == "POST":
-        ville = request.POST.get("villeLivraison") or ""
         adresse = (request.POST.get("adresseDetails") or "").strip()
-        if ville not in {c[0] for c in CITIES} or not adresse:
-            messages.error(request, _("Choisissez une ville et indiquez une adresse."))
+        if not adresse:
+            messages.error(request, _("Indiquez une adresse."))
         else:
             sync_if_authenticated(request)
-            result = api_client.create_order(request.jwt_token, ville, adresse)
+            result = api_client.create_order(request.jwt_token, VILLE_LIVRAISON, adresse)
             if result.ok:
                 clear_cart(request.session)
                 messages.success(request, _("Commande enregistrée. Merci !"))
                 return redirect("accounts:orders")
             messages.error(request, result.error or _("Impossible de passer la commande."))
 
-    return render(request, "accounts/checkout.html", {"cities": CITIES})
+    return render(request, "accounts/checkout.html")
 
 
 @login_required_api

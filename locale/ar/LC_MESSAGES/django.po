@@ -67,8 +67,8 @@ msgid "Votre panier est vide."
 msgstr "سلتك فارغة."
 
 #: .\accounts\views.py
-msgid "Choisissez une ville et indiquez une adresse."
-msgstr "اختر مدينة وحدد عنوانًا."
+msgid "Indiquez une adresse."
+msgstr "حدد عنوانًا."
 
 #: .\accounts\views.py
 msgid "Commande enregistrée. Merci !"
@@ -463,14 +463,17 @@ msgid "Finaliser la commande"
 msgstr "إتمام الطلب"
 
 #: .\templates\accounts\checkout.html
-msgid "Choisissez la ville de livraison et précisez l'adresse. Le paiement se fait à la livraison."
-msgstr "اختر مدينة التوصيل وحدد العنوان. الدفع عند الاستلام."
+msgid "Précisez l'adresse. Le paiement se fait à la livraison."
+msgstr "حدد العنوان. الدفع عند الاستلام."
 
-#: .\templates\accounts\checkout.html .\templates\adminpanel\orders\list.html
+#: .\templates\accounts\checkout.html
+msgid "Livraison à Nouadhibou"
+msgstr "التوصيل في نواذيبو"
+
+#: .\templates\adminpanel\orders\list.html
 msgid "Ville"
 msgstr "المدينة"
 
-#: .\templates\accounts\checkout.html
 #: .\templates\adminpanel\products\form.html
 msgid "— Choisir —"
 msgstr "— اختر —"
@@ -805,10 +808,6 @@ msgstr "تغيير الحالة"
 #: .\templates\adminpanel\products\list.html
 msgid "Tous les statuts"
 msgstr "كل الحالات"
-
-#: .\templates\adminpanel\orders\list.html
-msgid "Toutes les villes"
-msgstr "كل المدن"
 
 #: .\templates\adminpanel\orders\list.html
 #: .\templates\adminpanel\products\form.html
@@ -1175,8 +1174,8 @@ msgid "Nous rejoindre"
 msgstr "انضم إلينا"
 
 #: .\templates\base.html
-msgid "Marketplace mauritanienne — Nouadhibou, Zouérat, Nouakchott."
-msgstr "سوق موريتانية — نواذيبو، الزويرات، نواكشوط."
+msgid "Marketplace mauritanienne — Nouadhibou."
+msgstr "سوق موريتانية — نواذيبو."
 
 #: .\templates\base.html .\templates\core\home.html
 msgid "Voir le catalogue"
@@ -1308,20 +1307,20 @@ msgid "Aucune actualité publiée."
 msgstr "لا توجد أخبار منشورة."
 
 #: .\templates\core\home.html
-msgid "Tout acheter, à Nouadhibou et au-delà"
-msgstr "اشترِ كل شيء في نواذيبو وما بعدها"
+msgid "Votre marketplace à Nouadhibou"
+msgstr "سوقك في نواذيبو"
 
 #: .\templates\core\home.html
-msgid "Produits, hôtels, voitures et services — livrés à Nouadhibou, Zouérat et Nouakchott."
-msgstr "منتجات وفنادق وسيارات وخدمات — تُسلَّم في نواذيبو والزويرات ونواكشوط."
+msgid "Produits, hôtels, voitures et services — livrés à Nouadhibou."
+msgstr "منتجات وفنادق وسيارات وخدمات — تُسلَّم في نواذيبو."
 
 #: .\templates\core\home.html
 msgid "Livraison locale"
 msgstr "توصيل محلي"
 
 #: .\templates\core\home.html
-msgid "Nouadhibou, Zouérat et Nouakchott."
-msgstr "نواذيبو والزويرات ونواكشوط."
+msgid "Livraison à Nouadhibou."
+msgstr "التوصيل في نواذيبو."
 
 #: .\templates\core\home.html
 msgid "Commande par SMS"
@@ -1370,14 +1369,6 @@ msgstr "آخر الإعلانات والمعلومات"
 #: .\templates\core\home.html
 msgid "Toutes les actualités"
 msgstr "كل الأخبار"
-
-#: .\templates\core\home.html
-msgid "3 villes"
-msgstr "3 مدن"
-
-#: .\templates\core\home.html
-msgid "Nouadhibou, Zouérat, Nouakchott."
-msgstr "نواذيبو، الزويرات، نواكشوط."
 
 #: .\templates\core\home.html
 msgid "Panier libre"

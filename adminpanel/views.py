@@ -38,11 +38,6 @@ ORDER_STATUSES = [
     ("LIVREE", _lazy("Livrée")),
     ("ANNULEE", _lazy("Annulée")),
 ]
-CITIES = [
-    ("NOUADHIBOU", _lazy("Nouadhibou")),
-    ("ZOUERAT", _lazy("Zouérat")),
-    ("NOUAKCHOTT", _lazy("Nouakchott")),
-]
 PUB_STATUSES = [("BROUILLON", _lazy("Brouillon")), ("PUBLIE", _lazy("Publié"))]
 
 IMAGE_MAX_BYTES = 5 * 1024 * 1024
@@ -495,11 +490,9 @@ def product_import(request):
 def order_list(request):
     page = page_from_request(request)
     statut = request.GET.get("statut") or ""
-    ville = request.GET.get("ville") or ""
     result = api_client.admin_get_orders(
         _token(request),
         statut=statut or None,
-        ville=ville or None,
         page=page - 1,
         size=20,
     )
@@ -517,9 +510,7 @@ def order_list(request):
             "pagination": pagination,
             "page": page,
             "statut": statut,
-            "ville": ville,
             "statuses": ORDER_STATUSES,
-            "cities": CITIES,
         },
     )
 
