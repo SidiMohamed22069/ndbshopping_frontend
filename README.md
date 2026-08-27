@@ -62,10 +62,31 @@ python manage.py runserver
 
 Le WebSocket admin se connecte en **WSS** vers `PUBLIC_BACKEND_HOST/ws` (pas de proxy Django). Nginx doit upgrader `/ws`.
 
+## Traductions (français / arabe)
+
+L'interface (menus, boutons, labels, messages) est traduite via Django i18n. **Le contenu métier** (noms de produits, descriptions, titres de publications, noms de catégories) **n'est pas traduit** : il s'affiche tel que l'admin l'a saisi.
+
+Fichiers : `locale/ar/LC_MESSAGES/django.po` (source) → `django.mo` (compilé).
+
+Après avoir ajouté un texte d'interface (`{% trans %}`, `{% blocktrans %}` ou `_()` / `gettext_lazy`) :
+
+```bash
+# Extraire les nouvelles chaînes (gettext doit être installé)
+python manage.py makemessages -l ar --no-wrap --add-location=file --ignore .venv --ignore staticfiles
+
+# Éditer locale/ar/LC_MESSAGES/django.po : remplir les msgstr vides en arabe
+
+python manage.py compilemessages -l ar
+```
+
+Dans Docker, `gettext` est installé et `compilemessages` s'exécute au build. En local, installez gettext (ex. `pacman -S gettext` / `brew install gettext` / [GnuWin32](https://gnuwin32.sourceforge.net/packages/gettext.htm) sous Windows).
+
+Le sélecteur de langue est dans le header. L'arabe active le mode RTL (`dir="rtl"` + feuille Bootstrap RTL + `theme-rtl.css`).
+
 ## Parcours utilisateurs
 
 - Catalogue public, panier en session (prix toujours relus via `GET /products/{id}`).
-- Commande : nom + téléphone + mot de passe → OTP SMS (`/api/auth/register-or-login` puis `/verify-otp`).
+- Commande : téléphone + mot de passe (`POST /api/auth/register-or-login`) ; OTP seulement si le compte n'est pas encore vérifié. Inscription séparée : `POST /api/auth/register`.
 - Après OTP : JWT en session + `POST /api/cart/sync`.
 - Admin : `/admin-ndb/` (rôle `ADMIN`). Notifications temps réel : topic `/topic/admin-notifications`.
 

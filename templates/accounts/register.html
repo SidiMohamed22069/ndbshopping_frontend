@@ -1,16 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Créer un compte{% endblock %}
+{% block title %}{% trans "Créer un compte" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap form-narrow">
-  <h1 class="page-title">Créer un compte</h1>
-  <p class="muted">Indiquez votre nom, votre numéro mauritanien et un mot de passe. Un code SMS vous sera envoyé pour vérifier le téléphone.</p>
+  <h1 class="page-title">{% trans "Créer un compte" %}</h1>
+  <p class="muted">{% trans "Indiquez votre nom, votre numéro mauritanien et un mot de passe. Un code SMS vous sera envoyé pour vérifier le téléphone." %}</p>
 
   {% if account_exists %}
     <div class="alert alert-warning" role="alert">
-      Ce numéro de téléphone est déjà utilisé.
-      <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">Se connecter</a>
+      {% trans "Ce numéro de téléphone est déjà utilisé." %}
+      <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">{% trans "Se connecter" %}</a>
     </div>
   {% endif %}
 
@@ -18,23 +19,23 @@
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">
     <div class="mb-3">
-      <label class="form-label" for="nom">Nom</label>
+      <label class="form-label" for="nom">{% trans "Nom" %}</label>
       <input class="form-control" id="nom" name="nom" required maxlength="120" value="{{ request.POST.nom }}">
     </div>
     <div class="mb-3">
-      <label class="form-label" for="telephone">Téléphone</label>
-      <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="ex. 2xxxxxxx" value="{{ request.POST.telephone }}">
-      <div class="form-text">8 chiffres, commence par 2, 3 ou 4.</div>
+      <label class="form-label" for="telephone">{% trans "Téléphone" %}</label>
+      <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="{% trans 'ex. 2xxxxxxx' %}" value="{{ request.POST.telephone }}">
+      <div class="form-text">{% trans "8 chiffres, commence par 2, 3 ou 4." %}</div>
     </div>
     <div class="mb-3">
-      <label class="form-label" for="password">Mot de passe</label>
+      <label class="form-label" for="password">{% trans "Mot de passe" %}</label>
       <input class="form-control" id="password" name="password" type="password" required minlength="6" maxlength="72">
     </div>
-    <button class="btn-cta w-100" type="submit">Créer un compte</button>
+    <button class="btn-cta w-100" type="submit">{% trans "Créer un compte" %}</button>
   </form>
   <p class="text-center mt-3 mb-0">
-    Déjà un compte ?
-    <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">Se connecter</a>
+    {% trans "Déjà un compte ?" %}
+    <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}">{% trans "Se connecter" %}</a>
   </p>
 </section>
 {% endblock %}

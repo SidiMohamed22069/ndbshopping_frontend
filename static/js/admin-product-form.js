@@ -10,6 +10,16 @@
 
   const endpointTemplate = container.dataset.endpoint || "";
 
+  const i18n = {
+    loading: container.dataset.msgLoading || "Chargement des attributs…",
+    choose: container.dataset.msgChoose || "Choisissez une catégorie pour afficher les champs spécifiques (hôtel, voiture, etc.).",
+    fail: container.dataset.msgFail || "Impossible de charger les attributs.",
+    none: container.dataset.msgNone || "Aucun attribut spécifique pour cette catégorie.",
+    down: container.dataset.msgDown || "Service temporairement indisponible.",
+    yes: container.dataset.msgYes || "Oui",
+    no: container.dataset.msgNo || "Non",
+  };
+
   function inputFor(attr, currentValues) {
     const name = `attr_${attr.id}`;
     const current = currentValues[attr.id] || currentValues[String(attr.id)] || "";
@@ -18,8 +28,8 @@
     let field = "";
     if (type === "BOOLEEN") {
       field = `<select class="form-select" name="${name}">
-        <option value="false"${current === "false" || current === false ? " selected" : ""}>Non</option>
-        <option value="true"${current === "true" || current === true ? " selected" : ""}>Oui</option>
+        <option value="false"${current === "false" || current === false ? " selected" : ""}>${i18n.no}</option>
+        <option value="true"${current === "true" || current === true ? " selected" : ""}>${i18n.yes}</option>
       </select>`;
     } else if (type === "NOMBRE") {
       field = `<input class="form-control" type="number" step="any" name="${name}" value="${current}">`;
@@ -32,16 +42,16 @@
   }
 
   async function loadAttributes(categoryId) {
-    container.innerHTML = '<p class="text-muted small">Chargement des attributs…</p>';
+    container.innerHTML = `<p class="text-muted small">${i18n.loading}</p>`;
     if (!categoryId) {
-      container.innerHTML = '<p class="text-muted small">Choisissez une catégorie pour afficher les champs spécifiques (hôtel, voiture, etc.).</p>';
+      container.innerHTML = `<p class="text-muted small">${i18n.choose}</p>`;
       return;
     }
     const url = endpointTemplate.replace("999999", categoryId);
     try {
       const response = await fetch(url, { headers: { Accept: "application/json" } });
       if (!response.ok) {
-        container.innerHTML = '<p class="text-danger small">Impossible de charger les attributs.</p>';
+        container.innerHTML = `<p class="text-danger small">${i18n.fail}</p>`;
         return;
       }
       const attrs = await response.json();
@@ -50,14 +60,14 @@
         current[a.attributeDefinitionId] = a.valeur;
       });
       if (!attrs || !attrs.length) {
-        container.innerHTML = '<p class="text-muted small">Aucun attribut spécifique pour cette catégorie.</p>';
+        container.innerHTML = `<p class="text-muted small">${i18n.none}</p>`;
         return;
       }
       container.innerHTML = attrs.map(function (attr) {
         return inputFor(attr, current);
       }).join("");
     } catch (e) {
-      container.innerHTML = '<p class="text-danger small">Service temporairement indisponible.</p>';
+      container.innerHTML = `<p class="text-danger small">${i18n.down}</p>`;
     }
   }
 

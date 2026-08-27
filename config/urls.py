@@ -5,6 +5,7 @@ handler404 = "core.views.page_not_found"
 handler500 = "core.views.server_error"
 
 urlpatterns = [
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", include("core.urls")),
     path("", include("catalog.urls")),
     path("panier/", include("cart.urls")),

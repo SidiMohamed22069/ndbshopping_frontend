@@ -1,16 +1,24 @@
-{% load static ndb_tags %}
+{% load static i18n ndb_tags %}
+{# i18n : textes d'interface seulement. Noms de produits / catégories / publications = contenu admin, non traduit. #}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}NDB SHOPPING{% endblock %} · Marketplace Mauritanie</title>
+  <title>{% block title %}NDB SHOPPING{% endblock %} · {% trans "Marketplace Mauritanie" %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% if LANGUAGE_BIDI %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.rtl.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% else %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% endif %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  {% if LANGUAGE_BIDI %}
+    <link rel="stylesheet" href="{% static 'css/theme-rtl.css' %}">
+  {% endif %}
   <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
   {% block extra_css %}{% endblock %}
 </head>
@@ -21,26 +29,27 @@
         <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
       </a>
 
-      <nav class="header-nav d-none d-lg-flex" aria-label="Navigation principale">
-        <a class="nav-link" href="{% url 'core:home' %}">Accueil</a>
+      <nav class="header-nav d-none d-lg-flex" aria-label="{% trans 'Navigation principale' %}">
+        <a class="nav-link" href="{% url 'core:home' %}">{% trans "Accueil" %}</a>
         <div class="dropdown">
-          <a class="nav-link dropdown-toggle" href="{% url 'catalog:categories' %}" data-bs-toggle="dropdown">Catégories</a>
+          <a class="nav-link dropdown-toggle" href="{% url 'catalog:categories' %}" data-bs-toggle="dropdown">{% trans "Catégories" %}</a>
           <ul class="dropdown-menu">
             {% for cat in nav_categories %}
               <li><a class="dropdown-item" href="{% url 'catalog:category_products' cat.id %}">{{ cat.nom }}</a></li>
             {% empty %}
-              <li><span class="dropdown-item-text muted">Aucune catégorie</span></li>
+              <li><span class="dropdown-item-text muted">{% trans "Aucune catégorie" %}</span></li>
             {% endfor %}
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'catalog:categories' %}">Toutes les catégories</a></li>
+            <li><a class="dropdown-item" href="{% url 'catalog:categories' %}">{% trans "Toutes les catégories" %}</a></li>
           </ul>
         </div>
-        <a class="nav-link" href="{% url 'catalog:product_list' %}">Produits</a>
-        <a class="nav-link" href="{% url 'catalog:publication_list' %}">Actualités</a>
+        <a class="nav-link" href="{% url 'catalog:product_list' %}">{% trans "Produits" %}</a>
+        <a class="nav-link" href="{% url 'catalog:publication_list' %}">{% trans "Actualités" %}</a>
       </nav>
 
       <div class="header-actions">
-        <a class="header-icon-link" href="{% url 'cart:detail' %}" aria-label="Panier">
+        {% include "includes/language_switcher.html" %}
+        <a class="header-icon-link" href="{% url 'cart:detail' %}" aria-label="{% trans 'Panier' %}">
           <i class="bi bi-bag"></i>
           <span class="badge rounded-pill cart-badge" id="cartBadge">{{ cart_count }}</span>
         </a>
@@ -51,49 +60,49 @@
                 <i class="bi bi-person-circle"></i> {{ user_nom }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{% url 'accounts:orders' %}">Mes commandes</a></li>
+                <li><a class="dropdown-item" href="{% url 'accounts:orders' %}">{% trans "Mes commandes" %}</a></li>
                 {% if is_admin_api %}
-                  <li><a class="dropdown-item" href="{% url 'adminpanel:dashboard' %}">Espace admin</a></li>
+                  <li><a class="dropdown-item" href="{% url 'adminpanel:dashboard' %}">{% trans "Espace admin" %}</a></li>
                 {% endif %}
                 <li><hr class="dropdown-divider"></li>
                 <li>
                   <form action="{% url 'accounts:logout' %}" method="post">{% csrf_token %}
-                    <button class="dropdown-item" type="submit">Déconnexion</button>
+                    <button class="dropdown-item" type="submit">{% trans "Déconnexion" %}</button>
                   </form>
                 </li>
               </ul>
             </div>
           {% else %}
-            <a class="header-login" href="{% url 'accounts:login' %}">Connexion</a>
+            <a class="header-login" href="{% url 'accounts:login' %}">{% trans "Connexion" %}</a>
           {% endif %}
-          <a class="btn-cta" href="{% url 'cart:detail' %}">Commander</a>
+          <a class="btn-cta" href="{% url 'cart:detail' %}">{% trans "Commander" %}</a>
         </div>
-        <button class="header-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#headerMenu" aria-controls="headerMenu" aria-expanded="false" aria-label="Menu">
+        <button class="header-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#headerMenu" aria-controls="headerMenu" aria-expanded="false" aria-label="{% trans 'Menu' %}">
           <i class="bi bi-list fs-4"></i>
         </button>
       </div>
     </div>
 
     <div class="collapse header-collapse d-lg-none" id="headerMenu">
-      <nav class="header-nav" aria-label="Navigation mobile">
-        <a class="nav-link" href="{% url 'core:home' %}">Accueil</a>
-        <a class="nav-link" href="{% url 'catalog:categories' %}">Catégories</a>
-        <a class="nav-link" href="{% url 'catalog:product_list' %}">Produits</a>
-        <a class="nav-link" href="{% url 'catalog:publication_list' %}">Actualités</a>
+      <nav class="header-nav" aria-label="{% trans 'Navigation mobile' %}">
+        <a class="nav-link" href="{% url 'core:home' %}">{% trans "Accueil" %}</a>
+        <a class="nav-link" href="{% url 'catalog:categories' %}">{% trans "Catégories" %}</a>
+        <a class="nav-link" href="{% url 'catalog:product_list' %}">{% trans "Produits" %}</a>
+        <a class="nav-link" href="{% url 'catalog:publication_list' %}">{% trans "Actualités" %}</a>
       </nav>
       <div class="header-actions-mobile">
         {% if is_authenticated_api %}
-          <a class="header-login" href="{% url 'accounts:orders' %}">Mes commandes</a>
+          <a class="header-login" href="{% url 'accounts:orders' %}">{% trans "Mes commandes" %}</a>
           {% if is_admin_api %}
-            <a class="header-login" href="{% url 'adminpanel:dashboard' %}">Espace admin</a>
+            <a class="header-login" href="{% url 'adminpanel:dashboard' %}">{% trans "Espace admin" %}</a>
           {% endif %}
           <form action="{% url 'accounts:logout' %}" method="post">{% csrf_token %}
-            <button class="header-login btn btn-link p-0" type="submit">Déconnexion</button>
+            <button class="header-login btn btn-link p-0" type="submit">{% trans "Déconnexion" %}</button>
           </form>
         {% else %}
-          <a class="header-login" href="{% url 'accounts:login' %}">Connexion</a>
+          <a class="header-login" href="{% url 'accounts:login' %}">{% trans "Connexion" %}</a>
         {% endif %}
-        <a class="btn-cta" href="{% url 'cart:detail' %}">Commander</a>
+        <a class="btn-cta" href="{% url 'cart:detail' %}">{% trans "Commander" %}</a>
       </div>
     </div>
   </header>
@@ -105,7 +114,7 @@
   <main class="flex-grow-1">
     <div class="container alerts-wrap">
       {% if api_unavailable %}
-        <div class="alert alert-danger" role="alert">Service temporairement indisponible. Veuillez réessayer dans un instant.</div>
+        <div class="alert alert-danger" role="alert">{% trans "Service temporairement indisponible. Veuillez réessayer dans un instant." %}</div>
       {% endif %}
       {% include "includes/messages.html" %}
     </div>
@@ -114,8 +123,8 @@
 
   <aside class="cta-band">
     <div class="container cta-band-inner">
-      <p>Vous vendez quelque chose ? Contactez-nous pour référencer vos produits.</p>
-      <a class="btn-cta" href="{% url 'accounts:login' %}">Nous rejoindre</a>
+      <p>{% trans "Vous vendez quelque chose ? Contactez-nous pour référencer vos produits." %}</p>
+      <a class="btn-cta" href="{% url 'accounts:login' %}">{% trans "Nous rejoindre" %}</a>
     </div>
   </aside>
 
@@ -126,13 +135,13 @@
           <a class="site-logo-link site-logo-link--footer" href="{% url 'core:home' %}">
             <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
           </a>
-          <p>Marketplace mauritanienne — Nouadhibou, Zouérat, Nouakchott.</p>
+          <p>{% trans "Marketplace mauritanienne — Nouadhibou, Zouérat, Nouakchott." %}</p>
         </div>
-        <a class="btn-cta" href="{% url 'catalog:product_list' %}">Voir le catalogue</a>
-        <div class="footer-social" aria-label="Parcourir">
-          <a href="{% url 'catalog:product_list' %}" aria-label="Produits"><i class="bi bi-grid"></i></a>
-          <a href="{% url 'catalog:categories' %}" aria-label="Catégories"><i class="bi bi-folder"></i></a>
-          <a href="{% url 'catalog:publication_list' %}" aria-label="Actualités"><i class="bi bi-newspaper"></i></a>
+        <a class="btn-cta" href="{% url 'catalog:product_list' %}">{% trans "Voir le catalogue" %}</a>
+        <div class="footer-social" aria-label="{% trans 'Parcourir' %}">
+          <a href="{% url 'catalog:product_list' %}" aria-label="{% trans 'Produits' %}"><i class="bi bi-grid"></i></a>
+          <a href="{% url 'catalog:categories' %}" aria-label="{% trans 'Catégories' %}"><i class="bi bi-folder"></i></a>
+          <a href="{% url 'catalog:publication_list' %}" aria-label="{% trans 'Actualités' %}"><i class="bi bi-newspaper"></i></a>
         </div>
       </div>
       <p class="footer-copy">© {% now "Y" %} NDB SHOPPING</p>
@@ -140,6 +149,16 @@
   </footer>
 
   <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+  <script>
+    {% trans "Ajouté au panier" as ndb_added %}
+    {% trans "Impossible d'ajouter au panier" as ndb_cannot_add %}
+    {% trans "Service temporairement indisponible" as ndb_unavailable %}
+    window.NDB_I18N = {
+      addedToCart: "{{ ndb_added|escapejs }}",
+      cannotAddToCart: "{{ ndb_cannot_add|escapejs }}",
+      unavailable: "{{ ndb_unavailable|escapejs }}"
+    };
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{% static 'js/cart.js' %}"></script>
   {% block extra_js %}{% endblock %}

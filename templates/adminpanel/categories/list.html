@@ -1,12 +1,13 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Catégories{% endblock %}
+{% block title %}{% trans "Catégories" %}{% endblock %}
 
 {% block content %}
+{% trans "Supprimer cette catégorie ?" as confirm_delete %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h4 mb-0">Catégories</h1>
-  <a class="btn-cta" href="{% url 'adminpanel:category_create' %}">Nouvelle catégorie</a>
+  <h1 class="h4 mb-0">{% trans "Catégories" %}</h1>
+  <a class="btn-cta" href="{% url 'adminpanel:category_create' %}">{% trans "Nouvelle catégorie" %}</a>
 </div>
 
 {% for cat in categories %}
@@ -19,24 +20,24 @@
           <ul class="small mb-0 mt-1">
             {% for child in cat.children %}
               <li>{{ child.nom }}
-                <a href="{% url 'adminpanel:category_edit' child.id %}">modifier</a> ·
-                <a href="{% url 'adminpanel:category_attributes' child.id %}">attributs</a>
+                <a href="{% url 'adminpanel:category_edit' child.id %}">{% trans "modifier" %}</a> ·
+                <a href="{% url 'adminpanel:category_attributes' child.id %}">{% trans "attributs" %}</a>
               </li>
             {% endfor %}
           </ul>
         {% endif %}
       </div>
       <div class="btn-group btn-group-sm">
-        <a class="btn btn-outline-secondary" href="{% url 'adminpanel:category_attributes' cat.id %}">Attributs</a>
-        <a class="btn btn-outline-primary" href="{% url 'adminpanel:category_edit' cat.id %}">Modifier</a>
-        <form method="post" action="{% url 'adminpanel:category_delete' cat.id %}" onsubmit="return confirm('Supprimer cette catégorie ?');">
+        <a class="btn btn-outline-secondary" href="{% url 'adminpanel:category_attributes' cat.id %}">{% trans "Attributs" %}</a>
+        <a class="btn btn-outline-primary" href="{% url 'adminpanel:category_edit' cat.id %}">{% trans "Modifier" %}</a>
+        <form method="post" action="{% url 'adminpanel:category_delete' cat.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
           {% csrf_token %}
-          <button class="btn btn-outline-danger" type="submit">Supprimer</button>
+          <button class="btn btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
         </form>
       </div>
     </div>
   </div>
 {% empty %}
-  <p class="text-muted">Aucune catégorie.</p>
+  <p class="text-muted">{% trans "Aucune catégorie." %}</p>
 {% endfor %}
 {% endblock %}

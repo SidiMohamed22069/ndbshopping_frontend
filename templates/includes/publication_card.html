@@ -1,4 +1,4 @@
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 <article class="cat-card">
   <div class="cat-card-media">
     {% if pub.imageUrl %}
@@ -10,6 +10,6 @@
   <div class="cat-card-body">
     <h3>{{ pub.titre }}</h3>
     <p>{{ pub.contenu|truncatechars:100 }}</p>
-    <a class="btn-cta" href="{% url 'catalog:publication_detail' pub.id %}">Lire la suite</a>
+    <a class="btn-cta" href="{% url 'catalog:publication_detail' pub.id %}">{% trans "Lire la suite" %}</a>
   </div>
 </article>

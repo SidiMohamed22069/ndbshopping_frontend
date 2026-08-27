@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
 from services import api_client
@@ -73,15 +74,15 @@ def add(request):
     product_id, quantite = _parse_product_qty(request)
     if not product_id:
         if _wants_json(request):
-            return JsonResponse({"ok": False, "error": "Produit invalide."}, status=400)
-        messages.error(request, "Produit invalide.")
+            return JsonResponse({"ok": False, "error": _("Produit invalide.")}, status=400)
+        messages.error(request, _("Produit invalide."))
         return redirect("catalog:product_list")
 
     result = api_client.get_product(product_id)
     if not result.ok:
         if _wants_json(request):
             return JsonResponse({"ok": False, "error": result.error}, status=result.status or 400)
-        messages.error(request, result.error or "Produit introuvable.")
+        messages.error(request, result.error or _("Produit introuvable."))
         return redirect("catalog:product_list")
 
     cart_utils.add_item(request.session, product_id, quantite or 1)
@@ -92,10 +93,10 @@ def add(request):
             {
                 "ok": True,
                 "cart_count": cart_utils.cart_quantity(request.session),
-                "message": "Ajouté au panier.",
+                "message": _("Ajouté au panier."),
             }
         )
-    messages.success(request, "Produit ajouté au panier.")
+    messages.success(request, _("Produit ajouté au panier."))
     next_url = request.POST.get("next") or reverse("cart:detail")
     if next_url.startswith("/") and not next_url.startswith("//"):
         return redirect(next_url)
@@ -106,11 +107,11 @@ def add(request):
 def update(request):
     product_id, quantite = _parse_product_qty(request)
     if not product_id:
-        messages.error(request, "Produit invalide.")
+        messages.error(request, _("Produit invalide."))
         return redirect("cart:detail")
     cart_utils.update_item(request.session, product_id, quantite if quantite is not None else 1)
     cart_utils.sync_if_authenticated(request)
-    messages.success(request, "Panier mis à jour.")
+    messages.success(request, _("Panier mis à jour."))
     return redirect("cart:detail")
 
 
@@ -120,5 +121,5 @@ def remove(request):
     if product_id:
         cart_utils.remove_item(request.session, product_id)
         cart_utils.sync_if_authenticated(request)
-        messages.success(request, "Article retiré du panier.")
+        messages.success(request, _("Article retiré du panier."))
     return redirect("cart:detail")

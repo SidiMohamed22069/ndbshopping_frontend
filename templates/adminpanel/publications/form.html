@@ -1,37 +1,37 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}{% if publication %}Modifier{% else %}Nouvelle{% endif %} publication{% endblock %}
+{% block title %}{% if publication %}{% trans "Modifier" %}{% else %}{% trans "Nouvelle" %}{% endif %} {% trans "publication" %}{% endblock %}
 
 {% block content %}
-<h1 class="h4 mb-3">{% if publication %}Modifier{% else %}Nouvelle publication{% endif %}</h1>
+<h1 class="h4 mb-3">{% if publication %}{% trans "Modifier" %}{% else %}{% trans "Nouvelle publication" %}{% endif %}</h1>
 <form method="post" enctype="multipart/form-data" class="form-panel form-narrow-lg">
   {% csrf_token %}
   <div class="mb-3">
-    <label class="form-label" for="titre">Titre</label>
+    <label class="form-label" for="titre">{% trans "Titre" %}</label>
     <input class="form-control" id="titre" name="titre" required value="{{ publication.titre }}">
   </div>
   <div class="mb-3">
-    <label class="form-label" for="contenu">Contenu</label>
+    <label class="form-label" for="contenu">{% trans "Contenu" %}</label>
     <textarea class="form-control" id="contenu" name="contenu" rows="8" required>{{ publication.contenu }}</textarea>
   </div>
   <div class="mb-3">
-    <label class="form-label" for="image">Image</label>
+    <label class="form-label" for="image">{% trans "Image" %}</label>
     {% if publication.imageUrl %}
       <div class="mb-2">
         <img src="{{ publication.imageUrl|media_url }}" alt="{{ publication.titre }}" class="admin-image-preview">
-        <div class="form-text">Image actuelle. Choisissez un fichier pour la remplacer.</div>
+        <div class="form-text">{% trans "Image actuelle. Choisissez un fichier pour la remplacer." %}</div>
       </div>
     {% endif %}
     <input class="form-control" type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
-    <div class="form-text">JPG, PNG ou WebP — 5 Mo maximum.</div>
+    <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
   </div>
   <div class="mb-3">
-    <label class="form-label" for="produitLieId">ID produit lié (optionnel)</label>
+    <label class="form-label" for="produitLieId">{% trans "ID produit lié (optionnel)" %}</label>
     <input class="form-control" id="produitLieId" name="produitLieId" type="number" min="1" value="{{ publication.produitLieId }}">
   </div>
   <div class="mb-3">
-    <label class="form-label" for="statut">Statut</label>
+    <label class="form-label" for="statut">{% trans "Statut" %}</label>
     <select class="form-select" id="statut" name="statut">
       {% for code, label in statuses %}
         <option value="{{ code }}" {% if publication.statut == code %}selected{% endif %}>{{ label }}</option>
@@ -40,9 +40,9 @@
   </div>
   <div class="form-check mb-3">
     <input class="form-check-input" type="checkbox" id="misEnAvant" name="misEnAvant" value="true"{% if publication.misEnAvant %} checked{% endif %}>
-    <label class="form-check-label" for="misEnAvant">Afficher dans le bandeau du haut</label>
+    <label class="form-check-label" for="misEnAvant">{% trans "Afficher dans le bandeau du haut" %}</label>
   </div>
-  <button class="btn-cta" type="submit">Enregistrer</button>
-  <a class="btn btn-link" href="{% url 'adminpanel:publication_list' %}">Annuler</a>
+  <button class="btn-cta" type="submit">{% trans "Enregistrer" %}</button>
+  <a class="btn btn-link" href="{% url 'adminpanel:publication_list' %}">{% trans "Annuler" %}</a>
 </form>
 {% endblock %}

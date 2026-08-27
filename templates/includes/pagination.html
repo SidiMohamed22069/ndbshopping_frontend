@@ -1,18 +1,18 @@
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 {% if pagination and pagination.totalPages > 1 %}
-<nav aria-label="Pagination" class="mt-4">
+<nav aria-label="{% trans 'Pagination' %}" class="mt-4">
   <ul class="pagination justify-content-center">
     {% if pagination.page > 0 %}
       <li class="page-item">
-        <a class="page-link" href="?{% qs_replace page=pagination.page %}">Précédent</a>
+        <a class="page-link" href="?{% qs_replace page=pagination.page %}">{% trans "Précédent" %}</a>
       </li>
     {% endif %}
     <li class="page-item disabled">
-      <span class="page-link">Page {{ pagination.page|add:1 }} / {{ pagination.totalPages }}</span>
+      <span class="page-link">{% blocktrans with current=pagination.page|add:1 total=pagination.totalPages %}Page {{ current }} / {{ total }}{% endblocktrans %}</span>
     </li>
     {% if pagination.page|add:1 < pagination.totalPages %}
       <li class="page-item">
-        <a class="page-link" href="?{% qs_replace page=pagination.page|add:2 %}">Suivant</a>
+        <a class="page-link" href="?{% qs_replace page=pagination.page|add:2 %}">{% trans "Suivant" %}</a>
       </li>
     {% endif %}
   </ul>

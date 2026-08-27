@@ -1,28 +1,29 @@
+{% load i18n %}
 {% with url_name=request.resolver_match.url_name %}
 <nav class="admin-nav py-3">
   <a class="admin-nav-link {% if url_name == 'dashboard' %}active{% endif %}" href="{% url 'adminpanel:dashboard' %}">
-    <i class="bi bi-speedometer2"></i> Tableau de bord
+    <i class="bi bi-speedometer2"></i> {% trans "Tableau de bord" %}
   </a>
   <a class="admin-nav-link {% if 'categor' in url_name %}active{% endif %}" href="{% url 'adminpanel:category_list' %}">
-    <i class="bi bi-folder"></i> Catégories
+    <i class="bi bi-folder"></i> {% trans "Catégories" %}
   </a>
   <a class="admin-nav-link {% if url_name != 'product_import' and 'product' in url_name %}active{% endif %}" href="{% url 'adminpanel:product_list' %}">
-    <i class="bi bi-box-seam"></i> Produits
+    <i class="bi bi-box-seam"></i> {% trans "Produits" %}
   </a>
   <a class="admin-nav-link {% if url_name == 'product_import' %}active{% endif %}" href="{% url 'adminpanel:product_import' %}">
-    <i class="bi bi-upload"></i> Import
+    <i class="bi bi-upload"></i> {% trans "Import" %}
   </a>
   <a class="admin-nav-link {% if 'order' in url_name %}active{% endif %}" href="{% url 'adminpanel:order_list' %}">
-    <i class="bi bi-receipt"></i> Commandes
+    <i class="bi bi-receipt"></i> {% trans "Commandes" %}
   </a>
   <a class="admin-nav-link {% if 'publication' in url_name %}active{% endif %}" href="{% url 'adminpanel:publication_list' %}">
-    <i class="bi bi-newspaper"></i> Publications
+    <i class="bi bi-newspaper"></i> {% trans "Publications" %}
   </a>
   <a class="admin-nav-link {% if 'notification' in url_name %}active{% endif %}" href="{% url 'adminpanel:notification_list' %}">
-    <i class="bi bi-bell"></i> Notifications
+    <i class="bi bi-bell"></i> {% trans "Notifications" %}
   </a>
   <a class="admin-nav-link {% if 'user' in url_name %}active{% endif %}" href="{% url 'adminpanel:user_list' %}">
-    <i class="bi bi-people"></i> Comptes
+    <i class="bi bi-people"></i> {% trans "Comptes" %}
   </a>
 </nav>
 {% endwith %}

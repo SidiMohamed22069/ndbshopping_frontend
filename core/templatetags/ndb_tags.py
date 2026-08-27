@@ -2,6 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 from django import template
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 register = template.Library()
 
@@ -27,15 +28,16 @@ def mru(value) -> str:
     except (InvalidOperation, TypeError, ValueError):
         return str(value)
     formatted = f"{number:,.0f}".replace(",", " ")
-    return f"{formatted} UM"
+    unit = _("UM")
+    return f"{formatted} {unit}"
 
 
 @register.filter
 def ville_label(code: str | None) -> str:
     labels = {
-        "NOUADHIBOU": "Nouadhibou",
-        "ZOUERAT": "Zouérat",
-        "NOUAKCHOTT": "Nouakchott",
+        "NOUADHIBOU": _("Nouadhibou"),
+        "ZOUERAT": _("Zouérat"),
+        "NOUAKCHOTT": _("Nouakchott"),
     }
     return labels.get(code or "", code or "—")
 
@@ -43,29 +45,29 @@ def ville_label(code: str | None) -> str:
 @register.filter
 def statut_label(code: str | None) -> str:
     labels = {
-        "EN_ATTENTE": "En attente",
-        "CONFIRMEE": "Confirmée",
-        "EN_LIVRAISON": "En livraison",
-        "LIVREE": "Livrée",
-        "ANNULEE": "Annulée",
-        "BROUILLON": "Brouillon",
-        "PUBLIE": "Publié",
-        "PRODUIT": "Produit",
-        "HOTEL": "Hôtel",
-        "VOITURE": "Voiture",
-        "SERVICE": "Service",
-        "AUTRE": "Autre",
-        "CLIENT": "Client",
-        "ADMIN": "Admin",
-        "NOUVELLE_COMMANDE": "Nouvelle commande",
-        "SOLDE_SMS_BAS": "Solde SMS bas",
-        "MANUEL": "Manuel",
+        "EN_ATTENTE": _("En attente"),
+        "CONFIRMEE": _("Confirmée"),
+        "EN_LIVRAISON": _("En livraison"),
+        "LIVREE": _("Livrée"),
+        "ANNULEE": _("Annulée"),
+        "BROUILLON": _("Brouillon"),
+        "PUBLIE": _("Publié"),
+        "PRODUIT": _("Produit"),
+        "HOTEL": _("Hôtel"),
+        "VOITURE": _("Voiture"),
+        "SERVICE": _("Service"),
+        "AUTRE": _("Autre"),
+        "CLIENT": _("Client"),
+        "ADMIN": _("Admin"),
+        "NOUVELLE_COMMANDE": _("Nouvelle commande"),
+        "SOLDE_SMS_BAS": _("Solde SMS bas"),
+        "MANUEL": _("Manuel"),
         "FACEBOOK": "Facebook",
         "ALIBABA": "Alibaba",
-        "TEXTE": "Texte",
-        "NOMBRE": "Nombre",
-        "DATE": "Date",
-        "BOOLEEN": "Oui / Non",
+        "TEXTE": _("Texte"),
+        "NOMBRE": _("Nombre"),
+        "DATE": _("Date"),
+        "BOOLEEN": _("Oui / Non"),
     }
     return labels.get(code or "", code or "—")
 

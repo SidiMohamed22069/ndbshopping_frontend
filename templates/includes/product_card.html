@@ -1,4 +1,4 @@
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 <div class="col">
   <article class="listing-card">
     <div class="listing-card-media">
@@ -20,7 +20,7 @@
         <p>{{ product.description|truncatewords:12 }}</p>
       {% endif %}
       <p class="listing-price">{{ product.prix|mru }}</p>
-      <a class="btn-cta" href="{% url 'catalog:product_detail' product.id %}">Voir le produit</a>
+      <a class="btn-cta" href="{% url 'catalog:product_detail' product.id %}">{% trans "Voir le produit" %}</a>
     </div>
   </article>
 </div>

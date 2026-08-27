@@ -1,6 +1,10 @@
 /* ==========================================================================
    NDB SHOPPING — thème visuel
    Toutes les couleurs hexadécimales du projet vivent ICI (variables).
+
+   RTL : les insets physiques (left/right) ont été convertis en propriétés
+   logiques (inset-inline-start/end). En arabe, Bootstrap RTL + dir="rtl"
+   inversent flex/header. Complément : static/css/theme-rtl.css.
    ========================================================================== */
 
 :root {
@@ -308,8 +312,7 @@ textarea.form-control {
 .site-header {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     z-index: 1030;
     height: var(--header-height);
     background: var(--color-dark);
@@ -423,7 +426,7 @@ textarea.form-control {
 .admin-notif-badge {
     position: absolute;
     top: -0.2rem;
-    right: -0.45rem;
+    inset-inline-end: -0.45rem;
     min-width: 1.1rem;
     font-size: 0.65rem;
     background: var(--color-secondary) !important;
@@ -439,6 +442,27 @@ textarea.form-control {
 
 .header-login:hover {
     color: var(--color-secondary);
+}
+
+.lang-switcher {
+    margin: 0;
+}
+
+.lang-switcher select {
+    background: var(--color-primary);
+    color: var(--color-text-white);
+    border: 1px solid var(--color-grey-mid);
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    max-width: 7.5rem;
+}
+
+.lang-switcher select:focus {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 1px;
 }
 
 @media (max-width: 991.98px) {
@@ -458,8 +482,7 @@ textarea.form-control {
     .header-collapse {
         position: absolute;
         top: var(--header-height);
-        left: 0;
-        right: 0;
+        inset-inline: 0;
         background: var(--color-primary);
         padding: 1rem;
         display: none;
@@ -552,11 +575,11 @@ textarea.form-control {
 }
 
 .promo-banner .carousel-control-prev {
-    left: 0.4rem;
+    inset-inline-start: 0.4rem;
 }
 
 .promo-banner .carousel-control-next {
-    right: 0.4rem;
+    inset-inline-end: 0.4rem;
 }
 
 .promo-banner .carousel-control-prev:hover,
@@ -887,7 +910,7 @@ textarea.form-control {
 .cat-card-media .cat-badge {
     position: absolute;
     top: 0.6rem;
-    right: 0.6rem;
+    inset-inline-end: 0.6rem;
     margin: 0;
     width: 2.35rem;
     height: 2.35rem;

@@ -1,20 +1,20 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Tableau de bord{% endblock %}
+{% block title %}{% trans "Tableau de bord" %}{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Tableau de bord</h1>
+<h1 class="page-title">{% trans "Tableau de bord" %}</h1>
 <div class="row g-3 mb-4">
   <div class="col-md-4">
     <div class="admin-stat card-body p-4">
-      <p class="muted small mb-1">Commandes en attente</p>
+      <p class="muted small mb-1">{% trans "Commandes en attente" %}</p>
       <p class="display-6 mb-0">{{ pending_count }}</p>
     </div>
   </div>
   <div class="col-md-4">
     <div class="admin-stat card-body p-4">
-      <p class="muted small mb-1">Notifications non lues</p>
+      <p class="muted small mb-1">{% trans "Notifications non lues" %}</p>
       <p class="display-6 mb-0">{{ unread_count }}</p>
     </div>
   </div>
@@ -22,7 +22,7 @@
 
 <div class="row g-4">
   <div class="col-lg-6">
-    <h2 class="h6">Dernières commandes en attente</h2>
+    <h2 class="h6">{% trans "Dernières commandes en attente" %}</h2>
     <ul class="list-group">
       {% for order in pending_orders %}
         <li class="list-group-item d-flex justify-content-between">
@@ -30,12 +30,12 @@
           <span>{{ order.total|mru }}</span>
         </li>
       {% empty %}
-        <li class="list-group-item muted">Aucune commande en attente.</li>
+        <li class="list-group-item muted">{% trans "Aucune commande en attente." %}</li>
       {% endfor %}
     </ul>
   </div>
   <div class="col-lg-6">
-    <h2 class="h6">Notifications</h2>
+    <h2 class="h6">{% trans "Notifications" %}</h2>
     <ul class="list-group">
       {% for n in notifications %}
         <li class="list-group-item">
@@ -43,7 +43,7 @@
           {{ n.message }}
         </li>
       {% empty %}
-        <li class="list-group-item muted">Rien de nouveau.</li>
+        <li class="list-group-item muted">{% trans "Rien de nouveau." %}</li>
       {% endfor %}
     </ul>
   </div>

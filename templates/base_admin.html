@@ -1,35 +1,43 @@
-{% load static ndb_tags %}
+{% load static i18n ndb_tags %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Admin{% endblock %} · NDB SHOPPING</title>
+  <title>{% block title %}{% trans "Espace admin" %}{% endblock %} · NDB SHOPPING</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% if LANGUAGE_BIDI %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.rtl.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% else %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  {% endif %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  {% if LANGUAGE_BIDI %}
+    <link rel="stylesheet" href="{% static 'css/theme-rtl.css' %}">
+  {% endif %}
   <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
   {% block extra_css %}{% endblock %}
 </head>
 <body class="admin-body">
   <nav class="navbar navbar-dark admin-topbar sticky-top">
     <div class="container-fluid">
-      <button class="btn btn-light-outline d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-label="Menu">
+      <button class="btn btn-light-outline d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-label="{% trans 'Menu' %}">
         <i class="bi bi-list"></i>
       </button>
       <a class="site-logo-link" href="{% url 'adminpanel:dashboard' %}">
         <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
       </a>
       <div class="d-flex align-items-center gap-3">
-        <a class="header-icon-link" href="{% url 'adminpanel:notification_list' %}" aria-label="Notifications">
+        {% include "includes/language_switcher.html" %}
+        <a class="header-icon-link" href="{% url 'adminpanel:notification_list' %}" aria-label="{% trans 'Notifications' %}">
           <i class="bi bi-bell fs-5"></i>
           <span class="badge rounded-pill admin-notif-badge" id="adminNotifBadge">{{ unread_notifications }}</span>
         </a>
         <span class="text-white small d-none d-sm-inline">{{ user_nom }}</span>
-        <a class="btn-cta btn-cta-sm" href="{% url 'core:home' %}">Boutique</a>
+        <a class="btn-cta btn-cta-sm" href="{% url 'core:home' %}">{% trans "Boutique" %}</a>
       </div>
     </div>
   </nav>
@@ -41,7 +49,7 @@
 
     <div class="offcanvas offcanvas-start admin-offcanvas d-lg-none" tabindex="-1" id="adminSidebar">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title text-white">Menu</h5>
+        <h5 class="offcanvas-title text-white">{% trans "Menu" %}</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body p-0">
@@ -51,7 +59,7 @@
 
     <main class="admin-main flex-grow-1 p-3 p-md-4">
       {% if api_unavailable %}
-        <div class="alert alert-danger" role="alert">Service temporairement indisponible. Veuillez réessayer dans un instant.</div>
+        <div class="alert alert-danger" role="alert">{% trans "Service temporairement indisponible. Veuillez réessayer dans un instant." %}</div>
       {% endif %}
       {% include "includes/messages.html" %}
       {% block content %}{% endblock %}
@@ -66,6 +74,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
   <script>
     window.NDB_PUBLIC_BACKEND_HOST = "{{ PUBLIC_BACKEND_HOST }}";
+    {% trans "Nouvelle notification" as ndb_new_notif %}
+    window.NDB_I18N = {
+      newNotification: "{{ ndb_new_notif|escapejs }}"
+    };
   </script>
   <script src="{% static 'js/admin-ws.js' %}"></script>
   {% block extra_js %}{% endblock %}

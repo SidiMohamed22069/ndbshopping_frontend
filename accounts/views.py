@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_http_methods
 
 from cart.utils import clear_cart, sync_if_authenticated, to_sync_payload
@@ -9,9 +11,9 @@ from core.utils import page_from_request, safe_next_url
 from services import api_client
 
 CITIES = [
-    ("NOUADHIBOU", "Nouadhibou"),
-    ("ZOUERAT", "Zouérat"),
-    ("NOUAKCHOTT", "Nouakchott"),
+    ("NOUADHIBOU", _lazy("Nouadhibou")),
+    ("ZOUERAT", _lazy("Zouérat")),
+    ("NOUAKCHOTT", _lazy("Nouakchott")),
 ]
 
 
@@ -28,16 +30,16 @@ def _establish_session(request, token: str, user: dict, next_url: str | None):
     if not sync.ok:
         messages.warning(
             request,
-            "Connecté, mais le panier n'a pas pu être synchronisé. " + (sync.error or ""),
+            _("Connecté, mais le panier n'a pas pu être synchronisé. ") + (sync.error or ""),
         )
-    messages.success(request, f"Bienvenue {user.get('nom') or ''} !")
+    messages.success(request, _("Bienvenue %(nom)s !") % {"nom": user.get("nom") or ""})
     return redirect(safe_next_url(next_url or reverse("core:home")))
 
 
 def _go_to_otp(request, telephone: str, next_url: str, message: str | None = None):
     request.session["pending_phone"] = telephone
     request.session["pending_next"] = next_url
-    messages.success(request, message or "Code envoyé par SMS.")
+    messages.success(request, message or _("Code envoyé par SMS."))
     return redirect("accounts:otp")
 
 
@@ -53,7 +55,7 @@ def login_view(request):
         telephone = (request.POST.get("telephone") or "").strip()
         password = request.POST.get("password") or ""
         if not telephone or not password:
-            messages.error(request, "Téléphone et mot de passe sont obligatoires.")
+            messages.error(request, _("Téléphone et mot de passe sont obligatoires."))
         else:
             result = api_client.register_or_login(telephone, password)
             data = result.data if isinstance(result.data, dict) else {}
@@ -64,7 +66,7 @@ def login_view(request):
             if result.status == 404:
                 unknown_account = True
             else:
-                messages.error(request, result.error or "Connexion impossible.")
+                messages.error(request, result.error or _("Connexion impossible."))
 
     return render(
         request,
@@ -86,7 +88,7 @@ def register_view(request):
         telephone = (request.POST.get("telephone") or "").strip()
         password = request.POST.get("password") or ""
         if not nom or not telephone or not password:
-            messages.error(request, "Nom, téléphone et mot de passe sont obligatoires.")
+            messages.error(request, _("Nom, téléphone et mot de passe sont obligatoires."))
         else:
             result = api_client.register(nom, telephone, password)
             if result.ok:
@@ -95,7 +97,7 @@ def register_view(request):
             if result.status == 409:
                 account_exists = True
             else:
-                messages.error(request, result.error or "Inscription impossible.")
+                messages.error(request, result.error or _("Inscription impossible."))
 
     return render(
         request,
@@ -108,13 +110,13 @@ def register_view(request):
 def otp_view(request):
     telephone = request.session.get("pending_phone")
     if not telephone:
-        messages.warning(request, "Commencez par renseigner vos informations.")
+        messages.warning(request, _("Commencez par renseigner vos informations."))
         return redirect("accounts:login")
 
     if request.method == "POST":
         code = (request.POST.get("code") or "").strip()
         if not code:
-            messages.error(request, "Saisissez le code reçu par SMS.")
+            messages.error(request, _("Saisissez le code reçu par SMS."))
         else:
             result = api_client.verify_otp(telephone, code)
             if result.ok and isinstance(result.data, dict) and result.data.get("token"):
@@ -125,7 +127,7 @@ def otp_view(request):
                     result.data.get("user") or {},
                     next_url,
                 )
-            messages.error(request, result.error or "Code incorrect.")
+            messages.error(request, result.error or _("Code incorrect."))
 
     return render(request, "accounts/otp.html", {"telephone": telephone})
 
@@ -133,7 +135,7 @@ def otp_view(request):
 @require_http_methods(["POST", "GET"])
 def logout_view(request):
     request.session.flush()
-    messages.success(request, "Vous êtes déconnecté.")
+    messages.success(request, _("Vous êtes déconnecté."))
     return redirect("core:home")
 
 
@@ -143,22 +145,22 @@ def checkout(request):
     from cart.utils import get_cart
 
     if not get_cart(request.session):
-        messages.warning(request, "Votre panier est vide.")
+        messages.warning(request, _("Votre panier est vide."))
         return redirect("cart:detail")
 
     if request.method == "POST":
         ville = request.POST.get("villeLivraison") or ""
         adresse = (request.POST.get("adresseDetails") or "").strip()
         if ville not in {c[0] for c in CITIES} or not adresse:
-            messages.error(request, "Choisissez une ville et indiquez une adresse.")
+            messages.error(request, _("Choisissez une ville et indiquez une adresse."))
         else:
             sync_if_authenticated(request)
             result = api_client.create_order(request.jwt_token, ville, adresse)
             if result.ok:
                 clear_cart(request.session)
-                messages.success(request, "Commande enregistrée. Merci !")
+                messages.success(request, _("Commande enregistrée. Merci !"))
                 return redirect("accounts:orders")
-            messages.error(request, result.error or "Impossible de passer la commande.")
+            messages.error(request, result.error or _("Impossible de passer la commande."))
 
     return render(request, "accounts/checkout.html", {"cities": CITIES})
 

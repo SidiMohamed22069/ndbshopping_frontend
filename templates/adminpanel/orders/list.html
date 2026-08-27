@@ -1,14 +1,14 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Commandes{% endblock %}
+{% block title %}{% trans "Commandes" %}{% endblock %}
 
 {% block content %}
-<h1 class="h4 mb-3">Commandes</h1>
+<h1 class="h4 mb-3">{% trans "Commandes" %}</h1>
 <form class="row g-2 mb-3" method="get">
   <div class="col-md-4">
     <select class="form-select" name="statut">
-      <option value="">Tous les statuts</option>
+      <option value="">{% trans "Tous les statuts" %}</option>
       {% for code, label in statuses %}
         <option value="{{ code }}" {% if statut == code %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
@@ -16,14 +16,14 @@
   </div>
   <div class="col-md-4">
     <select class="form-select" name="ville">
-      <option value="">Toutes les villes</option>
+      <option value="">{% trans "Toutes les villes" %}</option>
       {% for code, label in cities %}
         <option value="{{ code }}" {% if ville == code %}selected{% endif %}>{{ label }}</option>
       {% endfor %}
     </select>
   </div>
   <div class="col-md-2 d-grid">
-    <button class="btn btn-outline-success" type="submit">Filtrer</button>
+    <button class="btn btn-outline-success" type="submit">{% trans "Filtrer" %}</button>
   </div>
 </form>
 
@@ -32,10 +32,10 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Client</th>
-        <th>Ville</th>
-        <th>Statut</th>
-        <th>Total</th>
+        <th>{% trans "Client" %}</th>
+        <th>{% trans "Ville" %}</th>
+        <th>{% trans "Statut" %}</th>
+        <th>{% trans "Total" %}</th>
         <th></th>
       </tr>
     </thead>
@@ -47,10 +47,10 @@
           <td>{{ o.villeLivraison|ville_label }}</td>
           <td><span class="badge text-bg-{{ o.statut|statut_badge }}">{{ o.statut|statut_label }}</span></td>
           <td>{{ o.total|mru }}</td>
-          <td><a class="btn btn-sm btn-outline-primary" href="{% url 'adminpanel:order_detail' o.id %}">Détail</a></td>
+          <td><a class="btn btn-sm btn-outline-primary" href="{% url 'adminpanel:order_detail' o.id %}">{% trans "Détail" %}</a></td>
         </tr>
       {% empty %}
-        <tr><td colspan="6" class="text-muted">Aucune commande.</td></tr>
+        <tr><td colspan="6" class="text-muted">{% trans "Aucune commande." %}</td></tr>
       {% endfor %}
     </tbody>
   </table>

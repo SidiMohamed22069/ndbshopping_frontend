@@ -1,27 +1,28 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Livraison{% endblock %}
+{% block title %}{% trans "Livraison" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap form-narrow">
-  <h1 class="page-title">Finaliser la commande</h1>
-  <p class="muted">Choisissez la ville de livraison et précisez l'adresse. Le paiement se fait à la livraison.</p>
+  <h1 class="page-title">{% trans "Finaliser la commande" %}</h1>
+  <p class="muted">{% trans "Choisissez la ville de livraison et précisez l'adresse. Le paiement se fait à la livraison." %}</p>
   <form method="post" class="form-panel">
     {% csrf_token %}
     <div class="mb-3">
-      <label class="form-label" for="villeLivraison">Ville</label>
+      <label class="form-label" for="villeLivraison">{% trans "Ville" %}</label>
       <select class="form-select" id="villeLivraison" name="villeLivraison" required>
-        <option value="">— Choisir —</option>
+        <option value="">{% trans "— Choisir —" %}</option>
         {% for code, label in cities %}
           <option value="{{ code }}">{{ label }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="mb-3">
-      <label class="form-label" for="adresseDetails">Adresse / précisions</label>
+      <label class="form-label" for="adresseDetails">{% trans "Adresse / précisions" %}</label>
       <textarea class="form-control" id="adresseDetails" name="adresseDetails" rows="3" required></textarea>
     </div>
-    <button class="btn-cta w-100" type="submit">Confirmer la commande</button>
+    <button class="btn-cta w-100" type="submit">{% trans "Confirmer la commande" %}</button>
   </form>
 </section>
 {% endblock %}

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Catégories{% endblock %}
+{% block title %}{% trans "Catégories" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap">
   <div class="section-heading">
-    <h1 class="page-title">Catégories</h1>
-    <p>Tous les univers du marketplace</p>
+    <h1 class="page-title">{% trans "Catégories" %}</h1>
+    <p>{% trans "Tous les univers du marketplace" %}</p>
   </div>
   <div class="row g-4 cat-grid">
     {% for cat in categories %}
@@ -15,7 +15,7 @@
         {% include "includes/category_card.html" %}
       </div>
     {% empty %}
-      <p class="muted">Aucune catégorie.</p>
+      <p class="muted">{% trans "Aucune catégorie." %}</p>
     {% endfor %}
   </div>
 </section>

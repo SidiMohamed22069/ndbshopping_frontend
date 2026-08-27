@@ -1,30 +1,30 @@
 {% extends "base.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Produits{% endblock %}
+{% block title %}{% trans "Produits" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap">
-  <h1 class="page-title">{% if selected_category %}{{ selected_category.nom }}{% else %}Catalogue{% endif %}</h1>
+  <h1 class="page-title">{% if selected_category %}{{ selected_category.nom }}{% else %}{% trans "Catalogue" %}{% endif %}</h1>
 
   <form class="search-bar mb-4" method="get" action="{% url 'catalog:product_list' %}" role="search">
-    <button class="search-submit" type="submit" aria-label="Rechercher"><i class="bi bi-search"></i></button>
-    <select class="form-select" name="category" aria-label="Catégorie">
-      <option value="">Toutes les catégories</option>
+    <button class="search-submit" type="submit" aria-label="{% trans 'Rechercher' %}"><i class="bi bi-search"></i></button>
+    <select class="form-select" name="category" aria-label="{% trans 'Catégorie' %}">
+      <option value="">{% trans "Toutes les catégories" %}</option>
       {% for cat in nav_categories_flat %}
         <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
       {% endfor %}
     </select>
-    <input class="form-control" type="number" name="min_prix" value="{{ min_prix }}" placeholder="Prix min" min="0" aria-label="Prix minimum">
-    <input class="form-control" type="number" name="max_prix" value="{{ max_prix }}" placeholder="Prix max" min="0" aria-label="Prix maximum">
-    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Recherche…">
+    <input class="form-control" type="number" name="min_prix" value="{{ min_prix }}" placeholder="{% trans 'Prix min' %}" min="0" aria-label="{% trans 'Prix minimum' %}">
+    <input class="form-control" type="number" name="max_prix" value="{{ max_prix }}" placeholder="{% trans 'Prix max' %}" min="0" aria-label="{% trans 'Prix maximum' %}">
+    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="{% trans 'Recherche…' %}">
   </form>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 product-grid">
     {% for product in products %}
       {% include "includes/product_card.html" %}
     {% empty %}
-      <p class="muted">Aucun produit ne correspond à votre recherche.</p>
+      <p class="muted">{% trans "Aucun produit ne correspond à votre recherche." %}</p>
     {% endfor %}
   </div>
   {% include "includes/pagination.html" %}

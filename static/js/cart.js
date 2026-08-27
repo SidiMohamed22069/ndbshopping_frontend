@@ -45,12 +45,12 @@
       if (payload.ok) {
         const badge = document.getElementById("cartBadge");
         if (badge) badge.textContent = payload.cart_count;
-        toast(payload.message || "Ajouté au panier", true);
+        toast(payload.message || (window.NDB_I18N && window.NDB_I18N.addedToCart) || "Ajouté au panier", true);
       } else {
-        toast(payload.error || "Impossible d'ajouter au panier", false);
+        toast(payload.error || (window.NDB_I18N && window.NDB_I18N.cannotAddToCart) || "Impossible d'ajouter au panier", false);
       }
     } catch (err) {
-      toast("Service temporairement indisponible", false);
+      toast((window.NDB_I18N && window.NDB_I18N.unavailable) || "Service temporairement indisponible", false);
     }
   });
 })();

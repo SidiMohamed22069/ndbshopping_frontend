@@ -1,23 +1,24 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Code SMS{% endblock %}
+{% block title %}{% trans "Code SMS" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap form-narrow">
-  <h1 class="page-title">Vérification SMS</h1>
-  <p class="muted">Un code a été envoyé au {{ telephone }}.</p>
+  <h1 class="page-title">{% trans "Vérification SMS" %}</h1>
+  <p class="muted">{% blocktrans %}Un code a été envoyé au {{ telephone }}.{% endblocktrans %}</p>
   <form method="post" class="form-panel">
     {% csrf_token %}
     <div class="mb-3">
-      <label class="form-label" for="code">Code OTP</label>
+      <label class="form-label" for="code">{% trans "Code OTP" %}</label>
       <input class="form-control form-control-lg text-center" id="code" name="code" required inputmode="numeric" autocomplete="one-time-code">
     </div>
-    <button class="btn-cta w-100" type="submit">Valider</button>
+    <button class="btn-cta w-100" type="submit">{% trans "Valider" %}</button>
   </form>
   <p class="small mt-3 mb-0">
-    <a href="{% url 'accounts:login' %}">Retour à la connexion</a>
+    <a href="{% url 'accounts:login' %}">{% trans "Retour à la connexion" %}</a>
     ·
-    <a href="{% url 'accounts:register' %}">Créer un compte</a>
+    <a href="{% url 'accounts:register' %}">{% trans "Créer un compte" %}</a>
   </p>
 </section>
 {% endblock %}

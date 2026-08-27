@@ -37,7 +37,7 @@
   function showToast(notif) {
     const container = document.getElementById("adminToastContainer");
     if (!container || typeof bootstrap === "undefined") return;
-    const message = (notif && notif.message) || "Nouvelle notification";
+    const message = (notif && notif.message) || (window.NDB_I18N && window.NDB_I18N.newNotification) || "Nouvelle notification";
     const el = document.createElement("div");
     el.className = "toast align-items-center text-bg-warning border-0";
     el.setAttribute("role", "alert");

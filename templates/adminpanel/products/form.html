@@ -1,19 +1,19 @@
 {% extends "base_admin.html" %}
-{% load static %}
+{% load i18n static %}
 
-{% block title %}{% if product %}Modifier{% else %}Nouveau{% endif %} produit{% endblock %}
+{% block title %}{% if product %}{% trans "Modifier" %}{% else %}{% trans "Nouveau" %}{% endif %} {% trans "produit" %}{% endblock %}
 
 {% block content %}
-<h1 class="h4 mb-3">{% if product %}Modifier {{ product.nom }}{% else %}Nouveau produit{% endif %}</h1>
+<h1 class="h4 mb-3">{% if product %}{% trans "Modifier" %} {{ product.nom }}{% else %}{% trans "Nouveau produit" %}{% endif %}</h1>
 <form method="post" class="form-panel">
   {% csrf_token %}
   <div class="row g-3">
     <div class="col-md-8">
-      <label class="form-label" for="nom">Nom</label>
+      <label class="form-label" for="nom">{% trans "Nom" %}</label>
       <input class="form-control" id="nom" name="nom" required maxlength="255" value="{{ product.nom }}">
     </div>
     <div class="col-md-4">
-      <label class="form-label" for="statut">Statut</label>
+      <label class="form-label" for="statut">{% trans "Statut" %}</label>
       <select class="form-select" id="statut" name="statut">
         {% for code, label in statuses %}
           <option value="{{ code }}" {% if product.statut == code %}selected{% endif %}>{{ label }}</option>
@@ -21,28 +21,28 @@
       </select>
     </div>
     <div class="col-12">
-      <label class="form-label" for="description">Description</label>
+      <label class="form-label" for="description">{% trans "Description" %}</label>
       <textarea class="form-control" id="description" name="description" rows="4">{{ product.description }}</textarea>
     </div>
     <div class="col-md-4">
-      <label class="form-label" for="prix">Prix (UM)</label>
+      <label class="form-label" for="prix">{% trans "Prix (UM)" %}</label>
       <input class="form-control" id="prix" name="prix" type="number" step="0.01" min="0" required value="{{ product.prix }}">
     </div>
     <div class="col-md-4">
-      <label class="form-label" for="stock">Stock</label>
+      <label class="form-label" for="stock">{% trans "Stock" %}</label>
       <input class="form-control" id="stock" name="stock" type="number" min="0" value="{{ product.stock|default:0 }}">
     </div>
     <div class="col-md-4">
-      <label class="form-label" for="categoryId">Catégorie</label>
+      <label class="form-label" for="categoryId">{% trans "Catégorie" %}</label>
       <select class="form-select" id="categoryId" name="categoryId" required>
-        <option value="">— Choisir —</option>
+        <option value="">{% trans "— Choisir —" %}</option>
         {% for cat in categories_flat %}
           <option value="{{ cat.id }}" {% if product.categoryId == cat.id %}selected{% endif %}>{{ cat.nom }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="col-md-6">
-      <label class="form-label" for="sourceOrigine">Source</label>
+      <label class="form-label" for="sourceOrigine">{% trans "Source" %}</label>
       <select class="form-select" id="sourceOrigine" name="sourceOrigine">
         {% for code, label in sources %}
           <option value="{{ code }}" {% if product.sourceOrigine == code %}selected{% endif %}>{{ label }}</option>
@@ -50,19 +50,34 @@
       </select>
     </div>
     <div class="col-md-6">
-      <label class="form-label" for="sourceUrl">URL source (optionnel)</label>
+      <label class="form-label" for="sourceUrl">{% trans "URL source (optionnel)" %}</label>
       <input class="form-control" id="sourceUrl" name="sourceUrl" value="{{ product.sourceUrl }}">
     </div>
   </div>
 
   <hr>
-  <h2 class="h6">Attributs de la catégorie</h2>
-  <div id="dynamicAttributes" data-endpoint="{% url 'core:category_attributes' 999999 %}">
-    <p class="text-muted small">Choisissez une catégorie pour charger les champs dynamiques.</p>
+  <h2 class="h6">{% trans "Attributs de la catégorie" %}</h2>
+  {% trans "Chargement des attributs…" as msg_loading %}
+  {% trans "Choisissez une catégorie pour afficher les champs spécifiques (hôtel, voiture, etc.)." as msg_choose %}
+  {% trans "Impossible de charger les attributs." as msg_fail %}
+  {% trans "Aucun attribut spécifique pour cette catégorie." as msg_none %}
+  {% trans "Service temporairement indisponible." as msg_down %}
+  {% trans "Oui" as msg_yes %}
+  {% trans "Non" as msg_no %}
+  <div id="dynamicAttributes"
+       data-endpoint="{% url 'core:category_attributes' 999999 %}"
+       data-msg-loading="{{ msg_loading }}"
+       data-msg-choose="{{ msg_choose }}"
+       data-msg-fail="{{ msg_fail }}"
+       data-msg-none="{{ msg_none }}"
+       data-msg-down="{{ msg_down }}"
+       data-msg-yes="{{ msg_yes }}"
+       data-msg-no="{{ msg_no }}">
+    <p class="text-muted small">{% trans "Choisissez une catégorie pour charger les champs dynamiques." %}</p>
   </div>
 
-  <button class="btn-cta" type="submit">Enregistrer</button>
-  <a class="btn btn-link" href="{% url 'adminpanel:product_list' %}">Annuler</a>
+  <button class="btn-cta" type="submit">{% trans "Enregistrer" %}</button>
+  <a class="btn btn-link" href="{% url 'adminpanel:product_list' %}">{% trans "Annuler" %}</a>
 </form>
 {% endblock %}
 

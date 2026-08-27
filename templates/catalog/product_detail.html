@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}{% if product %}{{ product.nom }}{% else %}Produit{% endif %}{% endblock %}
+{% block title %}{% if product %}{{ product.nom }}{% else %}{% trans "Produit" %}{% endif %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap">
   {% if not product %}
-    <p class="muted">Produit indisponible pour le moment.</p>
+    <p class="muted">{% trans "Produit indisponible pour le moment." %}</p>
   {% else %}
     <div class="row g-4">
       <div class="col-lg-6">
@@ -40,7 +40,11 @@
         <p class="listing-price">{{ product.prix|mru }}</p>
         {% if product.stock is not None %}
           <p class="small {% if product.stock < 1 %}text-danger{% else %}muted{% endif %}">
-            {% if product.stock < 1 %}Rupture de stock{% else %}Stock : {{ product.stock }}{% endif %}
+            {% if product.stock < 1 %}
+              {% trans "Rupture de stock" %}
+            {% else %}
+              {% blocktrans with stock=product.stock %}Stock : {{ stock }}{% endblocktrans %}
+            {% endif %}
           </p>
         {% endif %}
         <p>{{ product.description|linebreaksbr }}</p>
@@ -51,11 +55,11 @@
             <input type="hidden" name="product_id" value="{{ product.id }}">
             <input type="hidden" name="next" value="{{ request.path }}">
             <div class="col-auto">
-              <label class="form-label" for="qty">Quantité</label>
+              <label class="form-label" for="qty">{% trans "Quantité" %}</label>
               <input class="form-control qty-input" id="qty" type="number" name="quantite" value="1" min="1" max="{{ product.stock }}">
             </div>
             <div class="col-auto">
-              <button class="btn-cta" type="submit"><i class="bi bi-bag-plus"></i> Ajouter au panier</button>
+              <button class="btn-cta" type="submit"><i class="bi bi-bag-plus"></i> {% trans "Ajouter au panier" %}</button>
             </div>
           </form>
         {% endif %}
@@ -63,7 +67,7 @@
     </div>
 
     {% if product.attributs %}
-      <h2 class="h5 mt-5">Caractéristiques</h2>
+      <h2 class="h5 mt-5">{% trans "Caractéristiques" %}</h2>
       <div class="table-responsive surface-card">
         <table class="table attr-table mb-0">
           <tbody>

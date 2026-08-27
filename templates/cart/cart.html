@@ -1,23 +1,23 @@
 {% extends "base.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Panier{% endblock %}
+{% block title %}{% trans "Panier" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap">
-  <h1 class="page-title">Votre panier</h1>
+  <h1 class="page-title">{% trans "Votre panier" %}</h1>
   {% if not lines %}
-    <p class="muted">Le panier est vide.</p>
-    <a class="btn-cta" href="{% url 'catalog:product_list' %}">Parcourir les produits</a>
+    <p class="muted">{% trans "Le panier est vide." %}</p>
+    <a class="btn-cta" href="{% url 'catalog:product_list' %}">{% trans "Parcourir les produits" %}</a>
   {% else %}
     <div class="table-responsive surface-card">
       <table class="table align-middle mb-0">
         <thead>
           <tr>
-            <th>Produit</th>
-            <th>Prix</th>
-            <th>Quantité</th>
-            <th>Sous-total</th>
+            <th>{% trans "Produit" %}</th>
+            <th>{% trans "Prix" %}</th>
+            <th>{% trans "Quantité" %}</th>
+            <th>{% trans "Sous-total" %}</th>
             <th></th>
           </tr>
         </thead>
@@ -33,7 +33,7 @@
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ line.product_id }}">
                   <input class="form-control form-control-sm qty-input" type="number" name="quantite" value="{{ line.quantite }}" min="1">
-                  <button class="btn-ghost btn-sm" type="submit">OK</button>
+                  <button class="btn-ghost btn-sm" type="submit">{% trans "OK" %}</button>
                 </form>
               </td>
               <td>{{ line.sous_total|mru }}</td>
@@ -41,7 +41,7 @@
                 <form method="post" action="{% url 'cart:remove' %}">
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ line.product_id }}">
-                  <button class="btn-danger-outline btn-sm" type="submit">Retirer</button>
+                  <button class="btn-danger-outline btn-sm" type="submit">{% trans "Retirer" %}</button>
                 </form>
               </td>
             </tr>
@@ -50,10 +50,10 @@
       </table>
     </div>
     <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
-      <p class="h5 mb-0">Total : {{ total|mru }}</p>
-      <a class="btn-cta btn-cta-lg" href="{% url 'accounts:checkout' %}">Commander</a>
+      <p class="h5 mb-0">{% trans "Total :" %} {{ total|mru }}</p>
+      <a class="btn-cta btn-cta-lg" href="{% url 'accounts:checkout' %}">{% trans "Commander" %}</a>
     </div>
-    <p class="muted small mt-2">Les prix sont recalculés à partir du catalogue (jamais depuis le panier local).</p>
+    <p class="muted small mt-2">{% trans "Les prix sont recalculés à partir du catalogue (jamais depuis le panier local)." %}</p>
   {% endif %}
 </section>
 {% endblock %}

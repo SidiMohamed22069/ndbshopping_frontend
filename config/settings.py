@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -69,6 +70,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.storefront",
                 "core.context_processors.admin_badges",
@@ -96,7 +98,16 @@ SESSION_COOKIE_SECURE = os.environ.get("DJANGO_COOKIE_SECURE", "False") == "True
 CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 14  # 14 jours
 
-LANGUAGE_CODE = "fr-fr"
+# i18n : uniquement les textes FIXES de l'interface (menus, boutons, labels,
+# messages). Le contenu métier saisi par l'admin (noms de produits, descriptions,
+# titres de publications, noms de catégories) n'est PAS traduit — il s'affiche
+# tel quel, dans la langue où il a été écrit. Ce n'est pas un bug.
+LANGUAGE_CODE = "fr"
+LANGUAGES = [
+    ("fr", "Français"),
+    ("ar", "العربية"),
+]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = "Africa/Nouakchott"
 USE_I18N = True
 USE_TZ = True

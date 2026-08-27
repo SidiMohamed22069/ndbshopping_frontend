@@ -13,11 +13,12 @@ from typing import Any
 
 import requests
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _lazy
 
 # Timeout réseau : ne jamais laisser une vue bloquer indéfiniment.
 DEFAULT_TIMEOUT = getattr(settings, "API_TIMEOUT", 15)
 
-UNAVAILABLE = "Service temporairement indisponible. Veuillez réessayer dans un instant."
+UNAVAILABLE = _lazy("Service temporairement indisponible. Veuillez réessayer dans un instant.")
 
 
 @dataclass

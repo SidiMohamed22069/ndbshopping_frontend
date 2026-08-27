@@ -1,41 +1,42 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Attributs{% endblock %}
+{% block title %}{% trans "Attributs" %}{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'adminpanel:category_list' %}">← Catégories</a></p>
-<h1 class="h4 mb-3">Attributs · {{ category.nom|default:category_id }}</h1>
+{% trans "Supprimer cet attribut ?" as confirm_delete %}
+<p><a href="{% url 'adminpanel:category_list' %}">{% trans "Catégories" %}</a></p>
+<h1 class="h4 mb-3">{% trans "Attributs" %} · {{ category.nom|default:category_id }}</h1>
 
 <ul class="list-group mb-4">
   {% for attr in attributes %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <span>{{ attr.nomAttribut }} <span class="badge text-bg-light">{{ attr.typeValeur|statut_label }}</span></span>
-      <form method="post" action="{% url 'adminpanel:category_attribute_delete' category_id attr.id %}" onsubmit="return confirm('Supprimer cet attribut ?');">
+      <form method="post" action="{% url 'adminpanel:category_attribute_delete' category_id attr.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
         {% csrf_token %}
-        <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+        <button class="btn btn-sm btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
       </form>
     </li>
   {% empty %}
-    <li class="list-group-item text-muted">Aucun attribut. Ajoutez-en pour les hôtels, voitures, etc.</li>
+    <li class="list-group-item text-muted">{% trans "Aucun attribut. Ajoutez-en pour les hôtels, voitures, etc." %}</li>
   {% endfor %}
 </ul>
 
 <form method="post" class="form-panel form-narrow">
   {% csrf_token %}
-  <h2 class="h6">Ajouter un attribut</h2>
+  <h2 class="h6">{% trans "Ajouter un attribut" %}</h2>
   <div class="mb-3">
-    <label class="form-label" for="nomAttribut">Nom</label>
-    <input class="form-control" id="nomAttribut" name="nomAttribut" required maxlength="120" placeholder="ex. Kilométrage">
+    <label class="form-label" for="nomAttribut">{% trans "Nom" %}</label>
+    <input class="form-control" id="nomAttribut" name="nomAttribut" required maxlength="120" placeholder="{% trans 'ex. Kilométrage' %}">
   </div>
   <div class="mb-3">
-    <label class="form-label" for="typeValeur">Type</label>
+    <label class="form-label" for="typeValeur">{% trans "Type" %}</label>
     <select class="form-select" id="typeValeur" name="typeValeur">
       {% for code, label in attr_types %}
         <option value="{{ code }}">{{ label }}</option>
       {% endfor %}
     </select>
   </div>
-  <button class="btn-cta" type="submit">Ajouter</button>
+  <button class="btn-cta" type="submit">{% trans "Ajouter" %}</button>
 </form>
 {% endblock %}

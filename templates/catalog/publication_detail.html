@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
 {% block title %}{{ publication.titre }}{% endblock %}
 
 {% block content %}
 <article class="container page-wrap">
-  <p><a href="{% url 'catalog:publication_list' %}">← Actualités</a></p>
+  <p><a href="{% url 'catalog:publication_list' %}">{% trans "Actualités" %}</a></p>
   <h1 class="page-title">{{ publication.titre }}</h1>
   <p class="muted small">{{ publication.datePublication }}</p>
   {% if publication.imageUrl %}
@@ -14,12 +14,12 @@
   <div class="form-panel">{{ publication.contenu|linebreaks }}</div>
   {% if linked_product %}
     <div class="surface-card p-3 mt-4">
-      Produit associé :
+      {% trans "Produit associé :" %}
       <a href="{% url 'catalog:product_detail' linked_product.id %}">{{ linked_product.nom }}</a>
       — {{ linked_product.prix|mru }}
     </div>
   {% elif publication.produitLieId %}
-    <p class="mt-3"><a href="{% url 'catalog:product_detail' publication.produitLieId %}">Voir le produit associé</a></p>
+    <p class="mt-3"><a href="{% url 'catalog:product_detail' publication.produitLieId %}">{% trans "Voir le produit associé" %}</a></p>
   {% endif %}
 </article>
 {% endblock %}

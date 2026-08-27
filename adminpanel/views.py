@@ -3,6 +3,8 @@ import json
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_http_methods, require_POST
 
 from core.decorators import admin_required_api
@@ -10,38 +12,38 @@ from core.utils import flatten_categories, page_from_request
 from services import api_client
 
 CATEGORY_TYPES = [
-    ("PRODUIT", "Produit"),
-    ("HOTEL", "Hôtel"),
-    ("VOITURE", "Voiture"),
-    ("SERVICE", "Service"),
-    ("AUTRE", "Autre"),
+    ("PRODUIT", _lazy("Produit")),
+    ("HOTEL", _lazy("Hôtel")),
+    ("VOITURE", _lazy("Voiture")),
+    ("SERVICE", _lazy("Service")),
+    ("AUTRE", _lazy("Autre")),
 ]
 ATTR_TYPES = [
-    ("TEXTE", "Texte"),
-    ("NOMBRE", "Nombre"),
-    ("DATE", "Date"),
-    ("BOOLEEN", "Oui / Non"),
+    ("TEXTE", _lazy("Texte")),
+    ("NOMBRE", _lazy("Nombre")),
+    ("DATE", _lazy("Date")),
+    ("BOOLEEN", _lazy("Oui / Non")),
 ]
-PRODUCT_STATUSES = [("BROUILLON", "Brouillon"), ("PUBLIE", "Publié")]
+PRODUCT_STATUSES = [("BROUILLON", _lazy("Brouillon")), ("PUBLIE", _lazy("Publié"))]
 PRODUCT_SOURCES = [
-    ("MANUEL", "Manuel"),
+    ("MANUEL", _lazy("Manuel")),
     ("FACEBOOK", "Facebook"),
     ("ALIBABA", "Alibaba"),
-    ("AUTRE", "Autre"),
+    ("AUTRE", _lazy("Autre")),
 ]
 ORDER_STATUSES = [
-    ("EN_ATTENTE", "En attente"),
-    ("CONFIRMEE", "Confirmée"),
-    ("EN_LIVRAISON", "En livraison"),
-    ("LIVREE", "Livrée"),
-    ("ANNULEE", "Annulée"),
+    ("EN_ATTENTE", _lazy("En attente")),
+    ("CONFIRMEE", _lazy("Confirmée")),
+    ("EN_LIVRAISON", _lazy("En livraison")),
+    ("LIVREE", _lazy("Livrée")),
+    ("ANNULEE", _lazy("Annulée")),
 ]
 CITIES = [
-    ("NOUADHIBOU", "Nouadhibou"),
-    ("ZOUERAT", "Zouérat"),
-    ("NOUAKCHOTT", "Nouakchott"),
+    ("NOUADHIBOU", _lazy("Nouadhibou")),
+    ("ZOUERAT", _lazy("Zouérat")),
+    ("NOUAKCHOTT", _lazy("Nouakchott")),
 ]
-PUB_STATUSES = [("BROUILLON", "Brouillon"), ("PUBLIE", "Publié")]
+PUB_STATUSES = [("BROUILLON", _lazy("Brouillon")), ("PUBLIE", _lazy("Publié"))]
 
 IMAGE_MAX_BYTES = 5 * 1024 * 1024
 IMAGE_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
@@ -60,11 +62,11 @@ def _posted_image(request):
 
 def _validate_image(upload) -> str | None:
     if upload.size > IMAGE_MAX_BYTES:
-        return "Image trop volumineuse (5 Mo maximum)."
+        return _("Image trop volumineuse (5 Mo maximum).")
     content_type = (upload.content_type or "").lower()
     name = (upload.name or "").lower()
     if content_type not in IMAGE_CONTENT_TYPES and not name.endswith((".jpg", ".jpeg", ".png", ".webp")):
-        return "Format non accepté. Utilisez JPG, PNG ou WebP."
+        return _("Format non accepté. Utilisez JPG, PNG ou WebP.")
     return None
 
 
@@ -80,7 +82,7 @@ def _upload_image_if_present(request, upload_fn, entity_id) -> str | None:
     result = upload_fn(_token(request), entity_id, upload)
     if result.ok:
         return None
-    return result.error or "Impossible d'enregistrer l'image."
+    return result.error or _("Impossible d'enregistrer l'image.")
 
 
 def _find_in_tree(nodes, cid):
@@ -168,16 +170,16 @@ def category_create(request):
             if img_error:
                 messages.warning(
                     request,
-                    "Catégorie créée, mais l'image n'a pas pu être enregistrée : " + img_error,
+                    _("Catégorie créée, mais l'image n'a pas pu être enregistrée : ") + img_error,
                 )
                 if entity_id:
                     return redirect("adminpanel:category_edit", category_id=entity_id)
             elif entity_id and _posted_image(request):
-                messages.success(request, "Catégorie créée. Image enregistrée.")
+                messages.success(request, _("Catégorie créée. Image enregistrée."))
             else:
-                messages.success(request, "Catégorie créée.")
+                messages.success(request, _("Catégorie créée."))
             return redirect("adminpanel:category_list")
-        messages.error(request, result.error or "Création impossible.")
+        messages.error(request, result.error or _("Création impossible."))
     return render(
         request,
         "adminpanel/categories/form.html",
@@ -192,7 +194,7 @@ def category_edit(request, category_id):
     tree = cats.data if cats.ok else []
     category = _find_in_tree(tree, category_id)
     if not category:
-        messages.error(request, "Catégorie introuvable.")
+        messages.error(request, _("Catégorie introuvable."))
         return redirect("adminpanel:category_list")
     flat = [c for c in flatten_categories(tree) if str(c["id"]) != str(category_id)]
     if request.method == "POST":
@@ -205,15 +207,15 @@ def category_edit(request, category_id):
             if img_error:
                 messages.warning(
                     request,
-                    "Catégorie mise à jour, mais l'image n'a pas pu être enregistrée : " + img_error,
+                    _("Catégorie mise à jour, mais l'image n'a pas pu être enregistrée : ") + img_error,
                 )
                 return redirect("adminpanel:category_edit", category_id=category_id)
             if _posted_image(request):
-                messages.success(request, "Catégorie mise à jour. Image enregistrée.")
+                messages.success(request, _("Catégorie mise à jour. Image enregistrée."))
             else:
-                messages.success(request, "Catégorie mise à jour.")
+                messages.success(request, _("Catégorie mise à jour."))
             return redirect("adminpanel:category_list")
-        messages.error(request, result.error or "Mise à jour impossible.")
+        messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
         request,
         "adminpanel/categories/form.html",
@@ -226,9 +228,9 @@ def category_edit(request, category_id):
 def category_delete(request, category_id):
     result = api_client.admin_delete_category(_token(request), category_id)
     if result.ok:
-        messages.success(request, "Catégorie supprimée.")
+        messages.success(request, _("Catégorie supprimée."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:category_list")
 
 
@@ -246,9 +248,9 @@ def category_attributes(request, category_id):
         }
         result = api_client.admin_add_attribute(_token(request), category_id, payload)
         if result.ok:
-            messages.success(request, "Attribut ajouté.")
+            messages.success(request, _("Attribut ajouté."))
             return redirect("adminpanel:category_attributes", category_id=category_id)
-        messages.error(request, result.error or "Ajout impossible.")
+        messages.error(request, result.error or _("Ajout impossible."))
     return render(
         request,
         "adminpanel/categories/attributes.html",
@@ -266,9 +268,9 @@ def category_attributes(request, category_id):
 def category_attribute_delete(request, category_id, attribute_id):
     result = api_client.admin_delete_attribute(_token(request), category_id, attribute_id)
     if result.ok:
-        messages.success(request, "Attribut supprimé.")
+        messages.success(request, _("Attribut supprimé."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:category_attributes", category_id=category_id)
 
 
@@ -352,9 +354,9 @@ def product_create(request):
         payload = _product_payload(request)
         result = api_client.admin_create_product(_token(request), payload)
         if result.ok and isinstance(result.data, dict):
-            messages.success(request, "Produit créé. Vous pouvez ajouter des images.")
+            messages.success(request, _("Produit créé. Vous pouvez ajouter des images."))
             return redirect("adminpanel:product_images", product_id=result.data.get("id"))
-        messages.error(request, result.error or "Création impossible.")
+        messages.error(request, result.error or _("Création impossible."))
     return render(
         request,
         "adminpanel/products/form.html",
@@ -374,7 +376,7 @@ def product_edit(request, product_id):
     token = _token(request)
     prod = api_client.admin_get_product(token, product_id)
     if not prod.ok:
-        messages.error(request, prod.error or "Produit introuvable.")
+        messages.error(request, prod.error or _("Produit introuvable."))
         return redirect("adminpanel:product_list")
     cats = api_client.get_categories()
     flat = flatten_categories(cats.data if cats.ok else [])
@@ -382,9 +384,9 @@ def product_edit(request, product_id):
         payload = _product_payload(request)
         result = api_client.admin_update_product(token, product_id, payload)
         if result.ok:
-            messages.success(request, "Produit mis à jour.")
+            messages.success(request, _("Produit mis à jour."))
             return redirect("adminpanel:product_list")
-        messages.error(request, result.error or "Mise à jour impossible.")
+        messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
         request,
         "adminpanel/products/form.html",
@@ -403,9 +405,9 @@ def product_edit(request, product_id):
 def product_delete(request, product_id):
     result = api_client.admin_delete_product(_token(request), product_id)
     if result.ok:
-        messages.success(request, "Produit supprimé.")
+        messages.success(request, _("Produit supprimé."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:product_list")
 
 
@@ -416,18 +418,18 @@ def product_images(request, product_id):
     if request.method == "POST":
         upload = request.FILES.get("file")
         if not upload:
-            messages.error(request, "Choisissez une image (jpg, png, webp — 5 Mo max).")
+            messages.error(request, _("Choisissez une image (jpg, png, webp — 5 Mo max)."))
         else:
             result = api_client.admin_upload_product_image(token, product_id, upload)
             if result.ok:
-                messages.success(request, "Image ajoutée.")
+                messages.success(request, _("Image ajoutée."))
             else:
-                messages.error(request, result.error or "Upload impossible.")
+                messages.error(request, result.error or _("Upload impossible."))
         return redirect("adminpanel:product_images", product_id=product_id)
 
     prod = api_client.admin_get_product(token, product_id)
     if not prod.ok:
-        messages.error(request, prod.error or "Produit introuvable.")
+        messages.error(request, prod.error or _("Produit introuvable."))
         return redirect("adminpanel:product_list")
     return render(request, "adminpanel/products/images.html", {"product": prod.data})
 
@@ -437,9 +439,9 @@ def product_images(request, product_id):
 def product_image_delete(request, product_id, image_id):
     result = api_client.admin_delete_product_image(_token(request), product_id, image_id)
     if result.ok:
-        messages.success(request, "Image supprimée.")
+        messages.success(request, _("Image supprimée."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:product_images", product_id=product_id)
 
 
@@ -456,27 +458,27 @@ def product_import(request):
             url = (request.POST.get("url") or "").strip()
             category_id = request.POST.get("categoryId") or None
             if not url:
-                messages.error(request, "Collez une URL.")
+                messages.error(request, _("Collez une URL."))
             else:
                 result = api_client.admin_import_url(token, url, category_id)
                 if result.ok:
-                    messages.success(request, "Import URL : brouillon créé (stub).")
+                    messages.success(request, _("Import URL : brouillon créé (stub)."))
                     if isinstance(result.data, dict) and result.data.get("id"):
                         return redirect("adminpanel:product_edit", product_id=result.data["id"])
                 else:
-                    messages.error(request, result.error or "Import URL impossible.")
+                    messages.error(request, result.error or _("Import URL impossible."))
         elif action == "csv":
             upload = request.FILES.get("file")
             if not upload:
-                messages.error(request, "Choisissez un fichier CSV.")
+                messages.error(request, _("Choisissez un fichier CSV."))
             else:
                 result = api_client.admin_import_csv(token, upload)
                 if result.ok:
                     csv_result = result.data
                     imported = csv_result.get("imported", 0) if isinstance(csv_result, dict) else 0
-                    messages.success(request, f"Import CSV terminé : {imported} produit(s).")
+                    messages.success(request, _("Import CSV terminé : %(n)s produit(s).") % {"n": imported})
                 else:
-                    messages.error(request, result.error or "Import CSV impossible.")
+                    messages.error(request, result.error or _("Import CSV impossible."))
     return render(
         request,
         "adminpanel/products/import.html",
@@ -546,16 +548,16 @@ def order_detail(request, order_id):
         statut = request.POST.get("statut")
         result = api_client.admin_update_order_status(token, order_id, statut)
         if result.ok:
-            messages.success(request, "Statut mis à jour.")
+            messages.success(request, _("Statut mis à jour."))
             return redirect("adminpanel:order_detail", order_id=order_id)
-        messages.error(request, result.error or "Mise à jour impossible.")
+        messages.error(request, result.error or _("Mise à jour impossible."))
 
     order, lookup = _find_order(token, order_id)
     if not order:
         if lookup is not None and not lookup.ok:
             messages.error(request, lookup.error or api_client.UNAVAILABLE)
         else:
-            messages.error(request, "Commande introuvable.")
+            messages.error(request, _("Commande introuvable."))
         return redirect("adminpanel:order_list")
     return render(
         request,
@@ -610,16 +612,16 @@ def publication_create(request):
             if img_error:
                 messages.warning(
                     request,
-                    "Publication créée, mais l'image n'a pas pu être enregistrée : " + img_error,
+                    _("Publication créée, mais l'image n'a pas pu être enregistrée : ") + img_error,
                 )
                 if entity_id:
                     return redirect("adminpanel:publication_edit", publication_id=entity_id)
             elif entity_id and _posted_image(request):
-                messages.success(request, "Publication créée. Image enregistrée.")
+                messages.success(request, _("Publication créée. Image enregistrée."))
             else:
-                messages.success(request, "Publication créée.")
+                messages.success(request, _("Publication créée."))
             return redirect("adminpanel:publication_list")
-        messages.error(request, result.error or "Création impossible.")
+        messages.error(request, result.error or _("Création impossible."))
     return render(
         request,
         "adminpanel/publications/form.html",
@@ -648,7 +650,7 @@ def publication_edit(request, publication_id):
             break
         page += 1
     if not found:
-        messages.error(request, "Publication introuvable.")
+        messages.error(request, _("Publication introuvable."))
         return redirect("adminpanel:publication_list")
 
     if request.method == "POST":
@@ -662,15 +664,15 @@ def publication_edit(request, publication_id):
             if img_error:
                 messages.warning(
                     request,
-                    "Publication mise à jour, mais l'image n'a pas pu être enregistrée : " + img_error,
+                    _("Publication mise à jour, mais l'image n'a pas pu être enregistrée : ") + img_error,
                 )
                 return redirect("adminpanel:publication_edit", publication_id=publication_id)
             if _posted_image(request):
-                messages.success(request, "Publication mise à jour. Image enregistrée.")
+                messages.success(request, _("Publication mise à jour. Image enregistrée."))
             else:
-                messages.success(request, "Publication mise à jour.")
+                messages.success(request, _("Publication mise à jour."))
             return redirect("adminpanel:publication_list")
-        messages.error(request, result.error or "Mise à jour impossible.")
+        messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
         request,
         "adminpanel/publications/form.html",
@@ -683,9 +685,9 @@ def publication_edit(request, publication_id):
 def publication_delete(request, publication_id):
     result = api_client.admin_delete_publication(_token(request), publication_id)
     if result.ok:
-        messages.success(request, "Publication supprimée.")
+        messages.success(request, _("Publication supprimée."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:publication_list")
 
 
@@ -727,9 +729,9 @@ def notification_list(request):
 def notification_read(request, notification_id):
     result = api_client.admin_mark_notification_read(_token(request), notification_id)
     if result.ok:
-        messages.success(request, "Notification marquée comme lue.")
+        messages.success(request, _("Notification marquée comme lue."))
     else:
-        messages.error(request, result.error or "Action impossible.")
+        messages.error(request, result.error or _("Action impossible."))
     next_url = request.POST.get("next") or reverse("adminpanel:notification_list")
     if next_url.startswith("/") and not next_url.startswith("//"):
         return redirect(next_url)
@@ -740,7 +742,7 @@ def notification_read(request, notification_id):
 # Comptes utilisateurs
 # ---------------------------------------------------------------------------
 
-USER_ROLES = [("ADMIN", "Admin"), ("CLIENT", "Client")]
+USER_ROLES = [("ADMIN", _lazy("Admin")), ("CLIENT", _lazy("Client"))]
 
 
 @admin_required_api
@@ -790,9 +792,9 @@ def user_create(request):
         form["role"] = request.POST.get("role") or "CLIENT"
         password = request.POST.get("password") or ""
         if form["role"] not in {"ADMIN", "CLIENT"}:
-            messages.error(request, "Rôle invalide.")
+            messages.error(request, _("Rôle invalide."))
         elif not form["nom"] or not form["telephone"] or not password:
-            messages.error(request, "Nom, téléphone et mot de passe sont obligatoires.")
+            messages.error(request, _("Nom, téléphone et mot de passe sont obligatoires."))
         else:
             result = api_client.admin_create_user(
                 _token(request),
@@ -804,9 +806,9 @@ def user_create(request):
                 },
             )
             if result.ok:
-                messages.success(request, "Compte créé.")
+                messages.success(request, _("Compte créé."))
                 return redirect("adminpanel:user_list")
-            messages.error(request, result.error or "Création impossible.")
+            messages.error(request, result.error or _("Création impossible."))
     return render(
         request,
         "adminpanel/users/form.html",
@@ -818,15 +820,15 @@ def user_create(request):
 @require_POST
 def user_toggle_role(request, user_id):
     if str(user_id) == str(request.user_id):
-        messages.error(request, "Vous ne pouvez pas modifier votre propre rôle.")
+        messages.error(request, _("Vous ne pouvez pas modifier votre propre rôle."))
         return redirect("adminpanel:user_list")
     current = request.POST.get("current_role") or ""
     new_role = "CLIENT" if current == "ADMIN" else "ADMIN"
     result = api_client.admin_update_user_role(_token(request), user_id, new_role)
     if result.ok:
-        messages.success(request, "Rôle mis à jour.")
+        messages.success(request, _("Rôle mis à jour."))
     else:
-        messages.error(request, result.error or "Mise à jour du rôle impossible.")
+        messages.error(request, result.error or _("Mise à jour du rôle impossible."))
     return redirect("adminpanel:user_list")
 
 
@@ -834,14 +836,14 @@ def user_toggle_role(request, user_id):
 @require_POST
 def user_toggle_status(request, user_id):
     if str(user_id) == str(request.user_id):
-        messages.error(request, "Vous ne pouvez pas modifier le statut de votre propre compte.")
+        messages.error(request, _("Vous ne pouvez pas modifier le statut de votre propre compte."))
         return redirect("adminpanel:user_list")
     actuel = request.POST.get("actif") == "1"
     result = api_client.admin_update_user_status(_token(request), user_id, not actuel)
     if result.ok:
-        messages.success(request, "Compte bloqué." if actuel else "Compte débloqué.")
+        messages.success(request, _("Compte bloqué.") if actuel else _("Compte débloqué."))
     else:
-        messages.error(request, result.error or "Mise à jour du statut impossible.")
+        messages.error(request, result.error or _("Mise à jour du statut impossible."))
     return redirect("adminpanel:user_list")
 
 
@@ -849,11 +851,11 @@ def user_toggle_status(request, user_id):
 @require_POST
 def user_delete(request, user_id):
     if str(user_id) == str(request.user_id):
-        messages.error(request, "Vous ne pouvez pas supprimer votre propre compte.")
+        messages.error(request, _("Vous ne pouvez pas supprimer votre propre compte."))
         return redirect("adminpanel:user_list")
     result = api_client.admin_delete_user(_token(request), user_id)
     if result.ok:
-        messages.success(request, "Compte supprimé.")
+        messages.success(request, _("Compte supprimé."))
     else:
-        messages.error(request, result.error or "Suppression impossible.")
+        messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:user_list")

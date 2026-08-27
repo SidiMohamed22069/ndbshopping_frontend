@@ -1,11 +1,11 @@
 {% extends "base_admin.html" %}
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 
-{% block title %}Commande #{{ order.id }}{% endblock %}
+{% block title %}{% blocktrans with id=order.id %}Commande #{{ id }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'adminpanel:order_list' %}">← Commandes</a></p>
-<h1 class="h4">Commande #{{ order.id }}</h1>
+<p><a href="{% url 'adminpanel:order_list' %}">{% trans "Commandes" %}</a></p>
+<h1 class="h4">{% blocktrans with id=order.id %}Commande #{{ id }}{% endblocktrans %}</h1>
 <p>
   <span class="badge text-bg-{{ order.statut|statut_badge }}">{{ order.statut|statut_label }}</span>
   · {{ order.createdAt }}
@@ -17,7 +17,7 @@
 
 <table class="table bg-white">
   <thead>
-    <tr><th>Produit</th><th>Qté</th><th>Prix unit.</th><th>Sous-total</th></tr>
+    <tr><th>{% trans "Produit" %}</th><th>{% trans "Qté" %}</th><th>{% trans "Prix unit." %}</th><th>{% trans "Sous-total" %}</th></tr>
   </thead>
   <tbody>
     {% for item in order.items %}
@@ -30,12 +30,12 @@
     {% endfor %}
   </tbody>
 </table>
-<p class="h5">Total {{ order.total|mru }}</p>
+<p class="h5">{% trans "Total" %} {{ order.total|mru }}</p>
 
 <form method="post" class="row g-2 align-items-end form-narrow">
   {% csrf_token %}
   <div class="col">
-    <label class="form-label" for="statut">Changer le statut</label>
+    <label class="form-label" for="statut">{% trans "Changer le statut" %}</label>
     <select class="form-select" id="statut" name="statut">
       {% for code, label in statuses %}
         <option value="{{ code }}" {% if order.statut == code %}selected{% endif %}>{{ label }}</option>
@@ -43,7 +43,7 @@
     </select>
   </div>
   <div class="col-auto">
-    <button class="btn-cta" type="submit">Enregistrer</button>
+    <button class="btn-cta" type="submit">{% trans "Enregistrer" %}</button>
   </div>
 </form>
 {% endblock %}

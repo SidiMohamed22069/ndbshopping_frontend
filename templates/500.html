@@ -1,16 +1,17 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Erreur · NDB SHOPPING</title>
+  <title>{% trans "Erreur" %} · NDB SHOPPING</title>
   <link rel="stylesheet" href="/static/css/theme.css">
 </head>
 <body>
   <section class="container page-wrap text-center">
-    <h1 class="page-title">Service temporairement indisponible</h1>
-    <p class="muted">Une erreur interne s'est produite. Réessayez dans un instant.</p>
-    <p><a class="btn-cta" href="/">Retour à l'accueil</a></p>
+    <h1 class="page-title">{% trans "Service temporairement indisponible" %}</h1>
+    <p class="muted">{% trans "Une erreur interne s'est produite. Réessayez dans un instant." %}</p>
+    <p><a class="btn-cta" href="/">{% trans "Retour à l'accueil" %}</a></p>
   </section>
 </body>
 </html>

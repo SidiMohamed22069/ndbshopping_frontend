@@ -1,16 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}{% trans "Connexion" %}{% endblock %}
 
 {% block content %}
 <section class="container page-wrap form-narrow">
-  <h1 class="page-title">Se connecter</h1>
-  <p class="muted">Entrez votre numéro mauritanien et votre mot de passe.</p>
+  <h1 class="page-title">{% trans "Se connecter" %}</h1>
+  <p class="muted">{% trans "Entrez votre numéro mauritanien et votre mot de passe." %}</p>
 
   {% if unknown_account %}
     <div class="alert alert-warning" role="alert">
-      Aucun compte n'existe pour ce numéro.
-      <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Créer un compte</a>
+      {% trans "Aucun compte n'existe pour ce numéro." %}
+      <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">{% trans "Créer un compte" %}</a>
     </div>
   {% endif %}
 
@@ -18,19 +19,19 @@
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">
     <div class="mb-3">
-      <label class="form-label" for="telephone">Téléphone</label>
-      <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="ex. 2xxxxxxx" value="{{ request.POST.telephone }}">
-      <div class="form-text">8 chiffres, commence par 2, 3 ou 4.</div>
+      <label class="form-label" for="telephone">{% trans "Téléphone" %}</label>
+      <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="{% trans 'ex. 2xxxxxxx' %}" value="{{ request.POST.telephone }}">
+      <div class="form-text">{% trans "8 chiffres, commence par 2, 3 ou 4." %}</div>
     </div>
     <div class="mb-3">
-      <label class="form-label" for="password">Mot de passe</label>
+      <label class="form-label" for="password">{% trans "Mot de passe" %}</label>
       <input class="form-control" id="password" name="password" type="password" required minlength="6" maxlength="72">
     </div>
-    <button class="btn-cta w-100" type="submit">Se connecter</button>
+    <button class="btn-cta w-100" type="submit">{% trans "Se connecter" %}</button>
   </form>
   <p class="text-center mt-3 mb-0">
-    Pas encore de compte ?
-    <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">Créer un compte</a>
+    {% trans "Pas encore de compte ?" %}
+    <a href="{% url 'accounts:register' %}?next={{ next|urlencode }}">{% trans "Créer un compte" %}</a>
   </p>
 </section>
 {% endblock %}

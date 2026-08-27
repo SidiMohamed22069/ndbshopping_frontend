@@ -1,4 +1,4 @@
-{% load ndb_tags %}
+{% load i18n ndb_tags %}
 <article class="cat-card">
   <div class="cat-card-media">
     {% if cat.imageUrl %}
@@ -28,6 +28,6 @@
         {% endfor %}
       </ul>
     {% endif %}
-    <a class="btn-cta" href="{% url 'catalog:category_products' cat.id %}">Voir les produits</a>
+    <a class="btn-cta" href="{% url 'catalog:category_products' cat.id %}">{% trans "Voir les produits" %}</a>
   </div>
 </article>
