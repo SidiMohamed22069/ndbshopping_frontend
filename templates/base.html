@@ -11,14 +11,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
   {% block extra_css %}{% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
   <header class="site-header">
     <div class="container header-inner">
-      <a class="site-logo" href="{% url 'core:home' %}">
-        <span class="logo-mark">NDB</span>
-        <span>SHOPPING</span>
+      <a class="site-logo-link" href="{% url 'core:home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
       </a>
 
       <nav class="header-nav d-none d-lg-flex" aria-label="Navigation principale">
@@ -110,13 +110,19 @@
     {% block content %}{% endblock %}
   </main>
 
+  <aside class="cta-band">
+    <div class="container cta-band-inner">
+      <p>Vous vendez quelque chose ? Contactez-nous pour référencer vos produits.</p>
+      <a class="btn-cta" href="{% url 'accounts:login' %}">Nous rejoindre</a>
+    </div>
+  </aside>
+
   <footer class="site-footer">
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <a class="site-logo" href="{% url 'core:home' %}">
-            <span class="logo-mark">NDB</span>
-            <span>SHOPPING</span>
+          <a class="site-logo-link site-logo-link--footer" href="{% url 'core:home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
           </a>
           <p>Marketplace mauritanienne — Nouadhibou, Zouérat, Nouakchott.</p>
         </div>

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
   {% block extra_css %}{% endblock %}
 </head>
 <body class="admin-body">
@@ -19,9 +20,8 @@
       <button class="btn btn-light-outline d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-label="Menu">
         <i class="bi bi-list"></i>
       </button>
-      <a class="site-logo" href="{% url 'adminpanel:dashboard' %}">
-        <span class="logo-mark">NDB</span>
-        <span>Admin</span>
+      <a class="site-logo-link" href="{% url 'adminpanel:dashboard' %}">
+        <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
       </a>
       <div class="d-flex align-items-center gap-3">
         <a class="header-icon-link" href="{% url 'adminpanel:notification_list' %}" aria-label="Notifications">

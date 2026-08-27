@@ -1,0 +1,15 @@
+{% load ndb_tags %}
+<article class="cat-card">
+  <div class="cat-card-media">
+    {% if pub.imageUrl %}
+      <img src="{{ pub.imageUrl|media_url }}" alt="{{ pub.titre }}">
+    {% else %}
+      <div class="cat-card-placeholder"><i class="bi bi-newspaper"></i></div>
+    {% endif %}
+  </div>
+  <div class="cat-card-body">
+    <h3>{{ pub.titre }}</h3>
+    <p>{{ pub.contenu|truncatechars:100 }}</p>
+    <a class="btn-cta" href="{% url 'catalog:publication_detail' pub.id %}">Lire la suite</a>
+  </div>
+</article>

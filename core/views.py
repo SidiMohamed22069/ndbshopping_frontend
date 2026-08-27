@@ -7,7 +7,7 @@ from services import api_client
 @require_GET
 def home(request):
     products_result = api_client.get_products(page=0, size=8)
-    publications_result = api_client.get_publications(page=0, size=3)
+    publications_result = api_client.get_publications(page=0, size=6)
 
     products = []
     if products_result.ok and isinstance(products_result.data, dict):

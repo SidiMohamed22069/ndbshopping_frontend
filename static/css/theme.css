@@ -324,32 +324,44 @@ textarea.form-control {
     height: var(--header-height);
 }
 
-.site-logo {
+.site-logo-link {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--color-text-white);
-    font-weight: 700;
-    letter-spacing: 0.02em;
     flex-shrink: 0;
+    line-height: 0;
+    text-decoration: none;
+    background: var(--color-text-white);
+    border-radius: 0.5rem;
+    padding: 0.15rem 0.3rem;
 }
 
-.site-logo:hover {
-    color: var(--color-text-white);
+.site-logo {
+    height: 46px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
 }
 
-.logo-mark {
-    background: var(--color-secondary);
-    color: var(--color-on-secondary);
-    width: 2.1rem;
-    height: 2.1rem;
-    border-radius: 0.4rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
+.site-logo-link--footer .site-logo {
+    height: 64px;
+    max-width: 200px;
+}
+
+.site-logo-link:hover {
+    opacity: 0.92;
+}
+
+@media (max-width: 991.98px) {
+    .site-logo {
+        height: 36px;
+        max-width: 120px;
+    }
+
+    .site-logo-link--footer .site-logo {
+        height: 52px;
+        max-width: 160px;
+    }
 }
 
 .header-toggle {
@@ -493,10 +505,21 @@ textarea.form-control {
     overflow: hidden;
 }
 
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-dark);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     background-image:
         repeating-linear-gradient(
             45deg,
@@ -517,7 +540,7 @@ textarea.form-control {
 
 .hero .container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero-title {
@@ -605,9 +628,15 @@ textarea.form-control {
     background: var(--color-secondary);
     color: var(--color-on-secondary);
     border: 0;
-    padding: 0.85rem 1.25rem;
+    padding: 0.85rem 1.35rem;
     font-weight: 700;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    min-width: 9.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    cursor: pointer;
 }
 
 .search-bar .search-submit:hover {
@@ -622,8 +651,10 @@ textarea.form-control {
 }
 
 .search-bar .form-select {
+    flex: 0 1 16rem;
+    max-width: 16rem;
+    min-width: 9rem;
     border-inline-start: 1px solid var(--color-border);
-    max-width: 14rem;
 }
 
 .search-bar .form-control + .form-control,
@@ -632,7 +663,8 @@ textarea.form-control {
 }
 
 .search-bar .form-control {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 @media (max-width: 767.98px) {
@@ -641,8 +673,20 @@ textarea.form-control {
         border-radius: var(--radius-md);
     }
 
+    .search-bar .search-submit {
+        min-width: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+
     .search-bar .form-select {
         max-width: none;
+        flex: 1 1 auto;
+        border-inline-start: 0;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .search-bar .form-control {
         border-inline-start: 0;
         border-top: 1px solid var(--color-border);
     }
@@ -741,6 +785,17 @@ textarea.form-control {
     border: 3px solid var(--color-text-white);
 }
 
+.cat-card-media .cat-badge {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    margin: 0;
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1rem;
+    border-width: 2px;
+}
+
 .cat-grid > [class*="col"]:nth-child(6n+1) .cat-badge { background: var(--badge-1); }
 .cat-grid > [class*="col"]:nth-child(6n+2) .cat-badge { background: var(--badge-2); }
 .cat-grid > [class*="col"]:nth-child(6n+3) .cat-badge { background: var(--badge-3); }
@@ -757,7 +812,7 @@ textarea.form-control {
 
 .cat-card-body,
 .listing-card-body {
-    padding: 0 1.15rem 1.25rem;
+    padding: 1.15rem 1.15rem 1.25rem;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -835,6 +890,35 @@ textarea.form-control {
     color: var(--color-text-grey);
     font-size: 0.9rem;
     margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Bandeau CTA (avant footer)
+   -------------------------------------------------------------------------- */
+
+.cta-band {
+    background: var(--color-primary);
+    padding: 1.35rem 0;
+}
+
+.cta-band-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+.cta-band-inner p {
+    margin: 0;
+    color: var(--color-text-white);
+    font-weight: 400;
+}
+
+@media (max-width: 767.98px) {
+    .cta-band-inner {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 /* --------------------------------------------------------------------------
@@ -989,6 +1073,11 @@ textarea.form-control {
 
 .admin-topbar {
     background: var(--color-primary);
+}
+
+.admin-topbar .site-logo {
+    height: 40px;
+    max-width: 140px;
 }
 
 .admin-sidebar,

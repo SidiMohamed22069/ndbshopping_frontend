@@ -50,8 +50,9 @@
 
 <div class="container search-overlap">
   <form class="search-bar" action="{% url 'catalog:product_list' %}" method="get" role="search">
-    <button class="search-submit" type="submit" aria-label="Rechercher">
-      <i class="bi bi-search"></i>
+    <button class="search-submit" type="submit">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <span>Rechercher</span>
     </button>
     <select class="form-select" name="category" aria-label="Catégorie">
       <option value="">Toutes les catégories</option>
@@ -83,7 +84,28 @@
   </div>
 </section>
 
+{% if publications %}
 <section class="section-block section-block--light">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Nos actualités</h2>
+      <p>Dernières publicités et informations</p>
+    </div>
+    <div class="row g-4 cat-grid">
+      {% for pub in publications %}
+        <div class="col-12 col-md-6 col-lg-3">
+          {% include "includes/publication_card.html" %}
+        </div>
+      {% endfor %}
+    </div>
+    <p class="text-center mt-4 mb-0">
+      <a class="btn-cta-outline" href="{% url 'catalog:publication_list' %}">Toutes les actualités</a>
+    </p>
+  </div>
+</section>
+{% endif %}
+
+<section class="section-block">
   <div class="container">
     <div class="row g-4">
       <div class="col-12 col-md-6 col-lg-3">
@@ -118,7 +140,7 @@
   </div>
 </section>
 
-<section class="section-block">
+<section class="section-block section-block--light">
   <div class="container">
     <div class="section-heading">
       <h2>Derniers produits</h2>
@@ -133,28 +155,4 @@
     </div>
   </div>
 </section>
-
-{% if publications %}
-<section class="section-block section-block--light">
-  <div class="container">
-    <div class="section-heading">
-      <h2>Actualités</h2>
-      <p>Les dernières publications</p>
-    </div>
-    <div class="row g-4">
-      {% for pub in publications %}
-        <div class="col-md-4">
-          <article class="listing-card">
-            <div class="listing-card-body">
-              <h3><a href="{% url 'catalog:publication_detail' pub.id %}">{{ pub.titre }}</a></h3>
-              <p class="mb-3">{{ pub.contenu|truncatewords:24 }}</p>
-              <a class="btn-cta" href="{% url 'catalog:publication_detail' pub.id %}">Lire</a>
-            </div>
-          </article>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
 {% endblock %}

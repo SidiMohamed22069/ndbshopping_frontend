@@ -6,18 +6,18 @@
     {% else %}
       <div class="cat-card-placeholder"><i class="bi bi-images"></i></div>
     {% endif %}
+    <span class="cat-badge" aria-hidden="true">
+      {% if cat.type == "HOTEL" %}
+        <i class="bi bi-building"></i>
+      {% elif cat.type == "VOITURE" %}
+        <i class="bi bi-car-front"></i>
+      {% elif cat.type == "SERVICE" %}
+        <i class="bi bi-tools"></i>
+      {% else %}
+        <i class="bi bi-box-seam"></i>
+      {% endif %}
+    </span>
   </div>
-  <span class="cat-badge" aria-hidden="true">
-    {% if cat.type == "HOTEL" %}
-      <i class="bi bi-building"></i>
-    {% elif cat.type == "VOITURE" %}
-      <i class="bi bi-car-front"></i>
-    {% elif cat.type == "SERVICE" %}
-      <i class="bi bi-tools"></i>
-    {% else %}
-      <i class="bi bi-box-seam"></i>
-    {% endif %}
-  </span>
   <div class="cat-card-body">
     <h3>{{ cat.nom }}</h3>
     <p>{{ cat.type|statut_label }}</p>
