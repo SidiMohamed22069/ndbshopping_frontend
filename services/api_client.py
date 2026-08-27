@@ -168,6 +168,11 @@ def get_publications(page: int = 0, size: int = 20) -> ApiResult:
     return call("GET", "/publications", params={"page": page, "size": size})
 
 
+def get_featured_publications() -> ApiResult:
+    """Bandeau public : publications mises en avant (liste, pas une page)."""
+    return call("GET", "/publications/mises-en-avant")
+
+
 # ---------------------------------------------------------------------------
 # Panier (JWT requis) — POST /cart/sync remplace le panier serveur entier
 # ---------------------------------------------------------------------------
@@ -217,6 +222,14 @@ def admin_update_category(token: str, category_id: int | str, payload: dict) -> 
 
 def admin_delete_category(token: str, category_id: int | str) -> ApiResult:
     return call("DELETE", f"/admin/categories/{category_id}", token=token)
+
+
+def admin_upload_category_image(token: str, category_id: int | str, django_file) -> ApiResult:
+    django_file.seek(0)
+    files = {
+        "image": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
+    }
+    return call("POST", f"/admin/categories/{category_id}/image", token=token, files=files)
 
 
 def admin_add_attribute(token: str, category_id: int | str, payload: dict) -> ApiResult:
@@ -359,6 +372,14 @@ def admin_update_publication(token: str, publication_id: int | str, payload: dic
 
 def admin_delete_publication(token: str, publication_id: int | str) -> ApiResult:
     return call("DELETE", f"/admin/publications/{publication_id}", token=token)
+
+
+def admin_upload_publication_image(token: str, publication_id: int | str, django_file) -> ApiResult:
+    django_file.seek(0)
+    files = {
+        "image": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
+    }
+    return call("POST", f"/admin/publications/{publication_id}/image", token=token, files=files)
 
 
 # ---------------------------------------------------------------------------

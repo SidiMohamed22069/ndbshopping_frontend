@@ -1,10 +1,11 @@
 {% extends "base_admin.html" %}
+{% load ndb_tags %}
 
 {% block title %}{% if category %}Modifier{% else %}Nouvelle{% endif %} catégorie{% endblock %}
 
 {% block content %}
 <h1 class="h4 mb-3">{% if category %}Modifier {{ category.nom }}{% else %}Nouvelle catégorie{% endif %}</h1>
-<form method="post" class="form-panel form-narrow">
+<form method="post" enctype="multipart/form-data" class="form-panel form-narrow">
   {% csrf_token %}
   <div class="mb-3">
     <label class="form-label" for="nom">Nom</label>
@@ -28,8 +29,15 @@
     </select>
   </div>
   <div class="mb-3">
-    <label class="form-label" for="imageUrl">URL d'image (optionnel)</label>
-    <input class="form-control" id="imageUrl" name="imageUrl" value="{{ category.imageUrl }}">
+    <label class="form-label" for="image">Image</label>
+    {% if category.imageUrl %}
+      <div class="mb-2">
+        <img src="{{ category.imageUrl|media_url }}" alt="{{ category.nom }}" class="admin-image-preview">
+        <div class="form-text">Image actuelle. Choisissez un fichier pour la remplacer.</div>
+      </div>
+    {% endif %}
+    <input class="form-control" type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
+    <div class="form-text">JPG, PNG ou WebP — 5 Mo maximum.</div>
   </div>
   <button class="btn-cta" type="submit">Enregistrer</button>
   <a class="btn btn-link" href="{% url 'adminpanel:category_list' %}">Annuler</a>

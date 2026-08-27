@@ -494,6 +494,105 @@ textarea.form-control {
 }
 
 /* --------------------------------------------------------------------------
+   Bandeau publications mises en avant
+   -------------------------------------------------------------------------- */
+
+.promo-banner {
+    background: var(--color-primary);
+    border-bottom: 3px solid var(--color-secondary);
+}
+
+.promo-banner .carousel,
+.promo-banner .carousel-inner,
+.promo-banner .carousel-item {
+    height: 72px;
+}
+
+.promo-banner-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 72px;
+    padding: 0 3.25rem 0 1rem;
+    color: var(--color-text-white);
+    text-decoration: none;
+}
+
+.promo-banner-link:hover {
+    color: var(--color-secondary);
+}
+
+.promo-banner-link img {
+    width: 88px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 0.35rem;
+    flex-shrink: 0;
+    background: var(--color-dark);
+}
+
+.promo-banner-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.promo-banner .carousel-control-prev,
+.promo-banner .carousel-control-next {
+    width: 2.75rem;
+    height: 2.75rem;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    opacity: 1;
+    background: var(--color-dark);
+    border-radius: 50%;
+}
+
+.promo-banner .carousel-control-prev {
+    left: 0.4rem;
+}
+
+.promo-banner .carousel-control-next {
+    right: 0.4rem;
+}
+
+.promo-banner .carousel-control-prev:hover,
+.promo-banner .carousel-control-next:hover {
+    background: var(--color-secondary);
+}
+
+.promo-banner .carousel-control-prev:hover .carousel-control-prev-icon,
+.promo-banner .carousel-control-next:hover .carousel-control-next-icon {
+    filter: invert(1);
+}
+
+@media (max-width: 575.98px) {
+    .promo-banner .carousel,
+    .promo-banner .carousel-inner,
+    .promo-banner .carousel-item,
+    .promo-banner-link {
+        height: 64px;
+    }
+
+    .promo-banner-link {
+        padding-inline: 3rem;
+        gap: 0.5rem;
+    }
+
+    .promo-banner-link img {
+        width: 72px;
+        height: 48px;
+    }
+
+    .promo-banner-title {
+        font-size: 0.85rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
    Hero
    -------------------------------------------------------------------------- */
 
@@ -1135,4 +1234,14 @@ textarea.form-control {
     height: 140px;
     object-fit: cover;
     border-radius: var(--radius-md);
+}
+
+.admin-image-preview {
+    display: block;
+    width: auto;
+    max-width: 220px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
 }

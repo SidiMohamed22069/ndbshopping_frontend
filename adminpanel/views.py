@@ -43,9 +43,44 @@ CITIES = [
 ]
 PUB_STATUSES = [("BROUILLON", "Brouillon"), ("PUBLIE", "Publié")]
 
+IMAGE_MAX_BYTES = 5 * 1024 * 1024
+IMAGE_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
+
 
 def _token(request) -> str:
     return request.jwt_token
+
+
+def _posted_image(request):
+    upload = request.FILES.get("image")
+    if upload and getattr(upload, "size", 0):
+        return upload
+    return None
+
+
+def _validate_image(upload) -> str | None:
+    if upload.size > IMAGE_MAX_BYTES:
+        return "Image trop volumineuse (5 Mo maximum)."
+    content_type = (upload.content_type or "").lower()
+    name = (upload.name or "").lower()
+    if content_type not in IMAGE_CONTENT_TYPES and not name.endswith((".jpg", ".jpeg", ".png", ".webp")):
+        return "Format non accepté. Utilisez JPG, PNG ou WebP."
+    return None
+
+
+def _upload_image_if_present(request, upload_fn, entity_id) -> str | None:
+    """Envoie le fichier `image` s'il est présent. Retourne un message d'erreur, sinon None."""
+    upload = _posted_image(request)
+    if not upload or not entity_id:
+        return None
+    error = _validate_image(upload)
+    if error:
+        return error
+    upload.seek(0)
+    result = upload_fn(_token(request), entity_id, upload)
+    if result.ok:
+        return None
+    return result.error or "Impossible d'enregistrer l'image."
 
 
 def _find_in_tree(nodes, cid):
@@ -114,7 +149,6 @@ def _category_payload(request) -> dict:
         "nom": (request.POST.get("nom") or "").strip(),
         "type": request.POST.get("type") or "PRODUIT",
         "parentId": int(parent) if parent else None,
-        "imageUrl": (request.POST.get("imageUrl") or "").strip() or None,
     }
 
 
@@ -127,7 +161,21 @@ def category_create(request):
         payload = _category_payload(request)
         result = api_client.admin_create_category(_token(request), payload)
         if result.ok:
-            messages.success(request, "Catégorie créée.")
+            entity_id = (result.data or {}).get("id") if isinstance(result.data, dict) else None
+            img_error = _upload_image_if_present(
+                request, api_client.admin_upload_category_image, entity_id
+            )
+            if img_error:
+                messages.warning(
+                    request,
+                    "Catégorie créée, mais l'image n'a pas pu être enregistrée : " + img_error,
+                )
+                if entity_id:
+                    return redirect("adminpanel:category_edit", category_id=entity_id)
+            elif entity_id and _posted_image(request):
+                messages.success(request, "Catégorie créée. Image enregistrée.")
+            else:
+                messages.success(request, "Catégorie créée.")
             return redirect("adminpanel:category_list")
         messages.error(request, result.error or "Création impossible.")
     return render(
@@ -151,7 +199,19 @@ def category_edit(request, category_id):
         payload = _category_payload(request)
         result = api_client.admin_update_category(_token(request), category_id, payload)
         if result.ok:
-            messages.success(request, "Catégorie mise à jour.")
+            img_error = _upload_image_if_present(
+                request, api_client.admin_upload_category_image, category_id
+            )
+            if img_error:
+                messages.warning(
+                    request,
+                    "Catégorie mise à jour, mais l'image n'a pas pu être enregistrée : " + img_error,
+                )
+                return redirect("adminpanel:category_edit", category_id=category_id)
+            if _posted_image(request):
+                messages.success(request, "Catégorie mise à jour. Image enregistrée.")
+            else:
+                messages.success(request, "Catégorie mise à jour.")
             return redirect("adminpanel:category_list")
         messages.error(request, result.error or "Mise à jour impossible.")
     return render(
@@ -513,9 +573,9 @@ def _publication_payload(request) -> dict:
     return {
         "titre": (request.POST.get("titre") or "").strip(),
         "contenu": (request.POST.get("contenu") or "").strip(),
-        "imageUrl": (request.POST.get("imageUrl") or "").strip() or None,
         "produitLieId": int(produit) if produit else None,
         "statut": request.POST.get("statut") or "BROUILLON",
+        "misEnAvant": request.POST.get("misEnAvant") in ("on", "true", "1"),
     }
 
 
@@ -543,7 +603,21 @@ def publication_create(request):
     if request.method == "POST":
         result = api_client.admin_create_publication(_token(request), _publication_payload(request))
         if result.ok:
-            messages.success(request, "Publication créée.")
+            entity_id = (result.data or {}).get("id") if isinstance(result.data, dict) else None
+            img_error = _upload_image_if_present(
+                request, api_client.admin_upload_publication_image, entity_id
+            )
+            if img_error:
+                messages.warning(
+                    request,
+                    "Publication créée, mais l'image n'a pas pu être enregistrée : " + img_error,
+                )
+                if entity_id:
+                    return redirect("adminpanel:publication_edit", publication_id=entity_id)
+            elif entity_id and _posted_image(request):
+                messages.success(request, "Publication créée. Image enregistrée.")
+            else:
+                messages.success(request, "Publication créée.")
             return redirect("adminpanel:publication_list")
         messages.error(request, result.error or "Création impossible.")
     return render(
@@ -582,7 +656,19 @@ def publication_edit(request, publication_id):
             _token(request), publication_id, _publication_payload(request)
         )
         if result.ok:
-            messages.success(request, "Publication mise à jour.")
+            img_error = _upload_image_if_present(
+                request, api_client.admin_upload_publication_image, publication_id
+            )
+            if img_error:
+                messages.warning(
+                    request,
+                    "Publication mise à jour, mais l'image n'a pas pu être enregistrée : " + img_error,
+                )
+                return redirect("adminpanel:publication_edit", publication_id=publication_id)
+            if _posted_image(request):
+                messages.success(request, "Publication mise à jour. Image enregistrée.")
+            else:
+                messages.success(request, "Publication mise à jour.")
             return redirect("adminpanel:publication_list")
         messages.error(request, result.error or "Mise à jour impossible.")
     return render(
