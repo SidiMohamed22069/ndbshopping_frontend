@@ -1,0 +1,23 @@
+{% load ndb_tags %}
+<div class="col">
+  <article class="card product-card h-100 shadow-sm">
+    <a href="{% url 'catalog:product_detail' product.id %}" class="text-decoration-none text-dark">
+      {% with img=product.images.0 %}
+        {% if img %}
+          <img src="{{ img.url|media_url }}" class="card-img-top product-card-img" alt="{{ product.nom }}">
+        {% else %}
+          <div class="product-card-img d-flex align-items-center justify-content-center bg-light text-muted">
+            <i class="bi bi-image fs-1"></i>
+          </div>
+        {% endif %}
+      {% endwith %}
+      <div class="card-body">
+        <h3 class="h6 card-title">{{ product.nom }}</h3>
+        {% if product.categoryNom %}
+          <p class="small text-muted mb-1">{{ product.categoryNom }}</p>
+        {% endif %}
+        <p class="fw-bold ndb-price mb-0">{{ product.prix|mru }}</p>
+      </div>
+    </a>
+  </article>
+</div>

@@ -1,0 +1,46 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-3">Notifications</h1>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4">
+    <select class="form-select" name="lu">
+      <option value="">Toutes</option>
+      <option value="0" {% if lu == "0" %}selected{% endif %}>Non lues</option>
+      <option value="1" {% if lu == "1" %}selected{% endif %}>Lues</option>
+    </select>
+  </div>
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-outline-success" type="submit">Filtrer</button>
+  </div>
+</form>
+
+<ul class="list-group">
+  {% for n in notifications %}
+    <li class="list-group-item d-flex justify-content-between align-items-start gap-3">
+      <div>
+        <span class="badge text-bg-{% if n.lu %}secondary{% else %}warning{% endif %}">{{ n.type|statut_label }}</span>
+        {{ n.message }}
+        <div class="small text-muted">{{ n.createdAt }}</div>
+        {% if n.lienRessource %}
+          {% if "/orders/" in n.lienRessource %}
+            <a class="small" href="{% url 'adminpanel:order_list' %}">Voir les commandes</a>
+          {% endif %}
+        {% endif %}
+      </div>
+      {% if not n.lu %}
+        <form method="post" action="{% url 'adminpanel:notification_read' n.id %}">
+          {% csrf_token %}
+          <button class="btn btn-sm btn-outline-success" type="submit">Marquer lue</button>
+        </form>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">Aucune notification.</li>
+  {% endfor %}
+</ul>
+{% include "includes/pagination.html" %}
+{% endblock %}

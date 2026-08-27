@@ -1,0 +1,69 @@
+{% load static ndb_tags %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} · NDB SHOPPING</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="{% static 'css/ndb.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-body">
+  <nav class="navbar navbar-dark admin-topbar sticky-top">
+    <div class="container-fluid">
+      <button class="btn btn-outline-light d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebar" aria-label="Menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand fw-bold mb-0" href="{% url 'adminpanel:dashboard' %}">
+        <span class="ndb-logo-mark">NDB</span> Admin
+      </a>
+      <div class="d-flex align-items-center gap-3">
+        <a class="text-white position-relative" href="{% url 'adminpanel:notification_list' %}" aria-label="Notifications">
+          <i class="bi bi-bell fs-5"></i>
+          <span class="badge rounded-pill bg-warning text-dark admin-notif-badge" id="adminNotifBadge">{{ unread_notifications }}</span>
+        </a>
+        <span class="text-white-50 small d-none d-sm-inline">{{ user_nom }}</span>
+        <a class="btn btn-sm btn-outline-light" href="{% url 'core:home' %}">Boutique</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="d-flex">
+    <aside class="admin-sidebar d-none d-lg-flex flex-column">
+      {% include "includes/admin_nav.html" %}
+    </aside>
+
+    <div class="offcanvas offcanvas-start admin-offcanvas d-lg-none" tabindex="-1" id="adminSidebar">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-white">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        {% include "includes/admin_nav.html" %}
+      </div>
+    </div>
+
+    <main class="admin-main flex-grow-1 p-3 p-md-4">
+      {% if api_unavailable %}
+        <div class="alert alert-danger" role="alert">Service temporairement indisponible. Veuillez réessayer dans un instant.</div>
+      {% endif %}
+      {% include "includes/messages.html" %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="adminToastContainer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  {# STOMP natif sur WebSocket — le backend expose /ws (SockJS optionnel). #}
+  {# PUBLIC_BACKEND_HOST doit être le domaine PUBLIC (WSS en prod, pas le nom Docker interne). #}
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+  <script>
+    window.NDB_PUBLIC_BACKEND_HOST = "{{ PUBLIC_BACKEND_HOST }}";
+  </script>
+  <script src="{% static 'js/admin-ws.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

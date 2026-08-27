@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Code SMS{% endblock %}
+
+{% block content %}
+<section class="container pb-5" style="max-width: 28rem;">
+  <h1 class="h3 mb-3">Vérification SMS</h1>
+  <p class="text-muted">Un code a été envoyé au {{ telephone }}.</p>
+  <form method="post" class="bg-white p-4 rounded shadow-sm">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label" for="code">Code OTP</label>
+      <input class="form-control form-control-lg text-center" id="code" name="code" required inputmode="numeric" autocomplete="one-time-code">
+    </div>
+    <button class="btn btn-success w-100" type="submit">Valider</button>
+  </form>
+  <p class="small mt-3"><a href="{% url 'accounts:login' %}">Modifier le numéro</a></p>
+</section>
+{% endblock %}

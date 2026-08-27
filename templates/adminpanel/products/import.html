@@ -1,0 +1,58 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Import produits{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-4">Importer des produits</h1>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <form method="post" class="bg-white p-4 rounded shadow-sm h-100">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="url">
+      <h2 class="h6">Depuis une URL (stub)</h2>
+      <p class="small text-muted">Crée un brouillon via <code>POST /admin/products/import/url</code>.</p>
+      <div class="mb-3">
+        <label class="form-label" for="url">URL</label>
+        <input class="form-control" id="url" name="url" type="url" required placeholder="https://…">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="categoryId">Catégorie (optionnel)</label>
+        <select class="form-select" id="categoryId" name="categoryId">
+          <option value="">—</option>
+          {% for cat in categories_flat %}
+            <option value="{{ cat.id }}">{{ cat.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn-success" type="submit">Importer l'URL</button>
+    </form>
+  </div>
+  <div class="col-lg-6">
+    <form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm h-100">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="csv">
+      <h2 class="h6">Fichier CSV</h2>
+      <p class="small text-muted">Colonnes : <code>nom, description, prix, stock, categoryId</code></p>
+      <div class="mb-3">
+        <label class="form-label" for="file">Fichier</label>
+        <input class="form-control" type="file" id="file" name="file" accept=".csv,text/csv" required>
+      </div>
+      <button class="btn btn-success" type="submit">Importer le CSV</button>
+    </form>
+  </div>
+</div>
+
+{% if csv_result %}
+  <div class="alert alert-info mt-4">
+    Importés : {{ csv_result.imported }}
+    {% if csv_result.errors %}
+      <ul class="mb-0 mt-2">
+        {% for err in csv_result.errors %}
+          <li>Ligne {{ err.line }} : {{ err.message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

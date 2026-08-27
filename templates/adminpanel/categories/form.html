@@ -1,0 +1,37 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{% if category %}Modifier{% else %}Nouvelle{% endif %} catégorie{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-3">{% if category %}Modifier {{ category.nom }}{% else %}Nouvelle catégorie{% endif %}</h1>
+<form method="post" class="bg-white p-4 rounded shadow-sm" style="max-width: 36rem;">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label" for="nom">Nom</label>
+    <input class="form-control" id="nom" name="nom" required maxlength="150" value="{{ category.nom }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="type">Type</label>
+    <select class="form-select" id="type" name="type">
+      {% for code, label in types %}
+        <option value="{{ code }}" {% if category.type == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="parentId">Catégorie parente</label>
+    <select class="form-select" id="parentId" name="parentId">
+      <option value="">— Aucune (racine) —</option>
+      {% for p in parents %}
+        <option value="{{ p.id }}" {% if category.parentId == p.id %}selected{% endif %}>{{ p.nom }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="imageUrl">URL d'image (optionnel)</label>
+    <input class="form-control" id="imageUrl" name="imageUrl" value="{{ category.imageUrl }}">
+  </div>
+  <button class="btn btn-success" type="submit">Enregistrer</button>
+  <a class="btn btn-link" href="{% url 'adminpanel:category_list' %}">Annuler</a>
+</form>
+{% endblock %}

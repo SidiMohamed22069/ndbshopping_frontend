@@ -1,0 +1,30 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Images · {{ product.nom }}{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'adminpanel:product_edit' product.id %}">← {{ product.nom }}</a></p>
+<h1 class="h4 mb-3">Images</h1>
+
+<div class="row g-3 mb-4">
+  {% for img in product.images %}
+    <div class="col-6 col-md-3">
+      <img src="{{ img.url|media_url }}" class="gallery-thumb mb-2" alt="">
+      <form method="post" action="{% url 'adminpanel:product_image_delete' product.id img.id %}" onsubmit="return confirm('Supprimer cette image ?');">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-danger w-100" type="submit">Supprimer</button>
+      </form>
+    </div>
+  {% empty %}
+    <p class="text-muted">Aucune image.</p>
+  {% endfor %}
+</div>
+
+<form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm" style="max-width: 28rem;">
+  {% csrf_token %}
+  <label class="form-label" for="file">Ajouter une image (jpg, png, webp — 5 Mo max)</label>
+  <input class="form-control mb-3" type="file" id="file" name="file" accept="image/jpeg,image/png,image/webp" required>
+  <button class="btn btn-success" type="submit">Téléverser</button>
+</form>
+{% endblock %}

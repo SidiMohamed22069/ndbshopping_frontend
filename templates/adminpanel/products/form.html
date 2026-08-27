@@ -1,0 +1,74 @@
+{% extends "base_admin.html" %}
+{% load static %}
+
+{% block title %}{% if product %}Modifier{% else %}Nouveau{% endif %} produit{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-3">{% if product %}Modifier {{ product.nom }}{% else %}Nouveau produit{% endif %}</h1>
+<form method="post" class="bg-white p-4 rounded shadow-sm">
+  {% csrf_token %}
+  <div class="row g-3">
+    <div class="col-md-8">
+      <label class="form-label" for="nom">Nom</label>
+      <input class="form-control" id="nom" name="nom" required maxlength="255" value="{{ product.nom }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="statut">Statut</label>
+      <select class="form-select" id="statut" name="statut">
+        {% for code, label in statuses %}
+          <option value="{{ code }}" {% if product.statut == code %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="description">Description</label>
+      <textarea class="form-control" id="description" name="description" rows="4">{{ product.description }}</textarea>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="prix">Prix (UM)</label>
+      <input class="form-control" id="prix" name="prix" type="number" step="0.01" min="0" required value="{{ product.prix }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="stock">Stock</label>
+      <input class="form-control" id="stock" name="stock" type="number" min="0" value="{{ product.stock|default:0 }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="categoryId">Catégorie</label>
+      <select class="form-select" id="categoryId" name="categoryId" required>
+        <option value="">— Choisir —</option>
+        {% for cat in categories_flat %}
+          <option value="{{ cat.id }}" {% if product.categoryId == cat.id %}selected{% endif %}>{{ cat.nom }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="sourceOrigine">Source</label>
+      <select class="form-select" id="sourceOrigine" name="sourceOrigine">
+        {% for code, label in sources %}
+          <option value="{{ code }}" {% if product.sourceOrigine == code %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="sourceUrl">URL source (optionnel)</label>
+      <input class="form-control" id="sourceUrl" name="sourceUrl" value="{{ product.sourceUrl }}">
+    </div>
+  </div>
+
+  <hr>
+  <h2 class="h6">Attributs de la catégorie</h2>
+  <div id="dynamicAttributes" data-endpoint="{% url 'core:category_attributes' 999999 %}">
+    <p class="text-muted small">Choisissez une catégorie pour charger les champs dynamiques.</p>
+  </div>
+
+  <button class="btn btn-success" type="submit">Enregistrer</button>
+  <a class="btn btn-link" href="{% url 'adminpanel:product_list' %}">Annuler</a>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.NDB_PRODUCT_ATTRS = {{ product_attrs_json|safe }};
+</script>
+<script src="{% static 'js/admin-product-form.js' %}"></script>
+{% endblock %}

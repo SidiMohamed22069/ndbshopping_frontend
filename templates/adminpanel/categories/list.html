@@ -1,0 +1,42 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Catégories</h1>
+  <a class="btn btn-success" href="{% url 'adminpanel:category_create' %}">Nouvelle catégorie</a>
+</div>
+
+{% for cat in categories %}
+  <div class="card mb-2">
+    <div class="card-body d-flex flex-wrap justify-content-between gap-2">
+      <div>
+        <strong>{{ cat.nom }}</strong>
+        <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
+        {% if cat.children %}
+          <ul class="small mb-0 mt-1">
+            {% for child in cat.children %}
+              <li>{{ child.nom }}
+                <a href="{% url 'adminpanel:category_edit' child.id %}">modifier</a> ·
+                <a href="{% url 'adminpanel:category_attributes' child.id %}">attributs</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="btn-group btn-group-sm">
+        <a class="btn btn-outline-secondary" href="{% url 'adminpanel:category_attributes' cat.id %}">Attributs</a>
+        <a class="btn btn-outline-primary" href="{% url 'adminpanel:category_edit' cat.id %}">Modifier</a>
+        <form method="post" action="{% url 'adminpanel:category_delete' cat.id %}" onsubmit="return confirm('Supprimer cette catégorie ?');">
+          {% csrf_token %}
+          <button class="btn btn-outline-danger" type="submit">Supprimer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <p class="text-muted">Aucune catégorie.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Commande #{{ order.id }}{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'adminpanel:order_list' %}">← Commandes</a></p>
+<h1 class="h4">Commande #{{ order.id }}</h1>
+<p>
+  <span class="badge text-bg-{{ order.statut|statut_badge }}">{{ order.statut|statut_label }}</span>
+  · {{ order.createdAt }}
+</p>
+<p>
+  <strong>{{ order.clientNom }}</strong> · {{ order.clientTelephone }}<br>
+  {{ order.villeLivraison|ville_label }} — {{ order.adresseDetails }}
+</p>
+
+<table class="table bg-white">
+  <thead>
+    <tr><th>Produit</th><th>Qté</th><th>Prix unit.</th><th>Sous-total</th></tr>
+  </thead>
+  <tbody>
+    {% for item in order.items %}
+      <tr>
+        <td>{{ item.productNom }}</td>
+        <td>{{ item.quantite }}</td>
+        <td>{{ item.prixUnitaire|mru }}</td>
+        <td>{{ item.sousTotal|mru }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="h5">Total {{ order.total|mru }}</p>
+
+<form method="post" class="row g-2 align-items-end" style="max-width: 28rem;">
+  {% csrf_token %}
+  <div class="col">
+    <label class="form-label" for="statut">Changer le statut</label>
+    <select class="form-select" id="statut" name="statut">
+      {% for code, label in statuses %}
+        <option value="{{ code }}" {% if order.statut == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-success" type="submit">Enregistrer</button>
+  </div>
+</form>
+{% endblock %}

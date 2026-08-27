@@ -1,0 +1,74 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h1 class="h4 mb-0">Produits</h1>
+  <div class="btn-group">
+    <a class="btn btn-success" href="{% url 'adminpanel:product_create' %}">Nouveau</a>
+    <a class="btn btn-outline-secondary" href="{% url 'adminpanel:product_import' %}">Importer</a>
+  </div>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-3">
+    <input class="form-control" name="q" value="{{ q }}" placeholder="Recherche">
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="statut">
+      <option value="">Tous les statuts</option>
+      {% for code, label in statuses %}
+        <option value="{{ code }}" {% if statut == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" name="category">
+      <option value="">Toutes les catégories</option>
+      {% for cat in categories_flat %}
+        <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-outline-success" type="submit">Filtrer</button>
+  </div>
+</form>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table align-middle mb-0">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Catégorie</th>
+        <th>Prix</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+        <tr>
+          <td>{{ p.nom }}</td>
+          <td>{{ p.categoryNom }}</td>
+          <td>{{ p.prix|mru }}</td>
+          <td><span class="badge text-bg-{{ p.statut|statut_badge }}">{{ p.statut|statut_label }}</span></td>
+          <td class="text-nowrap">
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'adminpanel:product_edit' p.id %}">Modifier</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'adminpanel:product_images' p.id %}">Images</a>
+            <form class="d-inline" method="post" action="{% url 'adminpanel:product_delete' p.id %}" onsubmit="return confirm('Supprimer ce produit ?');">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5" class="text-muted">Aucun produit.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "includes/pagination.html" %}
+{% endblock %}

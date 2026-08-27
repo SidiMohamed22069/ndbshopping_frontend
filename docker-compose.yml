@@ -1,0 +1,22 @@
+# Service frontend Django — NDB SHOPPING
+#
+# IMPORTANT : ce service doit rejoindre le MÊME réseau Docker que le backend
+# (ex. ndbshopping_default) pour pouvoir l'appeler via http://backend:8080.
+# Fusionnez ce bloc dans le docker-compose.yml du backend, OU déclarez un
+# réseau externe partagé :
+#
+#   networks:
+#     default:
+#       external: true
+#       name: ndbshopping_default
+#
+# (vérifiez le nom réel avec : docker network ls)
+
+services:
+  frontend:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped

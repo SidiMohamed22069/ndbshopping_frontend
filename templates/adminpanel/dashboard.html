@@ -1,0 +1,55 @@
+{% extends "base_admin.html" %}
+{% load ndb_tags %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-4">Tableau de bord</h1>
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <p class="text-muted small mb-1">Commandes en attente</p>
+        <p class="display-6 mb-0">{{ pending_count }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <p class="text-muted small mb-1">Notifications non lues</p>
+        <p class="display-6 mb-0">{{ unread_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <h2 class="h6">Dernières commandes en attente</h2>
+    <ul class="list-group">
+      {% for order in pending_orders %}
+        <li class="list-group-item d-flex justify-content-between">
+          <a href="{% url 'adminpanel:order_detail' order.id %}">#{{ order.id }} {{ order.clientNom }}</a>
+          <span>{{ order.total|mru }}</span>
+        </li>
+      {% empty %}
+        <li class="list-group-item text-muted">Aucune commande en attente.</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-lg-6">
+    <h2 class="h6">Notifications</h2>
+    <ul class="list-group">
+      {% for n in notifications %}
+        <li class="list-group-item">
+          <span class="badge text-bg-warning">{{ n.type|statut_label }}</span>
+          {{ n.message }}
+        </li>
+      {% empty %}
+        <li class="list-group-item text-muted">Rien de nouveau.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

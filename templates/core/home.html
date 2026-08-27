@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load ndb_tags %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+<section class="container pb-4">
+  <div class="ndb-hero p-4 p-md-5 mb-4">
+    <h1 class="display-6 fw-bold">NDB SHOPPING</h1>
+    <p class="lead mb-3">Produits, hôtels, voitures et services — livrés à Nouadhibou, Zouérat et Nouakchott.</p>
+    <a class="btn btn-warning" href="{% url 'catalog:product_list' %}">Voir le catalogue</a>
+    <a class="btn btn-outline-light" href="{% url 'catalog:categories' %}">Catégories</a>
+  </div>
+
+  <h2 class="h4 mb-3">Catégories</h2>
+  <div class="row g-3 mb-5">
+    {% for cat in nav_categories %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a class="card h-100 text-decoration-none text-dark shadow-sm" href="{% url 'catalog:category_products' cat.id %}">
+          <div class="card-body">
+            <h3 class="h6 mb-1">{{ cat.nom }}</h3>
+            <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <p class="text-muted">Aucune catégorie pour le moment.</p>
+    {% endfor %}
+  </div>
+
+  <h2 class="h4 mb-3">Derniers produits</h2>
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mb-5">
+    {% for product in products %}
+      {% include "includes/product_card.html" %}
+    {% empty %}
+      <p class="text-muted">Aucun produit publié.</p>
+    {% endfor %}
+  </div>
+
+  {% if publications %}
+    <h2 class="h4 mb-3">Actualités</h2>
+    <div class="row g-3">
+      {% for pub in publications %}
+        <div class="col-md-4">
+          <article class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h3 class="h6"><a href="{% url 'catalog:publication_detail' pub.id %}">{{ pub.titre }}</a></h3>
+              <p class="small text-muted mb-0">{{ pub.contenu|truncatewords:24 }}</p>
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

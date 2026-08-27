@@ -1,0 +1,120 @@
+{% load static ndb_tags %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NDB SHOPPING{% endblock %} · Marketplace Mauritanie</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="{% static 'css/ndb.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <div class="ndb-topbar text-center py-1 small">
+    Livraison à Nouadhibou · Zouérat · Nouakchott
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark ndb-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{% url 'core:home' %}">
+        <span class="ndb-logo-mark">NDB</span> SHOPPING
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <form class="d-flex mx-lg-3 my-2 my-lg-0 flex-grow-1" action="{% url 'catalog:product_list' %}" method="get" role="search">
+          <input class="form-control" type="search" name="q" placeholder="Rechercher un produit…" value="{{ request.GET.q }}" aria-label="Recherche">
+          <button class="btn btn-warning ms-2" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{% url 'catalog:categories' %}" data-bs-toggle="dropdown">Catégories</a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% for cat in nav_categories %}
+                <li><a class="dropdown-item" href="{% url 'catalog:category_products' cat.id %}">{{ cat.nom }}</a></li>
+              {% empty %}
+                <li><span class="dropdown-item-text text-muted">Aucune catégorie</span></li>
+              {% endfor %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'catalog:categories' %}">Toutes les catégories</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'catalog:product_list' %}">Produits</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'catalog:publication_list' %}">Actualités</a></li>
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="{% url 'cart:detail' %}" aria-label="Panier">
+              <i class="bi bi-bag"></i>
+              <span class="badge rounded-pill bg-warning text-dark cart-badge" id="cartBadge">{{ cart_count }}</span>
+            </a>
+          </li>
+          {% if is_authenticated_api %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i> {{ user_nom }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'accounts:orders' %}">Mes commandes</a></li>
+                {% if is_admin_api %}
+                  <li><a class="dropdown-item" href="{% url 'adminpanel:dashboard' %}">Espace admin</a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form action="{% url 'accounts:logout' %}" method="post">{% csrf_token %}
+                    <button class="dropdown-item" type="submit">Déconnexion</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Connexion</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-grow-1">
+    <div class="container py-3">
+      {% if api_unavailable %}
+        <div class="alert alert-danger" role="alert">Service temporairement indisponible. Veuillez réessayer dans un instant.</div>
+      {% endif %}
+      {% include "includes/messages.html" %}
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="ndb-footer mt-auto py-4">
+    <div class="container">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <h6 class="fw-bold">NDB SHOPPING</h6>
+          <p class="small mb-0">Marketplace mauritanienne — Nouadhibou, Zouérat, Nouakchott.</p>
+        </div>
+        <div class="col-md-4">
+          <h6 class="fw-bold">Parcourir</h6>
+          <ul class="list-unstyled small mb-0">
+            <li><a href="{% url 'catalog:product_list' %}">Produits</a></li>
+            <li><a href="{% url 'catalog:categories' %}">Catégories</a></li>
+            <li><a href="{% url 'catalog:publication_list' %}">Actualités</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="fw-bold">Compte</h6>
+          <ul class="list-unstyled small mb-0">
+            <li><a href="{% url 'accounts:login' %}">Connexion / inscription</a></li>
+            <li><a href="{% url 'cart:detail' %}">Panier</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="small text-center mt-3 mb-0 opacity-75">© {% now "Y" %} NDB SHOPPING</p>
+    </div>
+  </footer>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{% static 'js/cart.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

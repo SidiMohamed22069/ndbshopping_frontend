@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<section class="container pb-5" style="max-width: 32rem;">
+  <h1 class="h3 mb-3">Connexion / inscription</h1>
+  <p class="text-muted">Indiquez votre nom, votre numéro mauritanien (8 chiffres) et un mot de passe. Un code SMS vous sera envoyé.</p>
+  <form method="post" class="bg-white p-4 rounded shadow-sm">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="mb-3">
+      <label class="form-label" for="nom">Nom</label>
+      <input class="form-control" id="nom" name="nom" required maxlength="120" value="{{ request.POST.nom }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="telephone">Téléphone</label>
+      <input class="form-control" id="telephone" name="telephone" required pattern="[2-4][0-9]{7}" maxlength="8" inputmode="numeric" placeholder="ex. 2xxxxxxx" value="{{ request.POST.telephone }}">
+      <div class="form-text">8 chiffres, commence par 2, 3 ou 4.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="password">Mot de passe</label>
+      <input class="form-control" id="password" name="password" type="password" required minlength="6" maxlength="72">
+    </div>
+    <button class="btn btn-success w-100" type="submit">Recevoir le code SMS</button>
+  </form>
+</section>
+{% endblock %}

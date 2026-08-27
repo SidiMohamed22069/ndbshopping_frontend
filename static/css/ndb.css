@@ -1,0 +1,125 @@
+:root {
+  --ndb-green: #0f6b4c;
+  --ndb-green-dark: #0a4d37;
+  --ndb-gold: #d4a017;
+  --ndb-sand: #f7f3ea;
+  --ndb-ink: #1a1f16;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--ndb-sand);
+  color: var(--ndb-ink);
+}
+
+.ndb-topbar {
+  background: var(--ndb-green-dark);
+  color: #f5e6b8;
+}
+
+.ndb-navbar {
+  background: var(--ndb-green);
+}
+
+.ndb-logo-mark {
+  background: var(--ndb-gold);
+  color: var(--ndb-green-dark);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.ndb-price {
+  color: var(--ndb-green);
+}
+
+.ndb-footer {
+  background: var(--ndb-green-dark);
+  color: #e8eedf;
+}
+
+.ndb-footer a {
+  color: #f5e6b8;
+  text-decoration: none;
+}
+
+.ndb-hero {
+  background: linear-gradient(120deg, var(--ndb-green) 0%, #1a8f68 60%, var(--ndb-gold) 130%);
+  color: #fff;
+  border-radius: 1rem;
+}
+
+.product-card {
+  border: 0;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.75rem 1.5rem rgba(15, 107, 76, 0.12) !important;
+}
+
+.product-card-img {
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.cart-badge,
+.admin-notif-badge {
+  font-size: 0.65rem;
+  min-width: 1.1rem;
+}
+
+.admin-notif-badge:empty,
+.cart-badge:empty {
+  display: none;
+}
+
+.admin-body {
+  background: #eef2ee;
+}
+
+.admin-topbar {
+  background: var(--ndb-green-dark);
+}
+
+.admin-sidebar {
+  width: 240px;
+  min-height: calc(100vh - 56px);
+  background: #123c2d;
+}
+
+.admin-offcanvas {
+  background: #123c2d;
+  width: 240px;
+}
+
+.admin-nav-link {
+  display: block;
+  color: #d7e6dc;
+  padding: 0.65rem 1.25rem;
+  text-decoration: none;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link.active {
+  background: rgba(212, 160, 23, 0.18);
+  color: #fff;
+}
+
+.admin-main {
+  min-width: 0;
+}
+
+.attr-table th {
+  width: 40%;
+}
+
+.gallery-thumb {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
