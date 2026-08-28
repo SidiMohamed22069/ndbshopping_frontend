@@ -1,11 +1,11 @@
 {% extends "base_admin.html" %}
-{% load i18n static %}
+{% load i18n static ndb_tags %}
 
 {% block title %}{% if product %}{% trans "Modifier" %}{% else %}{% trans "Nouveau" %}{% endif %} {% trans "produit" %}{% endblock %}
 
 {% block content %}
 <h1 class="h4 mb-3">{% if product %}{% trans "Modifier" %} {{ product.nom }}{% else %}{% trans "Nouveau produit" %}{% endif %}</h1>
-<form method="post" class="form-panel">
+<form method="post" enctype="multipart/form-data" class="form-panel">
   {% csrf_token %}
   <div class="row g-3">
     <div class="col-md-8">
@@ -41,8 +41,28 @@
         {% endfor %}
       </select>
     </div>
+  </div>
+
+  <hr>
+  <h2 class="h6" id="product-image-heading">{% trans "Image du produit" %}</h2>
+  <div class="mb-3">
+    {% with img=product.images.0 %}
+      {% if img %}
+        <div class="mb-2">
+          <img src="{{ img.url|media_url:img.id }}" alt="{{ product.nom }}" class="admin-image-preview">
+          <div class="form-text">{% trans "Image actuelle. Choisissez un fichier pour la remplacer." %}</div>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <input class="form-control" type="file" id="productImage" name="file" accept="image/jpeg,image/png,image/webp" aria-labelledby="product-image-heading">
+    <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
+  </div>
+
+  <hr>
+  <h2 class="h6">{% trans "Source" %}</h2>
+  <div class="row g-3">
     <div class="col-md-6">
-      <label class="form-label" for="sourceOrigine">{% trans "Source" %}</label>
+      <label class="form-label" for="sourceOrigine">{% trans "Origine" %}</label>
       <select class="form-select" id="sourceOrigine" name="sourceOrigine">
         {% for code, label in sources %}
           <option value="{{ code }}" {% if product.sourceOrigine == code %}selected{% endif %}>{{ label }}</option>
@@ -51,7 +71,8 @@
     </div>
     <div class="col-md-6">
       <label class="form-label" for="sourceUrl">{% trans "URL source (optionnel)" %}</label>
-      <input class="form-control" id="sourceUrl" name="sourceUrl" value="{{ product.sourceUrl }}">
+      <input class="form-control" id="sourceUrl" name="sourceUrl" type="text" inputmode="url" autocomplete="off" placeholder="https://" value="{{ source_url }}">
+      <div class="form-text">{% trans "Lien d'origine (Facebook, Alibaba). Pas l'URL de l'image." %}</div>
     </div>
   </div>
 

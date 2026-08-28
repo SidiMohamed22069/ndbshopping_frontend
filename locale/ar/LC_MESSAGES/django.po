@@ -147,12 +147,32 @@ msgid "Attribut supprimé."
 msgstr "تم حذف الخاصية."
 
 #: .\adminpanel\views.py
-msgid "Produit créé. Vous pouvez ajouter des images."
-msgstr "تم إنشاء المنتج. يمكنك إضافة صور."
+msgid "Impossible de remplacer l'image."
+msgstr "تعذر استبدال الصورة."
+
+#: .\adminpanel\views.py
+msgid "Produit créé, mais l'image n'a pas pu être enregistrée : "
+msgstr "تم إنشاء المنتج، لكن تعذر حفظ الصورة: "
+
+#: .\adminpanel\views.py
+msgid "Produit créé. Image enregistrée."
+msgstr "تم إنشاء المنتج. تم حفظ الصورة."
+
+#: .\adminpanel\views.py
+msgid "Produit créé."
+msgstr "تم إنشاء المنتج."
 
 #: .\adminpanel\views.py .\cart\views.py
 msgid "Produit introuvable."
 msgstr "المنتج غير موجود."
+
+#: .\adminpanel\views.py
+msgid "Produit mis à jour, mais l'image n'a pas pu être enregistrée : "
+msgstr "تم تحديث المنتج، لكن تعذر حفظ الصورة: "
+
+#: .\adminpanel\views.py
+msgid "Produit mis à jour. Image enregistrée."
+msgstr "تم تحديث المنتج. تم حفظ الصورة."
 
 #: .\adminpanel\views.py
 msgid "Produit mis à jour."
@@ -862,8 +882,20 @@ msgid "Source"
 msgstr "المصدر"
 
 #: .\templates\adminpanel\products\form.html
+msgid "Image du produit"
+msgstr "صورة المنتج"
+
+#: .\templates\adminpanel\products\form.html
+msgid "Origine"
+msgstr "المنشأ"
+
+#: .\templates\adminpanel\products\form.html
 msgid "URL source (optionnel)"
 msgstr "رابط المصدر (اختياري)"
+
+#: .\templates\adminpanel\products\form.html
+msgid "Lien d'origine (Facebook, Alibaba). Pas l'URL de l'image."
+msgstr "رابط المصدر (فيسبوك، علي بابا). ليس رابط الصورة."
 
 #: .\templates\adminpanel\products\form.html
 msgid "Attributs de la catégorie"

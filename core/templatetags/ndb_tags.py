@@ -1,4 +1,5 @@
 from decimal import Decimal, InvalidOperation
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from django import template
 from django.conf import settings
@@ -8,14 +9,25 @@ register = template.Library()
 
 
 @register.filter
-def media_url(path: str | None) -> str:
-    """Construit l'URL publique d'une image backend (/media/...)."""
+def media_url(path: str | None, version=None) -> str:
+    """Construit l'URL publique d'une image backend (/media/...) avec cache-busting."""
     if not path:
         return ""
-    if str(path).startswith("http://") or str(path).startswith("https://"):
-        return str(path)
-    base = settings.MEDIA_BACKEND_URL.rstrip("/")
-    return f"{base}/{str(path).lstrip('/')}"
+    raw = str(path)
+    if raw.startswith("http://") or raw.startswith("https://"):
+        url = raw
+    else:
+        base = settings.MEDIA_BACKEND_URL.rstrip("/")
+        url = f"{base}/{raw.lstrip('/')}"
+    token = "" if version in (None, "") else str(version).strip()
+    if not token:
+        token = urlsplit(url).path.rsplit("/", 1)[-1]
+    if not token:
+        return url
+    parts = urlsplit(url)
+    query = dict(parse_qsl(parts.query, keep_blank_values=True))
+    query["v"] = token
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
 
 
 @register.filter

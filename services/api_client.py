@@ -284,6 +284,7 @@ def admin_delete_product(token: str, product_id: int | str) -> ApiResult:
 
 
 def admin_upload_product_image(token: str, product_id: int | str, django_file) -> ApiResult:
+    django_file.seek(0)
     files = {
         "file": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
     }

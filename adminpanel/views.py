@@ -48,11 +48,47 @@ def _token(request) -> str:
     return request.jwt_token
 
 
-def _posted_image(request):
-    upload = request.FILES.get("image")
+def _posted_file(request, field_name: str):
+    upload = request.FILES.get(field_name)
     if upload and getattr(upload, "size", 0):
         return upload
     return None
+
+
+def _posted_image(request):
+    return _posted_file(request, "image")
+
+
+def _is_local_media_url(value: str | None) -> bool:
+    """True si la valeur pointe vers un fichier /media/ stocké par le backend."""
+    v = (value or "").strip().lower()
+    if not v:
+        return False
+    markers = ("/media/products/", "/media/categories/", "/media/publications/")
+    if any(marker in v for marker in markers):
+        return True
+    return v.startswith(("products/", "categories/", "publications/"))
+
+
+def _source_url_for_form(product: dict | None) -> str:
+    """sourceUrl d'import (Facebook/Alibaba), jamais l'URL d'une image uploadée."""
+    if not product:
+        return ""
+    source = (product.get("sourceUrl") or "").strip()
+    if not source or _is_local_media_url(source):
+        return ""
+    source_path = source.split("?")[0]
+    source_name = source_path.rsplit("/", 1)[-1]
+    for img in product.get("images") or []:
+        image_url = (img.get("url") or "").strip()
+        if not image_url:
+            continue
+        image_path = image_url.split("?")[0]
+        if source in (image_url, image_path) or source_path == image_path:
+            return ""
+        if source_name and source_name == image_path.rsplit("/", 1)[-1]:
+            return ""
+    return source
 
 
 def _validate_image(upload) -> str | None:
@@ -65,6 +101,14 @@ def _validate_image(upload) -> str | None:
     return None
 
 
+def _upload_ok_with_url(result) -> bool:
+    if not result.ok:
+        return False
+    if not isinstance(result.data, dict) or not result.data:
+        return True
+    return bool(result.data.get("url") or result.data.get("imageUrl") or result.data.get("id"))
+
+
 def _upload_image_if_present(request, upload_fn, entity_id) -> str | None:
     """Envoie le fichier `image` s'il est présent. Retourne un message d'erreur, sinon None."""
     upload = _posted_image(request)
@@ -75,7 +119,30 @@ def _upload_image_if_present(request, upload_fn, entity_id) -> str | None:
         return error
     upload.seek(0)
     result = upload_fn(_token(request), entity_id, upload)
-    if result.ok:
+    if _upload_ok_with_url(result):
+        return None
+    return result.error or _("Impossible d'enregistrer l'image.")
+
+
+def _upload_product_image_if_present(request, product_id, existing_images=None) -> str | None:
+    """Upload multipart vers POST /admin/products/{id}/images. Remplace les images existantes."""
+    upload = _posted_file(request, "file")
+    if not upload or not product_id:
+        return None
+    error = _validate_image(upload)
+    if error:
+        return error
+    token = _token(request)
+    for img in existing_images or []:
+        img_id = img.get("id")
+        if not img_id:
+            continue
+        deleted = api_client.admin_delete_product_image(token, product_id, img_id)
+        if not deleted.ok:
+            return deleted.error or _("Impossible de remplacer l'image.")
+    upload.seek(0)
+    result = api_client.admin_upload_product_image(token, product_id, upload)
+    if _upload_ok_with_url(result):
         return None
     return result.error or _("Impossible d'enregistrer l'image.")
 
@@ -171,6 +238,7 @@ def category_create(request):
                     return redirect("adminpanel:category_edit", category_id=entity_id)
             elif entity_id and _posted_image(request):
                 messages.success(request, _("Catégorie créée. Image enregistrée."))
+                return redirect("adminpanel:category_edit", category_id=entity_id)
             else:
                 messages.success(request, _("Catégorie créée."))
             return redirect("adminpanel:category_list")
@@ -207,8 +275,8 @@ def category_edit(request, category_id):
                 return redirect("adminpanel:category_edit", category_id=category_id)
             if _posted_image(request):
                 messages.success(request, _("Catégorie mise à jour. Image enregistrée."))
-            else:
-                messages.success(request, _("Catégorie mise à jour."))
+                return redirect("adminpanel:category_edit", category_id=category_id)
+            messages.success(request, _("Catégorie mise à jour."))
             return redirect("adminpanel:category_list")
         messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
@@ -289,6 +357,9 @@ def _product_payload(request) -> dict:
                 continue
     category_id = request.POST.get("categoryId")
     stock = request.POST.get("stock") or 0
+    source_url = (request.POST.get("sourceUrl") or "").strip() or None
+    if source_url and _is_local_media_url(source_url):
+        source_url = None
     return {
         "nom": (request.POST.get("nom") or "").strip(),
         "description": (request.POST.get("description") or "").strip() or None,
@@ -296,9 +367,20 @@ def _product_payload(request) -> dict:
         "stock": int(stock) if str(stock).isdigit() else 0,
         "categoryId": int(category_id) if category_id else None,
         "sourceOrigine": request.POST.get("sourceOrigine") or "MANUEL",
-        "sourceUrl": (request.POST.get("sourceUrl") or "").strip() or None,
+        "sourceUrl": source_url,
         "statut": request.POST.get("statut") or "BROUILLON",
         "attributs": attributs,
+    }
+
+
+def _product_form_context(product, categories_flat) -> dict:
+    return {
+        "product": product,
+        "source_url": _source_url_for_form(product if isinstance(product, dict) else None),
+        "product_attrs_json": json.dumps((product or {}).get("attributs") or []) if product else "[]",
+        "categories_flat": categories_flat,
+        "statuses": PRODUCT_STATUSES,
+        "sources": PRODUCT_SOURCES,
     }
 
 
@@ -349,19 +431,24 @@ def product_create(request):
         payload = _product_payload(request)
         result = api_client.admin_create_product(_token(request), payload)
         if result.ok and isinstance(result.data, dict):
-            messages.success(request, _("Produit créé. Vous pouvez ajouter des images."))
-            return redirect("adminpanel:product_images", product_id=result.data.get("id"))
+            entity_id = result.data.get("id")
+            img_error = _upload_product_image_if_present(request, entity_id, existing_images=[])
+            if img_error:
+                messages.warning(
+                    request,
+                    _("Produit créé, mais l'image n'a pas pu être enregistrée : ") + img_error,
+                )
+            elif _posted_file(request, "file"):
+                messages.success(request, _("Produit créé. Image enregistrée."))
+            else:
+                messages.success(request, _("Produit créé."))
+            if entity_id:
+                return redirect("adminpanel:product_edit", product_id=entity_id)
         messages.error(request, result.error or _("Création impossible."))
     return render(
         request,
         "adminpanel/products/form.html",
-        {
-            "product": None,
-            "product_attrs_json": "[]",
-            "categories_flat": flat,
-            "statuses": PRODUCT_STATUSES,
-            "sources": PRODUCT_SOURCES,
-        },
+        _product_form_context(None, flat),
     )
 
 
@@ -379,19 +466,23 @@ def product_edit(request, product_id):
         payload = _product_payload(request)
         result = api_client.admin_update_product(token, product_id, payload)
         if result.ok:
-            messages.success(request, _("Produit mis à jour."))
-            return redirect("adminpanel:product_list")
+            existing = prod.data.get("images") if isinstance(prod.data, dict) else []
+            img_error = _upload_product_image_if_present(request, product_id, existing_images=existing)
+            if img_error:
+                messages.warning(
+                    request,
+                    _("Produit mis à jour, mais l'image n'a pas pu être enregistrée : ") + img_error,
+                )
+            elif _posted_file(request, "file"):
+                messages.success(request, _("Produit mis à jour. Image enregistrée."))
+            else:
+                messages.success(request, _("Produit mis à jour."))
+            return redirect("adminpanel:product_edit", product_id=product_id)
         messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
         request,
         "adminpanel/products/form.html",
-        {
-            "product": prod.data,
-            "product_attrs_json": json.dumps(prod.data.get("attributs") or []),
-            "categories_flat": flat,
-            "statuses": PRODUCT_STATUSES,
-            "sources": PRODUCT_SOURCES,
-        },
+        _product_form_context(prod.data, flat),
     )
 
 
@@ -411,15 +502,20 @@ def product_delete(request, product_id):
 def product_images(request, product_id):
     token = _token(request)
     if request.method == "POST":
-        upload = request.FILES.get("file")
+        upload = _posted_file(request, "file")
         if not upload:
             messages.error(request, _("Choisissez une image (jpg, png, webp — 5 Mo max)."))
         else:
-            result = api_client.admin_upload_product_image(token, product_id, upload)
-            if result.ok:
-                messages.success(request, _("Image ajoutée."))
+            error = _validate_image(upload)
+            if error:
+                messages.error(request, error)
             else:
-                messages.error(request, result.error or _("Upload impossible."))
+                upload.seek(0)
+                result = api_client.admin_upload_product_image(token, product_id, upload)
+                if _upload_ok_with_url(result):
+                    messages.success(request, _("Image ajoutée."))
+                else:
+                    messages.error(request, result.error or _("Upload impossible."))
         return redirect("adminpanel:product_images", product_id=product_id)
 
     prod = api_client.admin_get_product(token, product_id)

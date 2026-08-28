@@ -4,7 +4,7 @@
     <div class="listing-card-media">
       {% with img=product.images.0 %}
         {% if img %}
-          <img src="{{ img.url|media_url }}" alt="{{ product.nom }}">
+          <img src="{{ img.url|media_url:img.id }}" alt="{{ product.nom }}">
         {% else %}
           <div class="listing-card-placeholder"><i class="bi bi-image"></i></div>
         {% endif %}
