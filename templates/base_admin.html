@@ -75,8 +75,12 @@
   <script>
     window.NDB_PUBLIC_BACKEND_HOST = "{{ PUBLIC_BACKEND_HOST }}";
     {% trans "Nouvelle notification" as ndb_new_notif %}
+    {% trans "Nouvelle commande" as ndb_new_order %}
+    {% trans "Produit à valider" as ndb_product_pending %}
     window.NDB_I18N = {
-      newNotification: "{{ ndb_new_notif|escapejs }}"
+      newNotification: "{{ ndb_new_notif|escapejs }}",
+      newOrder: "{{ ndb_new_order|escapejs }}",
+      productToValidate: "{{ ndb_product_pending|escapejs }}"
     };
   </script>
   <script src="{% static 'js/admin-ws.js' %}"></script>

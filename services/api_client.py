@@ -179,6 +179,22 @@ def get_product(product_id: int | str) -> ApiResult:
     return call("GET", f"/products/{product_id}")
 
 
+def get_my_products(token: str, page: int = 0, size: int = 20) -> ApiResult:
+    return call("GET", "/products/me", token=token, params={"page": page, "size": size})
+
+
+def submit_product(token: str, payload: dict) -> ApiResult:
+    return call("POST", "/products", token=token, json=payload)
+
+
+def upload_product_image(token: str, product_id: int | str, django_file) -> ApiResult:
+    django_file.seek(0)
+    files = {
+        "file": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
+    }
+    return call("POST", f"/products/{product_id}/images", token=token, files=files)
+
+
 def get_publications(page: int = 0, size: int = 20) -> ApiResult:
     return call("GET", "/publications", params={"page": page, "size": size})
 
@@ -307,6 +323,19 @@ def admin_upload_product_image(token: str, product_id: int | str, django_file) -
 
 def admin_delete_product_image(token: str, product_id: int | str, image_id: int | str) -> ApiResult:
     return call("DELETE", f"/admin/products/{product_id}/images/{image_id}", token=token)
+
+
+def admin_validate_product(token: str, product_id: int | str) -> ApiResult:
+    return call("PATCH", f"/admin/products/{product_id}/valider", token=token)
+
+
+def admin_reject_product(token: str, product_id: int | str, raison: str) -> ApiResult:
+    return call(
+        "PATCH",
+        f"/admin/products/{product_id}/rejeter",
+        token=token,
+        json={"raison": raison},
+    )
 
 
 def admin_import_url(token: str, url: str, category_id: int | str | None = None) -> ApiResult:

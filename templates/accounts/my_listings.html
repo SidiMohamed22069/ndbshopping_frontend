@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n ndb_tags %}
+
+{% block title %}{% trans "Mes annonces" %}{% endblock %}
+
+{% block content %}
+<section class="container page-wrap">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="page-title mb-0">{% trans "Mes annonces" %}</h1>
+    <a class="btn-cta" href="{% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
+  </div>
+
+  {% for product in products %}
+    <article class="listing-card mb-3">
+      <div class="listing-card-media">
+        {% with img=product.images.0 %}
+          {% include "includes/media_img.html" with src_path=img|image_path version=img.id alt=product.nom placeholder="img/placeholder-produit.png" %}
+        {% endwith %}
+      </div>
+      <div class="listing-card-body">
+        <div class="d-flex justify-content-between flex-wrap gap-2">
+          <h2 class="h6 mb-0">{{ product.nom }}</h2>
+          {% if product.statut == "EN_ATTENTE" %}
+            <span class="badge text-bg-warning">{% trans "En attente de validation" %}</span>
+          {% elif product.statut == "PUBLIE" %}
+            <span class="badge text-bg-success">{% trans "En ligne" %}</span>
+          {% elif product.statut == "REJETE" %}
+            <span class="badge text-bg-danger">{% trans "Refusé" %}</span>
+          {% else %}
+            <span class="badge text-bg-{{ product.statut|statut_badge }}">{{ product.statut|statut_label }}</span>
+          {% endif %}
+        </div>
+        {% if product.categoryNom %}
+          <p class="muted small mb-1">{{ product.categoryNom }}</p>
+        {% endif %}
+        <p class="listing-price mb-1">{{ product.prix|mru }}</p>
+        {% if product.statut == "REJETE" and product.raisonRejet %}
+          <p class="small text-danger mb-0">{% trans "Raison" %} : {{ product.raisonRejet }}</p>
+        {% endif %}
+      </div>
+    </article>
+  {% empty %}
+    <p class="muted">{% trans "Vous n'avez pas encore soumis d'annonce." %}</p>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+</section>
+{% endblock %}

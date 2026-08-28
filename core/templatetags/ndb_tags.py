@@ -109,6 +109,7 @@ def statut_label(code: str | None) -> str:
         "ANNULEE": _("Annulée"),
         "BROUILLON": _("Brouillon"),
         "PUBLIE": _("Publié"),
+        "REJETE": _("Refusé"),
         "PRODUIT": _("Produit"),
         "HOTEL": _("Hôtel"),
         "VOITURE": _("Voiture"),
@@ -117,6 +118,7 @@ def statut_label(code: str | None) -> str:
         "CLIENT": _("Client"),
         "ADMIN": _("Admin"),
         "NOUVELLE_COMMANDE": _("Nouvelle commande"),
+        "PRODUIT_A_VALIDER": _("Produit à valider"),
         "SOLDE_SMS_BAS": _("Solde SMS bas"),
         "MANUEL": _("Manuel"),
         "FACEBOOK": "Facebook",
@@ -139,6 +141,9 @@ def statut_badge(code: str | None) -> str:
         "ANNULEE": "secondary",
         "BROUILLON": "secondary",
         "PUBLIE": "success",
+        "REJETE": "danger",
+        "NOUVELLE_COMMANDE": "warning",
+        "PRODUIT_A_VALIDER": "info",
     }
     return mapping.get(code or "", "secondary")
 

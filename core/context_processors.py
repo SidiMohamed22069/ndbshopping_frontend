@@ -62,14 +62,19 @@ def storefront(request):
 
 
 def admin_badges(request):
-    """Badge notifications non lues — uniquement sur l'espace /admin-ndb/."""
+    """Badges admin : notifications non lues + produits EN_ATTENTE."""
+    empty = {"unread_notifications": 0, "pending_products_count": 0}
     if not request.path.startswith("/admin-ndb/"):
-        return {"unread_notifications": 0}
+        return empty
     token = request.session.get("jwt_token")
     if not token or request.session.get("user_role") != "ADMIN":
-        return {"unread_notifications": 0}
+        return empty
+    unread = 0
     result = api_client.admin_unread_count(token)
-    count = 0
     if result.ok and isinstance(result.data, dict):
-        count = result.data.get("count") or 0
-    return {"unread_notifications": count}
+        unread = result.data.get("count") or 0
+    pending = 0
+    pending_result = api_client.admin_get_products(token, statut="EN_ATTENTE", page=0, size=1)
+    if pending_result.ok and isinstance(pending_result.data, dict):
+        pending = pending_result.data.get("totalElements") or 0
+    return {"unread_notifications": unread, "pending_products_count": pending}

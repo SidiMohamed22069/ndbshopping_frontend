@@ -11,4 +11,7 @@ urlpatterns = [
     path("deconnexion/", views.logout_view, name="logout"),
     path("commander/", views.checkout, name="checkout"),
     path("commandes/", views.orders, name="orders"),
+    path("vendre/", views.sell, name="sell"),
+    path("vendre/confirmation/", views.sell_confirmation, name="sell_confirmation"),
+    path("mes-annonces/", views.my_listings, name="my_listings"),
 ]

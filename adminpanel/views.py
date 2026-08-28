@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_http_methods, require_POST
 
 from core.decorators import admin_required_api
-from core.utils import flatten_categories, page_from_request
+from core.utils import flatten_categories, normalize_product_images, page_from_request
 from services import api_client
 
 CATEGORY_TYPES = [
@@ -534,6 +534,81 @@ def product_image_delete(request, product_id, image_id):
     else:
         messages.error(request, result.error or _("Suppression impossible."))
     return redirect("adminpanel:product_images", product_id=product_id)
+
+
+def _submitter_names(token: str, user_ids) -> dict:
+    needed = {str(uid) for uid in user_ids if uid is not None}
+    names = {}
+    if not needed:
+        return names
+    page = 0
+    while page < 20 and needed:
+        result = api_client.admin_get_users(token, page=page, size=50)
+        if not result.ok or not isinstance(result.data, dict):
+            break
+        for user in result.data.get("content") or []:
+            uid = user.get("id")
+            key = str(uid) if uid is not None else ""
+            if key in needed:
+                names[key] = user.get("nom") or user.get("telephone") or key
+                needed.discard(key)
+        if page + 1 >= (result.data.get("totalPages") or 1):
+            break
+        page += 1
+    return names
+
+
+@admin_required_api
+@require_http_methods(["GET"])
+def product_pending(request):
+    page = page_from_request(request)
+    token = _token(request)
+    result = api_client.admin_get_products(token, statut="EN_ATTENTE", page=page - 1, size=20)
+    products, pagination = [], None
+    if result.ok and isinstance(result.data, dict):
+        products = [
+            normalize_product_images(p) for p in (result.data.get("content") or []) if isinstance(p, dict)
+        ]
+        pagination = result.data
+        names = _submitter_names(token, [p.get("soumisParUserId") for p in products])
+        for product in products:
+            uid = product.get("soumisParUserId")
+            product["soumisParNom"] = names.get(str(uid)) if uid is not None else "—"
+            if uid is not None and not product["soumisParNom"]:
+                product["soumisParNom"] = f"#{uid}"
+    else:
+        messages.error(request, result.error or api_client.UNAVAILABLE)
+    return render(
+        request,
+        "adminpanel/products/pending.html",
+        {"products": products, "pagination": pagination, "page": page},
+    )
+
+
+@admin_required_api
+@require_POST
+def product_validate(request, product_id):
+    result = api_client.admin_validate_product(_token(request), product_id)
+    if result.ok:
+        messages.success(request, _("Produit validé. Il est maintenant en ligne."))
+    else:
+        messages.error(request, result.error or _("Validation impossible."))
+    return redirect("adminpanel:product_pending")
+
+
+@admin_required_api
+@require_POST
+def product_reject(request, product_id):
+    raison = (request.POST.get("raison") or "").strip()
+    if not raison:
+        messages.error(request, _("Indiquez une raison de rejet."))
+        return redirect("adminpanel:product_pending")
+    result = api_client.admin_reject_product(_token(request), product_id, raison)
+    if result.ok:
+        messages.success(request, _("Produit rejeté."))
+    else:
+        messages.error(request, result.error or _("Rejet impossible."))
+    return redirect("adminpanel:product_pending")
 
 
 @admin_required_api

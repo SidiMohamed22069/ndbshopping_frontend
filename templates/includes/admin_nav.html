@@ -7,8 +7,16 @@
   <a class="admin-nav-link {% if 'categor' in url_name %}active{% endif %}" href="{% url 'adminpanel:category_list' %}">
     <i class="bi bi-folder"></i> {% trans "Catégories" %}
   </a>
-  <a class="admin-nav-link {% if url_name != 'product_import' and 'product' in url_name %}active{% endif %}" href="{% url 'adminpanel:product_list' %}">
+  <a class="admin-nav-link {% if url_name != 'product_import' and url_name != 'product_pending' and url_name != 'product_validate' and url_name != 'product_reject' and 'product' in url_name %}active{% endif %}" href="{% url 'adminpanel:product_list' %}">
     <i class="bi bi-box-seam"></i> {% trans "Produits" %}
+  </a>
+  <a class="admin-nav-link {% if url_name == 'product_pending' %}active{% endif %}" href="{% url 'adminpanel:product_pending' %}">
+    <i class="bi bi-clipboard-check"></i> {% trans "Produits à valider" %}
+    {% if pending_products_count %}
+      <span class="badge rounded-pill admin-nav-count admin-pending-products-badge">{{ pending_products_count }}</span>
+    {% else %}
+      <span class="badge rounded-pill admin-nav-count admin-pending-products-badge d-none">0</span>
+    {% endif %}
   </a>
   <a class="admin-nav-link {% if url_name == 'product_import' %}active{% endif %}" href="{% url 'adminpanel:product_import' %}">
     <i class="bi bi-upload"></i> {% trans "Import" %}

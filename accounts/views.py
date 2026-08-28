@@ -1,3 +1,5 @@
+from decimal import Decimal, InvalidOperation
+
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -6,10 +8,12 @@ from django.views.decorators.http import require_http_methods
 
 from cart.utils import clear_cart, sync_if_authenticated, to_sync_payload
 from core.decorators import login_required_api
-from core.utils import page_from_request, safe_next_url
+from core.utils import normalize_product_images, page_from_request, safe_next_url
 from services import api_client
 
 VILLE_LIVRAISON = "NOUADHIBOU"
+IMAGE_MAX_BYTES = 5 * 1024 * 1024
+IMAGE_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
 
 
 def _establish_session(request, token: str, user: dict, next_url: str | None):
@@ -174,4 +178,124 @@ def orders(request):
         request,
         "accounts/orders.html",
         {"orders": orders_list, "pagination": pagination, "page": page},
+    )
+
+
+def _posted_file(request, field_name: str):
+    upload = request.FILES.get(field_name)
+    if upload and getattr(upload, "size", 0):
+        return upload
+    return None
+
+
+def _validate_image(upload) -> str | None:
+    if upload.size > IMAGE_MAX_BYTES:
+        return _("Image trop volumineuse (5 Mo maximum).")
+    content_type = (upload.content_type or "").lower()
+    name = (upload.name or "").lower()
+    if content_type not in IMAGE_CONTENT_TYPES and not name.endswith((".jpg", ".jpeg", ".png", ".webp")):
+        return _("Format non accepté. Utilisez JPG, PNG ou WebP.")
+    return None
+
+
+def _client_product_payload(request) -> dict:
+    attributs = []
+    for key in request.POST:
+        if key.startswith("attr_"):
+            raw_id = key[5:]
+            try:
+                attributs.append(
+                    {
+                        "attributeDefinitionId": int(raw_id),
+                        "valeur": request.POST.get(key) or "",
+                    }
+                )
+            except ValueError:
+                continue
+    category_id = request.POST.get("categoryId")
+    stock = request.POST.get("stock") or 0
+    prix_raw = (request.POST.get("prix") or "").strip()
+    try:
+        prix = str(Decimal(prix_raw)) if prix_raw else "0"
+    except InvalidOperation:
+        prix = prix_raw or "0"
+    return {
+        "nom": (request.POST.get("nom") or "").strip(),
+        "description": (request.POST.get("description") or "").strip() or None,
+        "prix": prix,
+        "stock": int(stock) if str(stock).isdigit() else 0,
+        "categoryId": int(category_id) if category_id else None,
+        "attributs": attributs,
+    }
+
+
+@login_required_api
+@require_http_methods(["GET", "POST"])
+def sell(request):
+    form = {
+        "nom": request.POST.get("nom") or "",
+        "description": request.POST.get("description") or "",
+        "prix": request.POST.get("prix") or "",
+        "stock": request.POST.get("stock") or "0",
+        "categoryId": request.POST.get("categoryId") or "",
+    }
+    if request.method == "POST":
+        payload = _client_product_payload(request)
+        if not payload["nom"] or payload["categoryId"] is None:
+            messages.error(request, _("Le nom et la catégorie sont obligatoires."))
+        else:
+            upload = _posted_file(request, "file")
+            img_error = _validate_image(upload) if upload else None
+            if img_error:
+                messages.error(request, img_error)
+            else:
+                result = api_client.submit_product(request.jwt_token, payload)
+                if result.ok and isinstance(result.data, dict) and result.data.get("id"):
+                    entity_id = result.data["id"]
+                    if upload:
+                        upload.seek(0)
+                        img_result = api_client.upload_product_image(
+                            request.jwt_token, entity_id, upload
+                        )
+                        if not img_result.ok:
+                            messages.warning(
+                                request,
+                                _("Produit soumis, mais l'image n'a pas pu être enregistrée : ")
+                                + (img_result.error or ""),
+                            )
+                    request.session["product_submitted"] = True
+                    return redirect("accounts:sell_confirmation")
+                messages.error(request, result.error or _("Soumission impossible."))
+    return render(
+        request,
+        "accounts/sell.html",
+        {"form": form, "product_attrs_json": "[]"},
+    )
+
+
+@login_required_api
+@require_http_methods(["GET"])
+def sell_confirmation(request):
+    if not request.session.pop("product_submitted", None):
+        return redirect("accounts:my_listings")
+    return render(request, "accounts/sell_confirmation.html")
+
+
+@login_required_api
+@require_http_methods(["GET"])
+def my_listings(request):
+    page = page_from_request(request)
+    result = api_client.get_my_products(request.jwt_token, page=page - 1, size=12)
+    products, pagination = [], None
+    if result.ok and isinstance(result.data, dict):
+        products = [
+            normalize_product_images(p) for p in (result.data.get("content") or []) if isinstance(p, dict)
+        ]
+        pagination = result.data
+    else:
+        messages.error(request, result.error or api_client.UNAVAILABLE)
+    return render(
+        request,
+        "accounts/my_listings.html",
+        {"products": products, "pagination": pagination, "page": page},
     )

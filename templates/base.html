@@ -61,6 +61,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="{% url 'accounts:orders' %}">{% trans "Mes commandes" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'accounts:my_listings' %}">{% trans "Mes annonces" %}</a></li>
                 {% if is_admin_api %}
                   <li><a class="dropdown-item" href="{% url 'adminpanel:dashboard' %}">{% trans "Espace admin" %}</a></li>
                 {% endif %}
@@ -74,6 +75,11 @@
             </div>
           {% else %}
             <a class="header-login" href="{% url 'accounts:login' %}">{% trans "Connexion" %}</a>
+          {% endif %}
+          {% if is_authenticated_api %}
+            <a class="header-sell" href="{% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
+          {% else %}
+            <a class="header-sell" href="{% url 'accounts:login' %}?next={% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
           {% endif %}
           <a class="btn-cta" href="{% url 'cart:detail' %}">{% trans "Commander" %}</a>
         </div>
@@ -93,14 +99,17 @@
       <div class="header-actions-mobile">
         {% if is_authenticated_api %}
           <a class="header-login" href="{% url 'accounts:orders' %}">{% trans "Mes commandes" %}</a>
+          <a class="header-login" href="{% url 'accounts:my_listings' %}">{% trans "Mes annonces" %}</a>
           {% if is_admin_api %}
             <a class="header-login" href="{% url 'adminpanel:dashboard' %}">{% trans "Espace admin" %}</a>
           {% endif %}
           <form action="{% url 'accounts:logout' %}" method="post">{% csrf_token %}
             <button class="header-login btn btn-link p-0" type="submit">{% trans "Déconnexion" %}</button>
           </form>
+          <a class="header-sell" href="{% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
         {% else %}
           <a class="header-login" href="{% url 'accounts:login' %}">{% trans "Connexion" %}</a>
+          <a class="header-sell" href="{% url 'accounts:login' %}?next={% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
         {% endif %}
         <a class="btn-cta" href="{% url 'cart:detail' %}">{% trans "Commander" %}</a>
       </div>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 00:23+0200\n"
+"POT-Creation-Date: 2026-08-29 00:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,1476 +17,1672 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\accounts\views.py
+#: .\accounts\views.py:32
 msgid "Connecté, mais le panier n'a pas pu être synchronisé. "
 msgstr "تم تسجيل الدخول، لكن تعذر مزامنة السلة. "
 
-#: .\accounts\views.py
+#: .\accounts\views.py:34
 #, python-format
 msgid "Bienvenue %(nom)s !"
 msgstr "مرحبًا %(nom)s!"
 
-#: .\accounts\views.py
+#: .\accounts\views.py:41
 msgid "Code envoyé par SMS."
 msgstr "تم إرسال الرمز عبر رسالة قصيرة."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:57
 msgid "Téléphone et mot de passe sont obligatoires."
 msgstr "رقم الهاتف وكلمة المرور إلزاميان."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:68
 msgid "Connexion impossible."
 msgstr "تعذر تسجيل الدخول."
 
-#: .\accounts\views.py .\adminpanel\views.py
+#: .\accounts\views.py:90 .\adminpanel\views.py:956
 msgid "Nom, téléphone et mot de passe sont obligatoires."
 msgstr "الاسم والهاتف وكلمة المرور إلزامية."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:99
 msgid "Inscription impossible."
 msgstr "تعذر إنشاء الحساب."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:112
 msgid "Commencez par renseigner vos informations."
 msgstr "ابدأ بإدخال بياناتك."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:118
 msgid "Saisissez le code reçu par SMS."
 msgstr "أدخل الرمز المستلم عبر الرسالة القصيرة."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:129
 msgid "Code incorrect."
 msgstr "الرمز غير صحيح."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:137
 msgid "Vous êtes déconnecté."
 msgstr "تم تسجيل خروجك."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:147
 msgid "Votre panier est vide."
 msgstr "سلتك فارغة."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:153
 msgid "Indiquez une adresse."
 msgstr "حدد عنوانًا."
 
-#: .\accounts\views.py
+#: .\accounts\views.py:159
 msgid "Commande enregistrée. Merci !"
 msgstr "تم تسجيل الطلب. شكرًا!"
 
-#: .\accounts\views.py
+#: .\accounts\views.py:161
 msgid "Impossible de passer la commande."
 msgstr "تعذر إتمام الطلب."
 
-#: .\adminpanel\views.py
+#: .\accounts\views.py:193 .\adminpanel\views.py:96
 msgid "Image trop volumineuse (5 Mo maximum)."
 msgstr "الصورة كبيرة جدًا (5 ميغابايت كحد أقصى)."
 
-#: .\adminpanel\views.py
+#: .\accounts\views.py:197 .\adminpanel\views.py:100
 msgid "Format non accepté. Utilisez JPG, PNG ou WebP."
 msgstr "صيغة غير مقبولة. استخدم JPG أو PNG أو WebP."
 
-#: .\adminpanel\views.py
+#: .\accounts\views.py:245
+msgid "Le nom et la catégorie sont obligatoires."
+msgstr "الاسم والتصنيف إلزاميان."
+
+#: .\accounts\views.py:263
+msgid "Produit soumis, mais l'image n'a pas pu être enregistrée : "
+msgstr "تم إرسال المنتج، لكن تعذر حفظ الصورة: "
+
+#: .\accounts\views.py:268
+msgid "Soumission impossible."
+msgstr "تعذر الإرسال."
+
+#: .\adminpanel\views.py:124 .\adminpanel\views.py:147
 msgid "Impossible d'enregistrer l'image."
 msgstr "تعذر حفظ الصورة."
 
-#: .\adminpanel\views.py
-msgid "Catégorie créée, mais l'image n'a pas pu être enregistrée : "
-msgstr "تم إنشاء التصنيف، لكن تعذر حفظ الصورة: "
-
-#: .\adminpanel\views.py
-msgid "Catégorie créée. Image enregistrée."
-msgstr "تم إنشاء التصنيف. تم حفظ الصورة."
-
-#: .\adminpanel\views.py
-msgid "Catégorie créée."
-msgstr "تم إنشاء التصنيف."
-
-#: .\adminpanel\views.py
-msgid "Création impossible."
-msgstr "تعذر الإنشاء."
-
-#: .\adminpanel\views.py
-msgid "Catégorie introuvable."
-msgstr "التصنيف غير موجود."
-
-#: .\adminpanel\views.py
-msgid "Catégorie mise à jour, mais l'image n'a pas pu être enregistrée : "
-msgstr "تم تحديث التصنيف، لكن تعذر حفظ الصورة: "
-
-#: .\adminpanel\views.py
-msgid "Catégorie mise à jour. Image enregistrée."
-msgstr "تم تحديث التصنيف. تم حفظ الصورة."
-
-#: .\adminpanel\views.py
-msgid "Catégorie mise à jour."
-msgstr "تم تحديث التصنيف."
-
-#: .\adminpanel\views.py
-msgid "Mise à jour impossible."
-msgstr "تعذر التحديث."
-
-#: .\adminpanel\views.py
-msgid "Catégorie supprimée."
-msgstr "تم حذف التصنيف."
-
-#: .\adminpanel\views.py
-msgid "Suppression impossible."
-msgstr "تعذر الحذف."
-
-#: .\adminpanel\views.py
-msgid "Attribut ajouté."
-msgstr "تمت إضافة الخاصية."
-
-#: .\adminpanel\views.py
-msgid "Ajout impossible."
-msgstr "تعذر الإضافة."
-
-#: .\adminpanel\views.py
-msgid "Attribut supprimé."
-msgstr "تم حذف الخاصية."
-
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:142
 msgid "Impossible de remplacer l'image."
 msgstr "تعذر استبدال الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:235
+msgid "Catégorie créée, mais l'image n'a pas pu être enregistrée : "
+msgstr "تم إنشاء التصنيف، لكن تعذر حفظ الصورة: "
+
+#: .\adminpanel\views.py:240
+msgid "Catégorie créée. Image enregistrée."
+msgstr "تم إنشاء التصنيف. تم حفظ الصورة."
+
+#: .\adminpanel\views.py:243
+msgid "Catégorie créée."
+msgstr "تم إنشاء التصنيف."
+
+#: .\adminpanel\views.py:245 .\adminpanel\views.py:447
+#: .\adminpanel\views.py:783 .\adminpanel\views.py:970
+msgid "Création impossible."
+msgstr "تعذر الإنشاء."
+
+#: .\adminpanel\views.py:260
+msgid "Catégorie introuvable."
+msgstr "التصنيف غير موجود."
+
+#: .\adminpanel\views.py:273
+msgid "Catégorie mise à jour, mais l'image n'a pas pu être enregistrée : "
+msgstr "تم تحديث التصنيف، لكن تعذر حفظ الصورة: "
+
+#: .\adminpanel\views.py:277
+msgid "Catégorie mise à jour. Image enregistrée."
+msgstr "تم تحديث التصنيف. تم حفظ الصورة."
+
+#: .\adminpanel\views.py:279
+msgid "Catégorie mise à jour."
+msgstr "تم تحديث التصنيف."
+
+#: .\adminpanel\views.py:281 .\adminpanel\views.py:481
+#: .\adminpanel\views.py:712 .\adminpanel\views.py:834
+msgid "Mise à jour impossible."
+msgstr "تعذر التحديث."
+
+#: .\adminpanel\views.py:294
+msgid "Catégorie supprimée."
+msgstr "تم حذف التصنيف."
+
+#: .\adminpanel\views.py:296 .\adminpanel\views.py:336
+#: .\adminpanel\views.py:496 .\adminpanel\views.py:535
+#: .\adminpanel\views.py:849 .\adminpanel\views.py:1019
+msgid "Suppression impossible."
+msgstr "تعذر الحذف."
+
+#: .\adminpanel\views.py:314
+msgid "Attribut ajouté."
+msgstr "تمت إضافة الخاصية."
+
+#: .\adminpanel\views.py:316
+msgid "Ajout impossible."
+msgstr "تعذر الإضافة."
+
+#: .\adminpanel\views.py:334
+msgid "Attribut supprimé."
+msgstr "تم حذف الخاصية."
+
+#: .\adminpanel\views.py:439
 msgid "Produit créé, mais l'image n'a pas pu être enregistrée : "
 msgstr "تم إنشاء المنتج، لكن تعذر حفظ الصورة: "
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:442
 msgid "Produit créé. Image enregistrée."
 msgstr "تم إنشاء المنتج. تم حفظ الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:444
 msgid "Produit créé."
 msgstr "تم إنشاء المنتج."
 
-#: .\adminpanel\views.py .\cart\views.py
+#: .\adminpanel\views.py:461 .\adminpanel\views.py:523 .\cart\views.py:85
 msgid "Produit introuvable."
 msgstr "المنتج غير موجود."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:474
 msgid "Produit mis à jour, mais l'image n'a pas pu être enregistrée : "
 msgstr "تم تحديث المنتج، لكن تعذر حفظ الصورة: "
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:477
 msgid "Produit mis à jour. Image enregistrée."
 msgstr "تم تحديث المنتج. تم حفظ الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:479
 msgid "Produit mis à jour."
 msgstr "تم تحديث المنتج."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:494
 msgid "Produit supprimé."
 msgstr "تم حذف المنتج."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:507
 msgid "Choisissez une image (jpg, png, webp — 5 Mo max)."
 msgstr "اختر صورة (jpg أو png أو webp — 5 ميغابايت كحد أقصى)."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:516
 msgid "Image ajoutée."
 msgstr "تمت إضافة الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:518
 msgid "Upload impossible."
 msgstr "تعذر الرفع."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:533
 msgid "Image supprimée."
 msgstr "تم حذف الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:590
+msgid "Produit validé. Il est maintenant en ligne."
+msgstr "تم قبول المنتج. أصبح معروضًا الآن."
+
+#: .\adminpanel\views.py:592
+msgid "Validation impossible."
+msgstr "تعذر القبول."
+
+#: .\adminpanel\views.py:601
+msgid "Indiquez une raison de rejet."
+msgstr "حدد سبب الرفض."
+
+#: .\adminpanel\views.py:605
+msgid "Produit rejeté."
+msgstr "تم رفض المنتج."
+
+#: .\adminpanel\views.py:607
+msgid "Rejet impossible."
+msgstr "تعذر الرفض."
+
+#: .\adminpanel\views.py:624
 msgid "Collez une URL."
 msgstr "الصق رابطًا."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:628
 msgid "Import URL : brouillon créé (stub)."
 msgstr "استيراد الرابط: تم إنشاء مسودة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:632
 msgid "Import URL impossible."
 msgstr "تعذر استيراد الرابط."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:636
 msgid "Choisissez un fichier CSV."
 msgstr "اختر ملف CSV."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:642
 #, python-format
 msgid "Import CSV terminé : %(n)s produit(s)."
 msgstr "اكتمل استيراد CSV: %(n)s منتج."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:644
 msgid "Import CSV impossible."
 msgstr "تعذر استيراد CSV."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:710
 msgid "Statut mis à jour."
 msgstr "تم تحديث الحالة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:719
 msgid "Commande introuvable."
 msgstr "الطلب غير موجود."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:774
 msgid "Publication créée, mais l'image n'a pas pu être enregistrée : "
 msgstr "تم إنشاء المنشور، لكن تعذر حفظ الصورة: "
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:779
 msgid "Publication créée. Image enregistrée."
 msgstr "تم إنشاء المنشور. تم حفظ الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:781
 msgid "Publication créée."
 msgstr "تم إنشاء المنشور."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:812
 msgid "Publication introuvable."
 msgstr "المنشور غير موجود."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:826
 msgid "Publication mise à jour, mais l'image n'a pas pu être enregistrée : "
 msgstr "تم تحديث المنشور، لكن تعذر حفظ الصورة: "
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:830
 msgid "Publication mise à jour. Image enregistrée."
 msgstr "تم تحديث المنشور. تم حفظ الصورة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:832
 msgid "Publication mise à jour."
 msgstr "تم تحديث المنشور."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:847
 msgid "Publication supprimée."
 msgstr "تم حذف المنشور."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:891
 msgid "Notification marquée comme lue."
 msgstr "تم تعليم الإشعار كمقروء."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:893
 msgid "Action impossible."
 msgstr "تعذر تنفيذ الإجراء."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:954
 msgid "Rôle invalide."
 msgstr "دور غير صالح."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:968
 msgid "Compte créé."
 msgstr "تم إنشاء الحساب."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:982
 msgid "Vous ne pouvez pas modifier votre propre rôle."
 msgstr "لا يمكنك تغيير دورك."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:988
 msgid "Rôle mis à jour."
 msgstr "تم تحديث الدور."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:990
 msgid "Mise à jour du rôle impossible."
 msgstr "تعذر تحديث الدور."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:998
 msgid "Vous ne pouvez pas modifier le statut de votre propre compte."
 msgstr "لا يمكنك تغيير حالة حسابك."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:1003
 msgid "Compte bloqué."
 msgstr "تم حظر الحساب."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:1003
 msgid "Compte débloqué."
 msgstr "تم إلغاء حظر الحساب."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:1005
 msgid "Mise à jour du statut impossible."
 msgstr "تعذر تحديث الحالة."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:1013
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "لا يمكنك حذف حسابك."
 
-#: .\adminpanel\views.py
+#: .\adminpanel\views.py:1017
 msgid "Compte supprimé."
 msgstr "تم حذف الحساب."
 
-#: .\cart\views.py
+#: .\cart\views.py:77 .\cart\views.py:78 .\cart\views.py:110
 msgid "Produit invalide."
 msgstr "منتج غير صالح."
 
-#: .\cart\views.py
+#: .\cart\views.py:96
 msgid "Ajouté au panier."
 msgstr "تمت الإضافة إلى السلة."
 
-#: .\cart\views.py
+#: .\cart\views.py:99
 msgid "Produit ajouté au panier."
 msgstr "تمت إضافة المنتج إلى السلة."
 
-#: .\cart\views.py
+#: .\cart\views.py:114
 msgid "Panier mis à jour."
 msgstr "تم تحديث السلة."
 
-#: .\cart\views.py
+#: .\cart\views.py:124
 msgid "Article retiré du panier."
 msgstr "تمت إزالة المنتج من السلة."
 
-#: .\core\decorators.py
+#: .\core\decorators.py:15
 msgid "Veuillez vous connecter pour continuer."
 msgstr "يرجى تسجيل الدخول للمتابعة."
 
-#: .\core\decorators.py
+#: .\core\decorators.py:29
 msgid "Connectez-vous avec un compte administrateur."
 msgstr "سجّل الدخول بحساب مسؤول."
 
-#: .\core\decorators.py
+#: .\core\decorators.py:33
 msgid "Accès réservé aux administrateurs."
 msgstr "الوصول مخصص للمسؤولين."
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:88
 msgid "UM"
 msgstr "أوقية"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:95 .\templates\core\home.html:114
 msgid "Nouadhibou"
 msgstr "نواذيبو"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:96
 msgid "Zouérat"
 msgstr "الزويرات"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:97
 msgid "Nouakchott"
 msgstr "نواكشوط"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:105
 msgid "En attente"
 msgstr "قيد الانتظار"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:106
 msgid "Confirmée"
 msgstr "مؤكدة"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:107
 msgid "En livraison"
 msgstr "قيد التوصيل"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:108
 msgid "Livrée"
 msgstr "تم التسليم"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:109
 msgid "Annulée"
 msgstr "ملغاة"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:110
 msgid "Brouillon"
 msgstr "مسودة"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:111
 msgid "Publié"
 msgstr "منشور"
 
-#: .\core\templatetags\ndb_tags.py .\templates\adminpanel\orders\detail.html
-#: .\templates\cart\cart.html .\templates\catalog\product_detail.html
+#: .\core\templatetags\ndb_tags.py:112
+#: .\templates\accounts\my_listings.html:28
+msgid "Refusé"
+msgstr "مرفوض"
+
+#: .\core\templatetags\ndb_tags.py:113
+#: .\templates\adminpanel\orders\detail.html:20 .\templates\cart\cart.html:17
+#: .\templates\catalog\product_detail.html:4
 msgid "Produit"
 msgstr "منتج"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:114
 msgid "Hôtel"
 msgstr "فندق"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:115
 msgid "Voiture"
 msgstr "سيارة"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:116
 msgid "Service"
 msgstr "خدمة"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:117
 msgid "Autre"
 msgstr "أخرى"
 
-#: .\core\templatetags\ndb_tags.py .\templates\adminpanel\orders\list.html
-#: .\templates\adminpanel\users\list.html
+#: .\core\templatetags\ndb_tags.py:118
+#: .\templates\adminpanel\orders\list.html:27
+#: .\templates\adminpanel\users\list.html:47
 msgid "Client"
 msgstr "عميل"
 
-#: .\core\templatetags\ndb_tags.py .\templates\adminpanel\users\list.html
+#: .\core\templatetags\ndb_tags.py:119
+#: .\templates\adminpanel\users\list.html:45
 msgid "Admin"
 msgstr "مسؤول"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:120 .\templates\base_admin.html:78
 msgid "Nouvelle commande"
 msgstr "طلب جديد"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:121 .\templates\base_admin.html:79
+msgid "Produit à valider"
+msgstr "منتج بانتظار الموافقة"
+
+#: .\core\templatetags\ndb_tags.py:122
 msgid "Solde SMS bas"
 msgstr "رصيد الرسائل منخفض"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:123
 msgid "Manuel"
 msgstr "يدوي"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:126
 msgid "Texte"
 msgstr "نص"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:127
 msgid "Nombre"
 msgstr "رقم"
 
-#: .\core\templatetags\ndb_tags.py
-#: .\templates\adminpanel\publications\list.html
+#: .\core\templatetags\ndb_tags.py:128
+#: .\templates\adminpanel\products\pending.html:19
+#: .\templates\adminpanel\publications\list.html:15
 msgid "Date"
 msgstr "التاريخ"
 
-#: .\core\templatetags\ndb_tags.py
+#: .\core\templatetags\ndb_tags.py:129
 msgid "Oui / Non"
 msgstr "نعم / لا"
 
-#: .\templates\404.html
+#: .\templates\404.html:3
 msgid "Page introuvable"
 msgstr "الصفحة غير موجودة"
 
-#: .\templates\404.html
+#: .\templates\404.html:7
 msgid "Cette page n'existe pas."
 msgstr "هذه الصفحة غير موجودة."
 
-#: .\templates\404.html .\templates\500.html
+#: .\templates\404.html:8 .\templates\500.html:14
 msgid "Retour à l'accueil"
 msgstr "العودة إلى الرئيسية"
 
-#: .\templates\500.html
+#: .\templates\500.html:7
 msgid "Erreur"
 msgstr "خطأ"
 
-#: .\templates\500.html .\templates\base.html
+#: .\templates\500.html:12 .\templates\base.html:164
 msgid "Service temporairement indisponible"
 msgstr "الخدمة غير متاحة مؤقتًا"
 
-#: .\templates\500.html
+#: .\templates\500.html:13
 msgid "Une erreur interne s'est produite. Réessayez dans un instant."
 msgstr "حدث خطأ داخلي. أعد المحاولة بعد قليل."
 
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:4
 msgid "Livraison"
 msgstr "التوصيل"
 
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:8
 msgid "Finaliser la commande"
 msgstr "إتمام الطلب"
 
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:9
 msgid "Précisez l'adresse. Le paiement se fait à la livraison."
 msgstr "حدد العنوان. الدفع عند الاستلام."
 
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:12
 msgid "Livraison à Nouadhibou"
 msgstr "التوصيل في نواذيبو"
 
-#: .\templates\adminpanel\orders\list.html
-msgid "Ville"
-msgstr "المدينة"
-
-#: .\templates\adminpanel\products\form.html
-msgid "— Choisir —"
-msgstr "— اختر —"
-
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:14
 msgid "Adresse / précisions"
 msgstr "العنوان / تفاصيل"
 
-#: .\templates\accounts\checkout.html
+#: .\templates\accounts\checkout.html:17
 msgid "Confirmer la commande"
 msgstr "تأكيد الطلب"
 
-#: .\templates\accounts\login.html .\templates\base.html
+#: .\templates\accounts\login.html:4 .\templates\base.html:77
+#: .\templates\base.html:111
 msgid "Connexion"
 msgstr "تسجيل الدخول"
 
-#: .\templates\accounts\login.html .\templates\accounts\register.html
+#: .\templates\accounts\login.html:8 .\templates\accounts\login.html:30
+#: .\templates\accounts\register.html:14 .\templates\accounts\register.html:38
 msgid "Se connecter"
 msgstr "تسجيل الدخول"
 
-#: .\templates\accounts\login.html
+#: .\templates\accounts\login.html:9
 msgid "Entrez votre numéro mauritanien et votre mot de passe."
 msgstr "أدخل رقمك الموريتاني وكلمة المرور."
 
-#: .\templates\accounts\login.html
+#: .\templates\accounts\login.html:13
 msgid "Aucun compte n'existe pour ce numéro."
 msgstr "لا يوجد حساب بهذا الرقم."
 
-#: .\templates\accounts\login.html .\templates\accounts\otp.html
-#: .\templates\accounts\register.html .\templates\adminpanel\users\form.html
-#: .\templates\adminpanel\users\list.html
+#: .\templates\accounts\login.html:14 .\templates\accounts\login.html:34
+#: .\templates\accounts\otp.html:21 .\templates\accounts\register.html:4
+#: .\templates\accounts\register.html:8 .\templates\accounts\register.html:34
+#: .\templates\adminpanel\users\form.html:4
+#: .\templates\adminpanel\users\form.html:8
+#: .\templates\adminpanel\users\list.html:9
 msgid "Créer un compte"
 msgstr "إنشاء حساب"
 
-#: .\templates\accounts\login.html .\templates\accounts\register.html
-#: .\templates\adminpanel\users\form.html
-#: .\templates\adminpanel\users\list.html
+#: .\templates\accounts\login.html:22 .\templates\accounts\register.html:26
+#: .\templates\adminpanel\users\form.html:16
+#: .\templates\adminpanel\users\list.html:31
 msgid "Téléphone"
 msgstr "الهاتف"
 
-#: .\templates\accounts\login.html .\templates\accounts\register.html
-#: .\templates\adminpanel\users\form.html
+#: .\templates\accounts\login.html:23 .\templates\accounts\register.html:27
+#: .\templates\adminpanel\users\form.html:17
 msgid "ex. 2xxxxxxx"
 msgstr "مثال: 2xxxxxxx"
 
-#: .\templates\accounts\login.html .\templates\accounts\register.html
-#: .\templates\adminpanel\users\form.html
+#: .\templates\accounts\login.html:24 .\templates\accounts\register.html:28
+#: .\templates\adminpanel\users\form.html:18
 msgid "8 chiffres, commence par 2, 3 ou 4."
 msgstr "8 أرقام، يبدأ بـ 2 أو 3 أو 4."
 
-#: .\templates\accounts\login.html .\templates\accounts\register.html
-#: .\templates\adminpanel\users\form.html
+#: .\templates\accounts\login.html:27 .\templates\accounts\register.html:31
+#: .\templates\adminpanel\users\form.html:21
 msgid "Mot de passe"
 msgstr "كلمة المرور"
 
-#: .\templates\accounts\login.html
+#: .\templates\accounts\login.html:33
 msgid "Pas encore de compte ?"
 msgstr "ليس لديك حساب بعد؟"
 
-#: .\templates\accounts\orders.html .\templates\base.html
+#: .\templates\accounts\my_listings.html:4
+#: .\templates\accounts\my_listings.html:9 .\templates\accounts\sell.html:70
+#: .\templates\base.html:64 .\templates\base.html:102
+msgid "Mes annonces"
+msgstr "إعلاناتي"
+
+#: .\templates\accounts\my_listings.html:10 .\templates\accounts\sell.html:4
+#: .\templates\accounts\sell.html:8 .\templates\base.html:80
+#: .\templates\base.html:82 .\templates\base.html:109
+#: .\templates\base.html:112
+msgid "Vendre un produit"
+msgstr "بيع منتج"
+
+#: .\templates\accounts\my_listings.html:24
+msgid "En attente de validation"
+msgstr "بانتظار الموافقة"
+
+#: .\templates\accounts\my_listings.html:26
+msgid "En ligne"
+msgstr "معروض"
+
+#: .\templates\accounts\my_listings.html:38
+msgid "Raison"
+msgstr "السبب"
+
+#: .\templates\accounts\my_listings.html:43
+msgid "Vous n'avez pas encore soumis d'annonce."
+msgstr "لم ترسل أي إعلان بعد."
+
+#: .\templates\accounts\orders.html:4 .\templates\accounts\orders.html:8
+#: .\templates\base.html:63 .\templates\base.html:101
 msgid "Mes commandes"
 msgstr "طلباتي"
 
-#: .\templates\accounts\orders.html .\templates\adminpanel\orders\detail.html
+#: .\templates\accounts\orders.html:13
+#: .\templates\adminpanel\orders\detail.html:4
+#: .\templates\adminpanel\orders\detail.html:8
 #, python-format
 msgid "Commande #%(id)s"
 msgstr "طلب #%(id)s"
 
-#: .\templates\accounts\orders.html .\templates\adminpanel\orders\detail.html
-#: .\templates\adminpanel\orders\list.html
+#: .\templates\accounts\orders.html:22
+#: .\templates\adminpanel\orders\detail.html:33
+#: .\templates\adminpanel\orders\list.html:30
 msgid "Total"
 msgstr "المجموع"
 
-#: .\templates\accounts\orders.html
+#: .\templates\accounts\orders.html:26
 msgid "Vous n'avez pas encore de commande."
 msgstr "ليس لديك أي طلب بعد."
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:4
 msgid "Code SMS"
 msgstr "رمز الرسالة"
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:8
 msgid "Vérification SMS"
 msgstr "التحقق عبر الرسالة"
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:9
 #, python-format
 msgid "Un code a été envoyé au %(telephone)s."
 msgstr "تم إرسال رمز إلى %(telephone)s."
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:13
 msgid "Code OTP"
 msgstr "رمز التحقق"
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:16
+#: .\templates\adminpanel\products\pending.html:39
 msgid "Valider"
 msgstr "تأكيد"
 
-#: .\templates\accounts\otp.html
+#: .\templates\accounts\otp.html:19
 msgid "Retour à la connexion"
 msgstr "العودة لتسجيل الدخول"
 
-#: .\templates\accounts\register.html
+#: .\templates\accounts\register.html:9
 msgid "Indiquez votre nom, votre numéro mauritanien et un mot de passe. Un code SMS vous sera envoyé pour vérifier le téléphone."
 msgstr "أدخل اسمك ورقمك الموريتاني وكلمة مرور. سيُرسل رمز عبر رسالة للتحقق من الهاتف."
 
-#: .\templates\accounts\register.html
+#: .\templates\accounts\register.html:13
 msgid "Ce numéro de téléphone est déjà utilisé."
 msgstr "رقم الهاتف هذا مستخدم بالفعل."
 
-#: .\templates\accounts\register.html
-#: .\templates\adminpanel\categories\attributes.html
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\adminpanel\users\form.html
-#: .\templates\adminpanel\users\list.html
+#: .\templates\accounts\register.html:22 .\templates\accounts\sell.html:15
+#: .\templates\adminpanel\categories\attributes.html:29
+#: .\templates\adminpanel\categories\form.html:11
+#: .\templates\adminpanel\products\form.html:12
+#: .\templates\adminpanel\products\list.html:45
+#: .\templates\adminpanel\products\pending.html:15
+#: .\templates\adminpanel\users\form.html:12
+#: .\templates\adminpanel\users\list.html:30
 msgid "Nom"
 msgstr "الاسم"
 
-#: .\templates\accounts\register.html
+#: .\templates\accounts\register.html:37
 msgid "Déjà un compte ?"
 msgstr "لديك حساب بالفعل؟"
 
-#: .\templates\adminpanel\categories\attributes.html
-#: .\templates\adminpanel\categories\list.html
-msgid "Attributs"
-msgstr "الخصائص"
+#: .\templates\accounts\sell.html:9
+msgid "Votre annonce sera visible sur le catalogue après validation par notre équipe."
+msgstr "سيظهر إعلانك في الكتالوج بعد موافقة فريقنا."
 
-#: .\templates\adminpanel\categories\attributes.html
-msgid "Supprimer cet attribut ?"
-msgstr "حذف هذه الخاصية؟"
-
-#: .\templates\adminpanel\categories\attributes.html
-#: .\templates\adminpanel\categories\list.html .\templates\base.html
-#: .\templates\catalog\categories.html .\templates\core\home.html
-#: .\templates\includes\admin_nav.html
-msgid "Catégories"
-msgstr "التصنيفات"
-
-#: .\templates\adminpanel\categories\attributes.html
-#: .\templates\adminpanel\categories\list.html
-#: .\templates\adminpanel\products\images.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\adminpanel\publications\list.html
-#: .\templates\adminpanel\users\list.html
-msgid "Supprimer"
-msgstr "حذف"
-
-#: .\templates\adminpanel\categories\attributes.html
-msgid "Aucun attribut. Ajoutez-en pour les hôtels, voitures, etc."
-msgstr "لا توجد خصائص. أضف خصائص للفنادق والسيارات وغيرها."
-
-#: .\templates\adminpanel\categories\attributes.html
-msgid "Ajouter un attribut"
-msgstr "إضافة خاصية"
-
-#: .\templates\adminpanel\categories\attributes.html
-msgid "ex. Kilométrage"
-msgstr "مثال: المسافة المقطوعة"
-
-#: .\templates\adminpanel\categories\attributes.html
-#: .\templates\adminpanel\categories\form.html
-msgid "Type"
-msgstr "النوع"
-
-#: .\templates\adminpanel\categories\attributes.html
-msgid "Ajouter"
-msgstr "إضافة"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\categories\list.html
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\adminpanel\publications\form.html
-#: .\templates\adminpanel\publications\list.html
-msgid "Modifier"
-msgstr "تعديل"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\publications\form.html
-#: .\templates\adminpanel\publications\list.html
-msgid "Nouvelle"
-msgstr "جديدة"
-
-#: .\templates\adminpanel\categories\form.html
-msgid "catégorie"
-msgstr "تصنيف"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\categories\list.html
-msgid "Nouvelle catégorie"
-msgstr "تصنيف جديد"
-
-#: .\templates\adminpanel\categories\form.html
-msgid "Catégorie parente"
-msgstr "التصنيف الأب"
-
-#: .\templates\adminpanel\categories\form.html
-msgid "— Aucune (racine) —"
-msgstr "— بدون (جذر) —"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\publications\form.html
-msgid "Image"
-msgstr "صورة"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\publications\form.html
-msgid "Image actuelle. Choisissez un fichier pour la remplacer."
-msgstr "الصورة الحالية. اختر ملفًا لاستبدالها."
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\publications\form.html
-msgid "JPG, PNG ou WebP — 5 Mo maximum."
-msgstr "JPG أو PNG أو WebP — 5 ميغابايت كحد أقصى."
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\orders\detail.html
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\publications\form.html
-msgid "Enregistrer"
-msgstr "حفظ"
-
-#: .\templates\adminpanel\categories\form.html
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\publications\form.html
-#: .\templates\adminpanel\users\form.html
-msgid "Annuler"
-msgstr "إلغاء"
-
-#: .\templates\adminpanel\categories\list.html
-msgid "Supprimer cette catégorie ?"
-msgstr "حذف هذا التصنيف؟"
-
-#: .\templates\adminpanel\categories\list.html
-msgid "modifier"
-msgstr "تعديل"
-
-#: .\templates\adminpanel\categories\list.html
-msgid "attributs"
-msgstr "خصائص"
-
-#: .\templates\adminpanel\categories\list.html
-#: .\templates\catalog\categories.html
-msgid "Aucune catégorie."
-msgstr "لا توجد تصنيفات."
-
-#: .\templates\adminpanel\dashboard.html .\templates\includes\admin_nav.html
-msgid "Tableau de bord"
-msgstr "لوحة التحكم"
-
-#: .\templates\adminpanel\dashboard.html
-msgid "Commandes en attente"
-msgstr "طلبات قيد الانتظار"
-
-#: .\templates\adminpanel\dashboard.html
-msgid "Notifications non lues"
-msgstr "إشعارات غير مقروءة"
-
-#: .\templates\adminpanel\dashboard.html
-msgid "Dernières commandes en attente"
-msgstr "آخر الطلبات قيد الانتظار"
-
-#: .\templates\adminpanel\dashboard.html
-msgid "Aucune commande en attente."
-msgstr "لا توجد طلبات قيد الانتظار."
-
-#: .\templates\adminpanel\dashboard.html
-#: .\templates\adminpanel\notifications\list.html .\templates\base_admin.html
-#: .\templates\includes\admin_nav.html
-msgid "Notifications"
-msgstr "الإشعارات"
-
-#: .\templates\adminpanel\dashboard.html
-msgid "Rien de nouveau."
-msgstr "لا جديد."
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Toutes"
-msgstr "الكل"
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Non lues"
-msgstr "غير مقروءة"
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Lues"
-msgstr "مقروءة"
-
-#: .\templates\adminpanel\notifications\list.html
-#: .\templates\adminpanel\orders\list.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\adminpanel\users\list.html
-msgid "Filtrer"
-msgstr "تصفية"
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Voir les commandes"
-msgstr "عرض الطلبات"
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Marquer lue"
-msgstr "تعليم كمقروء"
-
-#: .\templates\adminpanel\notifications\list.html
-msgid "Aucune notification."
-msgstr "لا توجد إشعارات."
-
-#: .\templates\adminpanel\orders\detail.html
-#: .\templates\adminpanel\orders\list.html .\templates\includes\admin_nav.html
-msgid "Commandes"
-msgstr "الطلبات"
-
-#: .\templates\adminpanel\orders\detail.html
-msgid "Qté"
-msgstr "الكمية"
-
-#: .\templates\adminpanel\orders\detail.html
-msgid "Prix unit."
-msgstr "سعر الوحدة"
-
-#: .\templates\adminpanel\orders\detail.html .\templates\cart\cart.html
-msgid "Sous-total"
-msgstr "المجموع الفرعي"
-
-#: .\templates\adminpanel\orders\detail.html
-msgid "Changer le statut"
-msgstr "تغيير الحالة"
-
-#: .\templates\adminpanel\orders\list.html
-#: .\templates\adminpanel\products\list.html
-msgid "Tous les statuts"
-msgstr "كل الحالات"
-
-#: .\templates\adminpanel\orders\list.html
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\adminpanel\publications\form.html
-#: .\templates\adminpanel\publications\list.html
-#: .\templates\adminpanel\users\list.html
-msgid "Statut"
-msgstr "الحالة"
-
-#: .\templates\adminpanel\orders\list.html
-msgid "Détail"
-msgstr "التفاصيل"
-
-#: .\templates\adminpanel\orders\list.html
-msgid "Aucune commande."
-msgstr "لا توجد طلبات."
-
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\products\list.html
-msgid "Nouveau"
-msgstr "جديد"
-
-#: .\templates\adminpanel\products\form.html
-msgid "produit"
-msgstr "منتج"
-
-#: .\templates\adminpanel\products\form.html
-msgid "Nouveau produit"
-msgstr "منتج جديد"
-
-#: .\templates\adminpanel\products\form.html
-msgid "Description"
-msgstr "الوصف"
-
-#: .\templates\adminpanel\products\form.html
-msgid "Prix (UM)"
-msgstr "السعر (أوقية)"
-
-#: .\templates\adminpanel\products\form.html
-msgid "Stock"
-msgstr "المخزون"
-
-#: .\templates\adminpanel\products\form.html
-#: .\templates\adminpanel\products\list.html
-#: .\templates\catalog\product_list.html .\templates\core\home.html
+#: .\templates\accounts\sell.html:19
+#: .\templates\adminpanel\products\form.html:36
+#: .\templates\adminpanel\products\list.html:46
+#: .\templates\adminpanel\products\pending.html:16
+#: .\templates\catalog\product_list.html:12 .\templates\core\home.html:57
 msgid "Catégorie"
 msgstr "التصنيف"
 
-#: .\templates\adminpanel\products\form.html
-msgid "Source"
-msgstr "المصدر"
+#: .\templates\accounts\sell.html:21
+#: .\templates\adminpanel\products\form.html:38
+msgid "— Choisir —"
+msgstr "— اختر —"
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:28
+#: .\templates\adminpanel\products\form.html:24
+msgid "Description"
+msgstr "الوصف"
+
+#: .\templates\accounts\sell.html:32
+#: .\templates\adminpanel\products\form.html:28
+msgid "Prix (UM)"
+msgstr "السعر (أوقية)"
+
+#: .\templates\accounts\sell.html:36
+#: .\templates\adminpanel\products\form.html:32
+msgid "Stock"
+msgstr "المخزون"
+
+#: .\templates\accounts\sell.html:42
+#: .\templates\adminpanel\products\form.html:47
 msgid "Image du produit"
 msgstr "صورة المنتج"
 
-#: .\templates\adminpanel\products\form.html
-msgid "Origine"
-msgstr "المنشأ"
+#: .\templates\accounts\sell.html:45
+#: .\templates\adminpanel\categories\form.html:42
+#: .\templates\adminpanel\products\form.html:58
+#: .\templates\adminpanel\publications\form.html:27
+msgid "JPG, PNG ou WebP — 5 Mo maximum."
+msgstr "JPG أو PNG أو WebP — 5 ميغابايت كحد أقصى."
 
-#: .\templates\adminpanel\products\form.html
-msgid "URL source (optionnel)"
-msgstr "رابط المصدر (اختياري)"
-
-#: .\templates\adminpanel\products\form.html
-msgid "Lien d'origine (Facebook, Alibaba). Pas l'URL de l'image."
-msgstr "رابط المصدر (فيسبوك، علي بابا). ليس رابط الصورة."
-
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:49
+#: .\templates\adminpanel\products\form.html:80
 msgid "Attributs de la catégorie"
 msgstr "خصائص التصنيف"
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:50
+#: .\templates\adminpanel\products\form.html:81
 msgid "Chargement des attributs…"
 msgstr "جاري تحميل الخصائص…"
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:51
+#: .\templates\adminpanel\products\form.html:82
 msgid "Choisissez une catégorie pour afficher les champs spécifiques (hôtel, voiture, etc.)."
 msgstr "اختر تصنيفًا لعرض الحقول الخاصة (فندق، سيارة، إلخ)."
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:52
+#: .\templates\adminpanel\products\form.html:83
 msgid "Impossible de charger les attributs."
 msgstr "تعذر تحميل الخصائص."
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:53
+#: .\templates\adminpanel\products\form.html:84
 msgid "Aucun attribut spécifique pour cette catégorie."
 msgstr "لا توجد خصائص خاصة لهذا التصنيف."
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:54
+#: .\templates\adminpanel\products\form.html:85
 msgid "Service temporairement indisponible."
 msgstr "الخدمة غير متاحة مؤقتًا."
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:55
+#: .\templates\adminpanel\products\form.html:86
 msgid "Oui"
 msgstr "نعم"
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:56
+#: .\templates\adminpanel\products\form.html:87
 msgid "Non"
 msgstr "لا"
 
-#: .\templates\adminpanel\products\form.html
+#: .\templates\accounts\sell.html:66
+#: .\templates\adminpanel\products\form.html:97
 msgid "Choisissez une catégorie pour charger les champs dynamiques."
 msgstr "اختر تصنيفًا لتحميل الحقول الديناميكية."
 
-#: .\templates\adminpanel\products\images.html
-#: .\templates\adminpanel\products\list.html
+#: .\templates\accounts\sell.html:69
+msgid "Soumettre l'annonce"
+msgstr "إرسال الإعلان"
+
+#: .\templates\accounts\sell_confirmation.html:4
+#: .\templates\accounts\sell_confirmation.html:10
+msgid "Annonce soumise"
+msgstr "تم إرسال الإعلان"
+
+#: .\templates\accounts\sell_confirmation.html:11
+msgid "Votre produit a été soumis et sera visible après validation par notre équipe."
+msgstr "تم إرسال منتجك وسيظهر بعد موافقة فريقنا."
+
+#: .\templates\accounts\sell_confirmation.html:13
+msgid "Voir mes annonces"
+msgstr "عرض إعلاناتي"
+
+#: .\templates\accounts\sell_confirmation.html:14
+msgid "Ajouter une autre annonce"
+msgstr "إضافة إعلان آخر"
+
+#: .\templates\adminpanel\categories\attributes.html:4
+#: .\templates\adminpanel\categories\attributes.html:9
+#: .\templates\adminpanel\categories\list.html:31
+msgid "Attributs"
+msgstr "الخصائص"
+
+#: .\templates\adminpanel\categories\attributes.html:7
+msgid "Supprimer cet attribut ?"
+msgstr "حذف هذه الخاصية؟"
+
+#: .\templates\adminpanel\categories\attributes.html:8
+#: .\templates\adminpanel\categories\list.html:4
+#: .\templates\adminpanel\categories\list.html:9 .\templates\base.html:35
+#: .\templates\base.html:95 .\templates\base.html:152
+#: .\templates\catalog\categories.html:4 .\templates\catalog\categories.html:9
+#: .\templates\core\home.html:72 .\templates\includes\admin_nav.html:8
+msgid "Catégories"
+msgstr "التصنيفات"
+
+#: .\templates\adminpanel\categories\attributes.html:17
+#: .\templates\adminpanel\categories\list.html:35
+#: .\templates\adminpanel\products\images.html:17
+#: .\templates\adminpanel\products\list.html:64
+#: .\templates\adminpanel\publications\list.html:27
+#: .\templates\adminpanel\users\list.html:83
+msgid "Supprimer"
+msgstr "حذف"
+
+#: .\templates\adminpanel\categories\attributes.html:21
+msgid "Aucun attribut. Ajoutez-en pour les hôtels, voitures, etc."
+msgstr "لا توجد خصائص. أضف خصائص للفنادق والسيارات وغيرها."
+
+#: .\templates\adminpanel\categories\attributes.html:27
+msgid "Ajouter un attribut"
+msgstr "إضافة خاصية"
+
+#: .\templates\adminpanel\categories\attributes.html:30
+msgid "ex. Kilométrage"
+msgstr "مثال: المسافة المقطوعة"
+
+#: .\templates\adminpanel\categories\attributes.html:33
+#: .\templates\adminpanel\categories\form.html:15
+msgid "Type"
+msgstr "النوع"
+
+#: .\templates\adminpanel\categories\attributes.html:40
+msgid "Ajouter"
+msgstr "إضافة"
+
+#: .\templates\adminpanel\categories\form.html:4
+#: .\templates\adminpanel\categories\form.html:7
+#: .\templates\adminpanel\categories\list.html:32
+#: .\templates\adminpanel\products\form.html:4
+#: .\templates\adminpanel\products\form.html:7
+#: .\templates\adminpanel\products\list.html:60
+#: .\templates\adminpanel\publications\form.html:4
+#: .\templates\adminpanel\publications\form.html:7
+#: .\templates\adminpanel\publications\list.html:24
+msgid "Modifier"
+msgstr "تعديل"
+
+#: .\templates\adminpanel\categories\form.html:4
+#: .\templates\adminpanel\publications\form.html:4
+#: .\templates\adminpanel\publications\list.html:10
+msgid "Nouvelle"
+msgstr "جديدة"
+
+#: .\templates\adminpanel\categories\form.html:4
+msgid "catégorie"
+msgstr "تصنيف"
+
+#: .\templates\adminpanel\categories\form.html:7
+#: .\templates\adminpanel\categories\list.html:10
+msgid "Nouvelle catégorie"
+msgstr "تصنيف جديد"
+
+#: .\templates\adminpanel\categories\form.html:23
+msgid "Catégorie parente"
+msgstr "التصنيف الأب"
+
+#: .\templates\adminpanel\categories\form.html:25
+msgid "— Aucune (racine) —"
+msgstr "— بدون (جذر) —"
+
+#: .\templates\adminpanel\categories\form.html:32
+#: .\templates\adminpanel\products\pending.html:14
+#: .\templates\adminpanel\publications\form.html:19
+msgid "Image"
+msgstr "صورة"
+
+#: .\templates\adminpanel\categories\form.html:37
+#: .\templates\adminpanel\products\form.html:53
+#: .\templates\adminpanel\publications\form.html:23
+msgid "Image actuelle. Choisissez un fichier pour la remplacer."
+msgstr "الصورة الحالية. اختر ملفًا لاستبدالها."
+
+#: .\templates\adminpanel\categories\form.html:44
+#: .\templates\adminpanel\orders\detail.html:46
+#: .\templates\adminpanel\products\form.html:100
+#: .\templates\adminpanel\publications\form.html:45
+msgid "Enregistrer"
+msgstr "حفظ"
+
+#: .\templates\adminpanel\categories\form.html:45
+#: .\templates\adminpanel\products\form.html:101
+#: .\templates\adminpanel\publications\form.html:46
+#: .\templates\adminpanel\users\form.html:33
+msgid "Annuler"
+msgstr "إلغاء"
+
+#: .\templates\adminpanel\categories\list.html:7
+msgid "Supprimer cette catégorie ?"
+msgstr "حذف هذا التصنيف؟"
+
+#: .\templates\adminpanel\categories\list.html:23
+msgid "modifier"
+msgstr "تعديل"
+
+#: .\templates\adminpanel\categories\list.html:24
+msgid "attributs"
+msgstr "خصائص"
+
+#: .\templates\adminpanel\categories\list.html:41
+#: .\templates\catalog\categories.html:18
+msgid "Aucune catégorie."
+msgstr "لا توجد تصنيفات."
+
+#: .\templates\adminpanel\dashboard.html:4
+#: .\templates\adminpanel\dashboard.html:7
+#: .\templates\includes\admin_nav.html:5
+msgid "Tableau de bord"
+msgstr "لوحة التحكم"
+
+#: .\templates\adminpanel\dashboard.html:11
+msgid "Commandes en attente"
+msgstr "طلبات قيد الانتظار"
+
+#: .\templates\adminpanel\dashboard.html:17
+msgid "Notifications non lues"
+msgstr "إشعارات غير مقروءة"
+
+#: .\templates\adminpanel\dashboard.html:25
+msgid "Dernières commandes en attente"
+msgstr "آخر الطلبات قيد الانتظار"
+
+#: .\templates\adminpanel\dashboard.html:33
+msgid "Aucune commande en attente."
+msgstr "لا توجد طلبات قيد الانتظار."
+
+#: .\templates\adminpanel\dashboard.html:38
+#: .\templates\adminpanel\notifications\list.html:4
+#: .\templates\adminpanel\notifications\list.html:7
+#: .\templates\base_admin.html:35 .\templates\includes\admin_nav.html:31
+msgid "Notifications"
+msgstr "الإشعارات"
+
+#: .\templates\adminpanel\dashboard.html:46
+msgid "Rien de nouveau."
+msgstr "لا جديد."
+
+#: .\templates\adminpanel\notifications\list.html:11
+msgid "Toutes"
+msgstr "الكل"
+
+#: .\templates\adminpanel\notifications\list.html:12
+msgid "Non lues"
+msgstr "غير مقروءة"
+
+#: .\templates\adminpanel\notifications\list.html:13
+msgid "Lues"
+msgstr "مقروءة"
+
+#: .\templates\adminpanel\notifications\list.html:17
+#: .\templates\adminpanel\orders\list.html:18
+#: .\templates\adminpanel\products\list.html:37
+#: .\templates\adminpanel\users\list.html:22
+msgid "Filtrer"
+msgstr "تصفية"
+
+#: .\templates\adminpanel\notifications\list.html:30
+msgid "Voir les commandes"
+msgstr "عرض الطلبات"
+
+#: .\templates\adminpanel\notifications\list.html:32
+msgid "Voir les produits à valider"
+msgstr "عرض المنتجات بانتظار الموافقة"
+
+#: .\templates\adminpanel\notifications\list.html:39
+msgid "Marquer lue"
+msgstr "تعليم كمقروء"
+
+#: .\templates\adminpanel\notifications\list.html:44
+msgid "Aucune notification."
+msgstr "لا توجد إشعارات."
+
+#: .\templates\adminpanel\orders\detail.html:7
+#: .\templates\adminpanel\orders\list.html:4
+#: .\templates\adminpanel\orders\list.html:7
+#: .\templates\includes\admin_nav.html:25
+msgid "Commandes"
+msgstr "الطلبات"
+
+#: .\templates\adminpanel\orders\detail.html:20
+msgid "Qté"
+msgstr "الكمية"
+
+#: .\templates\adminpanel\orders\detail.html:20
+msgid "Prix unit."
+msgstr "سعر الوحدة"
+
+#: .\templates\adminpanel\orders\detail.html:20 .\templates\cart\cart.html:20
+msgid "Sous-total"
+msgstr "المجموع الفرعي"
+
+#: .\templates\adminpanel\orders\detail.html:38
+msgid "Changer le statut"
+msgstr "تغيير الحالة"
+
+#: .\templates\adminpanel\orders\list.html:11
+#: .\templates\adminpanel\products\list.html:22
+msgid "Tous les statuts"
+msgstr "كل الحالات"
+
+#: .\templates\adminpanel\orders\list.html:28
+msgid "Ville"
+msgstr "المدينة"
+
+#: .\templates\adminpanel\orders\list.html:29
+#: .\templates\adminpanel\products\form.html:16
+#: .\templates\adminpanel\products\list.html:48
+#: .\templates\adminpanel\publications\form.html:34
+#: .\templates\adminpanel\publications\list.html:15
+#: .\templates\adminpanel\users\list.html:33
+msgid "Statut"
+msgstr "الحالة"
+
+#: .\templates\adminpanel\orders\list.html:42
+msgid "Détail"
+msgstr "التفاصيل"
+
+#: .\templates\adminpanel\orders\list.html:45
+msgid "Aucune commande."
+msgstr "لا توجد طلبات."
+
+#: .\templates\adminpanel\products\form.html:4
+#: .\templates\adminpanel\products\list.html:11
+msgid "Nouveau"
+msgstr "جديد"
+
+#: .\templates\adminpanel\products\form.html:4
+msgid "produit"
+msgstr "منتج"
+
+#: .\templates\adminpanel\products\form.html:7
+msgid "Nouveau produit"
+msgstr "منتج جديد"
+
+#: .\templates\adminpanel\products\form.html:62
+msgid "Source"
+msgstr "المصدر"
+
+#: .\templates\adminpanel\products\form.html:65
+msgid "Origine"
+msgstr "المنشأ"
+
+#: .\templates\adminpanel\products\form.html:73
+msgid "URL source (optionnel)"
+msgstr "رابط المصدر (اختياري)"
+
+#: .\templates\adminpanel\products\form.html:75
+msgid "Lien d'origine (Facebook, Alibaba). Pas l'URL de l'image."
+msgstr "رابط المصدر (فيسبوك، علي بابا). ليس رابط الصورة."
+
+#: .\templates\adminpanel\products\images.html:4
+#: .\templates\adminpanel\products\images.html:9
+#: .\templates\adminpanel\products\list.html:61
 msgid "Images"
 msgstr "الصور"
 
-#: .\templates\adminpanel\products\images.html
+#: .\templates\adminpanel\products\images.html:7
 msgid "Supprimer cette image ?"
 msgstr "حذف هذه الصورة؟"
 
-#: .\templates\adminpanel\products\images.html
+#: .\templates\adminpanel\products\images.html:21
 msgid "Aucune image."
 msgstr "لا توجد صور."
 
-#: .\templates\adminpanel\products\images.html
+#: .\templates\adminpanel\products\images.html:27
 msgid "Ajouter une image (jpg, png, webp — 5 Mo max)"
 msgstr "إضافة صورة (jpg أو png أو webp — 5 ميغابايت كحد أقصى)"
 
-#: .\templates\adminpanel\products\images.html
+#: .\templates\adminpanel\products\images.html:29
 msgid "Téléverser"
 msgstr "رفع"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:4
 msgid "Import produits"
 msgstr "استيراد المنتجات"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:7
 msgid "Importer des produits"
 msgstr "استيراد منتجات"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:14
 msgid "Depuis une URL (stub)"
 msgstr "من رابط (تجريبي)"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:15
 msgid "Crée un brouillon via"
 msgstr "ينشئ مسودة عبر"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:17
 msgid "URL"
 msgstr "الرابط"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:21
 msgid "Catégorie (optionnel)"
 msgstr "التصنيف (اختياري)"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:29
 msgid "Importer l'URL"
 msgstr "استيراد الرابط"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:36
 msgid "Fichier CSV"
 msgstr "ملف CSV"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:37
 msgid "Colonnes :"
 msgstr "الأعمدة:"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:39
 msgid "Fichier"
 msgstr "الملف"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:42
 msgid "Importer le CSV"
 msgstr "استيراد CSV"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:49
 msgid "Importés :"
 msgstr "المستوردة:"
 
-#: .\templates\adminpanel\products\import.html
+#: .\templates\adminpanel\products\import.html:53
 msgid "Ligne"
 msgstr "السطر"
 
-#: .\templates\adminpanel\products\list.html .\templates\base.html
-#: .\templates\catalog\product_list.html .\templates\includes\admin_nav.html
+#: .\templates\adminpanel\products\list.html:4
+#: .\templates\adminpanel\products\list.html:9 .\templates\base.html:46
+#: .\templates\base.html:96 .\templates\base.html:151
+#: .\templates\catalog\product_list.html:4
+#: .\templates\includes\admin_nav.html:11
 msgid "Produits"
 msgstr "المنتجات"
 
-#: .\templates\adminpanel\products\list.html
+#: .\templates\adminpanel\products\list.html:7
 msgid "Supprimer ce produit ?"
 msgstr "حذف هذا المنتج؟"
 
-#: .\templates\adminpanel\products\list.html
+#: .\templates\adminpanel\products\list.html:12
 msgid "Importer"
 msgstr "استيراد"
 
-#: .\templates\adminpanel\products\list.html .\templates\core\home.html
+#: .\templates\adminpanel\products\list.html:18 .\templates\core\home.html:63
 msgid "Recherche"
 msgstr "بحث"
 
-#: .\templates\adminpanel\products\list.html .\templates\base.html
-#: .\templates\catalog\product_list.html .\templates\core\home.html
+#: .\templates\adminpanel\products\list.html:30 .\templates\base.html:43
+#: .\templates\catalog\product_list.html:13 .\templates\core\home.html:58
 msgid "Toutes les catégories"
 msgstr "كل التصنيفات"
 
-#: .\templates\adminpanel\products\list.html .\templates\cart\cart.html
+#: .\templates\adminpanel\products\list.html:47
+#: .\templates\adminpanel\products\pending.html:17
+#: .\templates\cart\cart.html:18
 msgid "Prix"
 msgstr "السعر"
 
-#: .\templates\adminpanel\products\list.html
+#: .\templates\adminpanel\products\list.html:69
 msgid "Aucun produit."
 msgstr "لا توجد منتجات."
 
-#: .\templates\adminpanel\publications\form.html
+#: .\templates\adminpanel\products\pending.html:4
+#: .\templates\adminpanel\products\pending.html:8
+#: .\templates\includes\admin_nav.html:14
+msgid "Produits à valider"
+msgstr "منتجات بانتظار الموافقة"
+
+#: .\templates\adminpanel\products\pending.html:7
+msgid "Valider ce produit et le publier en ligne ?"
+msgstr "قبول هذا المنتج ونشره؟"
+
+#: .\templates\adminpanel\products\pending.html:18
+msgid "Soumis par"
+msgstr "مقدَّم من"
+
+#: .\templates\adminpanel\products\pending.html:41
+msgid "Rejeter"
+msgstr "رفض"
+
+#: .\templates\adminpanel\products\pending.html:45
+msgid "Raison du rejet"
+msgstr "سبب الرفض"
+
+#: .\templates\adminpanel\products\pending.html:47
+msgid "Confirmer le rejet"
+msgstr "تأكيد الرفض"
+
+#: .\templates\adminpanel\products\pending.html:53
+msgid "Aucun produit en attente de validation."
+msgstr "لا توجد منتجات بانتظار الموافقة."
+
+#: .\templates\adminpanel\publications\form.html:4
 msgid "publication"
 msgstr "منشور"
 
-#: .\templates\adminpanel\publications\form.html
+#: .\templates\adminpanel\publications\form.html:7
 msgid "Nouvelle publication"
 msgstr "منشور جديد"
 
-#: .\templates\adminpanel\publications\form.html
-#: .\templates\adminpanel\publications\list.html
+#: .\templates\adminpanel\publications\form.html:11
+#: .\templates\adminpanel\publications\list.html:15
 msgid "Titre"
 msgstr "العنوان"
 
-#: .\templates\adminpanel\publications\form.html
+#: .\templates\adminpanel\publications\form.html:15
 msgid "Contenu"
 msgstr "المحتوى"
 
-#: .\templates\adminpanel\publications\form.html
+#: .\templates\adminpanel\publications\form.html:30
 msgid "ID produit lié (optionnel)"
 msgstr "معرّف المنتج المرتبط (اختياري)"
 
-#: .\templates\adminpanel\publications\form.html
+#: .\templates\adminpanel\publications\form.html:43
 msgid "Afficher dans le bandeau du haut"
 msgstr "عرض في الشريط العلوي"
 
-#: .\templates\adminpanel\publications\list.html
-#: .\templates\includes\admin_nav.html
+#: .\templates\adminpanel\publications\list.html:4
+#: .\templates\adminpanel\publications\list.html:9
+#: .\templates\includes\admin_nav.html:28
 msgid "Publications"
 msgstr "المنشورات"
 
-#: .\templates\adminpanel\publications\list.html
+#: .\templates\adminpanel\publications\list.html:7
 msgid "Supprimer ?"
 msgstr "حذف؟"
 
-#: .\templates\adminpanel\publications\list.html
+#: .\templates\adminpanel\publications\list.html:32
 msgid "Aucune publication."
 msgstr "لا توجد منشورات."
 
-#: .\templates\adminpanel\users\form.html
-#: .\templates\adminpanel\users\list.html .\templates\includes\admin_nav.html
+#: .\templates\adminpanel\users\form.html:7
+#: .\templates\adminpanel\users\list.html:4
+#: .\templates\adminpanel\users\list.html:8
+#: .\templates\includes\admin_nav.html:34
 msgid "Comptes"
 msgstr "الحسابات"
 
-#: .\templates\adminpanel\users\form.html
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\form.html:25
+#: .\templates\adminpanel\users\list.html:32
 msgid "Rôle"
 msgstr "الدور"
 
-#: .\templates\adminpanel\users\form.html
+#: .\templates\adminpanel\users\form.html:32
 msgid "Créer"
 msgstr "إنشاء"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:14
 msgid "Filtrer par rôle"
 msgstr "تصفية حسب الدور"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:15
 msgid "Tous les rôles"
 msgstr "كل الأدوار"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:34
 msgid "Créé le"
 msgstr "تاريخ الإنشاء"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:52
 msgid "Vérifié"
 msgstr "موثّق"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:54
 msgid "Non vérifié"
 msgstr "غير موثّق"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:57
 msgid "Actif"
 msgstr "نشط"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:59
 msgid "Bloqué"
 msgstr "محظور"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:65
 msgid "Changer le rôle ?"
 msgstr "تغيير الدور؟"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:66
 msgid "Supprimer définitivement ce compte ?"
 msgstr "حذف هذا الحساب نهائيًا؟"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:71
 msgid "Passer client"
 msgstr "تحويل إلى عميل"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:71
 msgid "Passer admin"
 msgstr "تحويل إلى مسؤول"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:74
+#: .\templates\adminpanel\users\list.html:78
 msgid "Bloquer"
 msgstr "حظر"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:74
+#: .\templates\adminpanel\users\list.html:78
 msgid "Débloquer"
 msgstr "إلغاء الحظر"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:86
 msgid "Vous"
 msgstr "أنت"
 
-#: .\templates\adminpanel\users\list.html
+#: .\templates\adminpanel\users\list.html:91
 msgid "Aucun compte."
 msgstr "لا توجد حسابات."
 
-#: .\templates\base.html
+#: .\templates\base.html:8
 msgid "Marketplace Mauritanie"
 msgstr "سوق موريتانيا"
 
-#: .\templates\base.html
+#: .\templates\base.html:32
 msgid "Navigation principale"
 msgstr "التنقل الرئيسي"
 
-#: .\templates\base.html .\templates\core\home.html
+#: .\templates\base.html:33 .\templates\base.html:94
+#: .\templates\core\home.html:4
 msgid "Accueil"
 msgstr "الرئيسية"
 
-#: .\templates\base.html
+#: .\templates\base.html:40
 msgid "Aucune catégorie"
 msgstr "لا توجد تصنيفات"
 
-#: .\templates\base.html .\templates\catalog\publication_detail.html
-#: .\templates\catalog\publication_list.html
+#: .\templates\base.html:47 .\templates\base.html:97 .\templates\base.html:153
+#: .\templates\catalog\publication_detail.html:8
+#: .\templates\catalog\publication_list.html:4
+#: .\templates\catalog\publication_list.html:8
 msgid "Actualités"
 msgstr "الأخبار"
 
-#: .\templates\base.html .\templates\cart\cart.html
+#: .\templates\base.html:52 .\templates\cart\cart.html:4
 msgid "Panier"
 msgstr "السلة"
 
-#: .\templates\base.html .\templates\base_admin.html
+#: .\templates\base.html:66 .\templates\base.html:104
+#: .\templates\base_admin.html:7
 msgid "Espace admin"
 msgstr "لوحة الإدارة"
 
-#: .\templates\base.html
+#: .\templates\base.html:71 .\templates\base.html:107
 msgid "Déconnexion"
 msgstr "تسجيل الخروج"
 
-#: .\templates\base.html .\templates\cart\cart.html
+#: .\templates\base.html:84 .\templates\base.html:114
+#: .\templates\cart\cart.html:54
 msgid "Commander"
 msgstr "اطلب الآن"
 
-#: .\templates\base.html .\templates\base_admin.html
+#: .\templates\base.html:86 .\templates\base_admin.html:27
+#: .\templates\base_admin.html:52
 msgid "Menu"
 msgstr "القائمة"
 
-#: .\templates\base.html
+#: .\templates\base.html:93
 msgid "Navigation mobile"
 msgstr "تنقل الجوال"
 
-#: .\templates\base.html .\templates\base_admin.html
+#: .\templates\base.html:126 .\templates\base_admin.html:62
 msgid "Service temporairement indisponible. Veuillez réessayer dans un instant."
 msgstr "الخدمة غير متاحة مؤقتًا. يرجى المحاولة بعد قليل."
 
-#: .\templates\base.html
+#: .\templates\base.html:135
 msgid "Vous vendez quelque chose ? Contactez-nous pour référencer vos produits."
 msgstr "هل تبيع شيئًا؟ تواصل معنا لإدراج منتجاتك."
 
-#: .\templates\base.html
+#: .\templates\base.html:136
 msgid "Nous rejoindre"
 msgstr "انضم إلينا"
 
-#: .\templates\base.html
+#: .\templates\base.html:147
 msgid "Marketplace mauritanienne — Nouadhibou."
 msgstr "سوق موريتانية — نواذيبو."
 
-#: .\templates\base.html .\templates\core\home.html
+#: .\templates\base.html:149 .\templates\core\home.html:13
 msgid "Voir le catalogue"
 msgstr "عرض الكتالوج"
 
-#: .\templates\base.html
+#: .\templates\base.html:150
 msgid "Parcourir"
 msgstr "تصفح"
 
-#: .\templates\base.html
+#: .\templates\base.html:162
 msgid "Ajouté au panier"
 msgstr "تمت الإضافة إلى السلة"
 
-#: .\templates\base.html
+#: .\templates\base.html:163
 msgid "Impossible d'ajouter au panier"
 msgstr "تعذر الإضافة إلى السلة"
 
-#: .\templates\base_admin.html
+#: .\templates\base_admin.html:40
 msgid "Boutique"
 msgstr "المتجر"
 
-#: .\templates\base_admin.html
+#: .\templates\base_admin.html:77
 msgid "Nouvelle notification"
 msgstr "إشعار جديد"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:8
 msgid "Votre panier"
 msgstr "سلتك"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:10
 msgid "Le panier est vide."
 msgstr "السلة فارغة."
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:11
 msgid "Parcourir les produits"
 msgstr "تصفح المنتجات"
 
-#: .\templates\cart\cart.html .\templates\catalog\product_detail.html
+#: .\templates\cart\cart.html:19 .\templates\catalog\product_detail.html:58
 msgid "Quantité"
 msgstr "الكمية"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:36
 msgid "OK"
 msgstr "موافق"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:44
 msgid "Retirer"
 msgstr "إزالة"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:53
 msgid "Total :"
 msgstr "المجموع:"
 
-#: .\templates\cart\cart.html
+#: .\templates\cart\cart.html:56
 msgid "Les prix sont recalculés à partir du catalogue (jamais depuis le panier local)."
 msgstr "تُعاد حساب الأسعار من الكتالوج (وليس من السلة المحلية)."
 
-#: .\templates\catalog\categories.html
+#: .\templates\catalog\categories.html:10
 msgid "Tous les univers du marketplace"
 msgstr "كل أقسام السوق"
 
-#: .\templates\catalog\product_detail.html
+#: .\templates\catalog\product_detail.html:9
 msgid "Produit indisponible pour le moment."
 msgstr "المنتج غير متاح حاليًا."
 
-#: .\templates\catalog\product_detail.html
+#: .\templates\catalog\product_detail.html:44
 msgid "Rupture de stock"
 msgstr "نفاد المخزون"
 
-#: .\templates\catalog\product_detail.html
+#: .\templates\catalog\product_detail.html:46
 #, python-format
 msgid "Stock : %(stock)s"
 msgstr "المخزون: %(stock)s"
 
-#: .\templates\catalog\product_detail.html
+#: .\templates\catalog\product_detail.html:62
 msgid "Ajouter au panier"
 msgstr "أضف إلى السلة"
 
-#: .\templates\catalog\product_detail.html
+#: .\templates\catalog\product_detail.html:70
 msgid "Caractéristiques"
 msgstr "المواصفات"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:8
 msgid "Catalogue"
 msgstr "الكتالوج"
 
-#: .\templates\catalog\product_list.html .\templates\core\home.html
+#: .\templates\catalog\product_list.html:11 .\templates\core\home.html:55
 msgid "Rechercher"
 msgstr "بحث"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:18
 msgid "Prix min"
 msgstr "أدنى سعر"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:18
 msgid "Prix minimum"
 msgstr "السعر الأدنى"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:19
 msgid "Prix max"
 msgstr "أعلى سعر"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:19
 msgid "Prix maximum"
 msgstr "السعر الأعلى"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:20
 msgid "Recherche…"
 msgstr "بحث…"
 
-#: .\templates\catalog\product_list.html
+#: .\templates\catalog\product_list.html:27
 msgid "Aucun produit ne correspond à votre recherche."
 msgstr "لا يوجد منتج يطابق بحثك."
 
-#: .\templates\catalog\publication_detail.html
+#: .\templates\catalog\publication_detail.html:17
 msgid "Produit associé :"
 msgstr "المنتج المرتبط:"
 
-#: .\templates\catalog\publication_detail.html
+#: .\templates\catalog\publication_detail.html:22
 msgid "Voir le produit associé"
 msgstr "عرض المنتج المرتبط"
 
-#: .\templates\catalog\publication_list.html
+#: .\templates\catalog\publication_list.html:22
 msgid "Lire"
 msgstr "اقرأ"
 
-#: .\templates\catalog\publication_list.html
+#: .\templates\catalog\publication_list.html:28
 msgid "Aucune actualité publiée."
 msgstr "لا توجد أخبار منشورة."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:11
 msgid "Votre marketplace à Nouadhibou"
 msgstr "سوقك في نواذيبو"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:12
 msgid "Produits, hôtels, voitures et services — livrés à Nouadhibou."
 msgstr "منتجات وفنادق وسيارات وخدمات — تُسلَّم في نواذيبو."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:20
 msgid "Livraison locale"
 msgstr "توصيل محلي"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:21 .\templates\core\home.html:115
 msgid "Livraison à Nouadhibou."
 msgstr "التوصيل في نواذيبو."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:27
 msgid "Commande par SMS"
 msgstr "طلب عبر الرسالة"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:28
 msgid "Nom, téléphone, puis code OTP."
 msgstr "الاسم والهاتف ثم رمز التحقق."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:34
 msgid "Paiement à la livraison"
 msgstr "الدفع عند الاستلام"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:35
 msgid "Vous réglez en recevant votre commande."
 msgstr "تدفع عند استلام طلبك."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:41
 msgid "Catalogue varié"
 msgstr "كتالوج متنوع"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:42
 msgid "Produits, hôtels, voitures et services."
 msgstr "منتجات وفنادق وسيارات وخدمات."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:63
 msgid "Que recherchez-vous ?"
 msgstr "عمّ تبحث؟"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:73
 msgid "Parcourez le catalogue par univers"
 msgstr "تصفح الكتالوج حسب الأقسام"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:81
 msgid "Aucune catégorie pour le moment."
 msgstr "لا توجد تصنيفات حاليًا."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:91
 msgid "Nos actualités"
 msgstr "أخبارنا"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:92
 msgid "Dernières publicités et informations"
 msgstr "آخر الإعلانات والمعلومات"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:102
 msgid "Toutes les actualités"
 msgstr "كل الأخبار"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:121
 msgid "Panier libre"
 msgstr "سلة بدون حساب"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:122
 msgid "Ajoutez des articles sans créer de compte."
 msgstr "أضف منتجات دون إنشاء حساب."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:128
 msgid "Compte vérifié"
 msgstr "حساب موثّق"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:129
 msgid "Connexion sécurisée par code SMS."
 msgstr "تسجيل دخول آمن برمز رسالة قصيرة."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:135
 msgid "Suivi simple"
 msgstr "متابعة سهلة"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:136
 msgid "Retrouvez l'historique de vos commandes."
 msgstr "اطلع على سجل طلباتك."
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:146
 msgid "Derniers produits"
 msgstr "أحدث المنتجات"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:147
 msgid "Les nouveautés du catalogue"
 msgstr "جديد الكتالوج"
 
-#: .\templates\core\home.html
+#: .\templates\core\home.html:153
 msgid "Aucun produit publié."
 msgstr "لا توجد منتجات منشورة."
 
-#: .\templates\includes\admin_nav.html
+#: .\templates\includes\admin_nav.html:22
 msgid "Import"
 msgstr "استيراد"
 
-#: .\templates\includes\category_card.html
+#: .\templates\includes\category_card.html:27
 msgid "Voir les produits"
 msgstr "عرض المنتجات"
 
-#: .\templates\includes\language_switcher.html
+#: .\templates\includes\language_switcher.html:5
 msgid "Langue"
 msgstr "اللغة"
 
-#: .\templates\includes\messages.html
+#: .\templates\includes\messages.html:6
 msgid "Fermer"
 msgstr "إغلاق"
 
-#: .\templates\includes\pagination.html
+#: .\templates\includes\pagination.html:3
 msgid "Pagination"
 msgstr "ترقيم الصفحات"
 
-#: .\templates\includes\pagination.html
+#: .\templates\includes\pagination.html:7
 msgid "Précédent"
 msgstr "السابق"
 
-#: .\templates\includes\pagination.html
+#: .\templates\includes\pagination.html:11
 #, python-format
 msgid "Page %(current)s / %(total)s"
 msgstr "صفحة %(current)s / %(total)s"
 
-#: .\templates\includes\pagination.html
+#: .\templates\includes\pagination.html:15
 msgid "Suivant"
 msgstr "التالي"
 
-#: .\templates\includes\product_card.html
+#: .\templates\includes\product_card.html:19
 msgid "Voir le produit"
 msgstr "عرض المنتج"
 
-#: .\templates\includes\promo_banner.html
+#: .\templates\includes\promo_banner.html:3
 msgid "Annonces"
 msgstr "الإعلانات"
 
-#: .\templates\includes\promo_banner.html
+#: .\templates\includes\promo_banner.html:20
 msgid "Annonce précédente"
 msgstr "الإعلان السابق"
 
-#: .\templates\includes\promo_banner.html
+#: .\templates\includes\promo_banner.html:24
 msgid "Annonce suivante"
 msgstr "الإعلان التالي"
 
-#: .\templates\includes\publication_card.html
+#: .\templates\includes\publication_card.html:13
 msgid "Lire la suite"
 msgstr "اقرأ المزيد"

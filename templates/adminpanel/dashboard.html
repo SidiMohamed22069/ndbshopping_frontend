@@ -39,7 +39,7 @@
     <ul class="list-group">
       {% for n in notifications %}
         <li class="list-group-item">
-          <span class="badge text-bg-warning">{{ n.type|statut_label }}</span>
+          <span class="badge text-bg-{{ n.type|statut_badge }}">{{ n.type|statut_label }}</span>
           {{ n.message }}
         </li>
       {% empty %}

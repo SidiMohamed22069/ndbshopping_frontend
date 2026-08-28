@@ -25,23 +25,52 @@
     heartbeatOutgoing: 10000,
   });
 
-  function bumpBadge() {
-    const badge = document.getElementById("adminNotifBadge");
-    if (!badge) return;
-    const current = parseInt(badge.textContent, 10);
-    const next = (Number.isNaN(current) ? 0 : current) + 1;
-    badge.textContent = String(next);
-    badge.classList.remove("d-none");
+  function bumpBadges(selector) {
+    document.querySelectorAll(selector).forEach(function (badge) {
+      const current = parseInt(badge.textContent, 10);
+      const next = (Number.isNaN(current) ? 0 : current) + 1;
+      badge.textContent = String(next);
+      badge.classList.remove("d-none");
+    });
+  }
+
+  function bumpBadge(id) {
+    bumpBadges("#" + id);
+  }
+
+  function toastMeta(notif) {
+    const type = (notif && notif.type) || "";
+    const i18n = window.NDB_I18N || {};
+    if (type === "PRODUIT_A_VALIDER") {
+      return {
+        cls: "toast align-items-center text-bg-info border-0",
+        label: i18n.productToValidate || "Produit à valider",
+        icon: "bi-box-seam",
+      };
+    }
+    if (type === "NOUVELLE_COMMANDE") {
+      return {
+        cls: "toast align-items-center text-bg-warning border-0",
+        label: i18n.newOrder || "Nouvelle commande",
+        icon: "bi-receipt",
+      };
+    }
+    return {
+      cls: "toast align-items-center text-bg-warning border-0",
+      label: i18n.newNotification || "Nouvelle notification",
+      icon: "bi-bell",
+    };
   }
 
   function showToast(notif) {
     const container = document.getElementById("adminToastContainer");
     if (!container || typeof bootstrap === "undefined") return;
-    const message = (notif && notif.message) || (window.NDB_I18N && window.NDB_I18N.newNotification) || "Nouvelle notification";
+    const meta = toastMeta(notif);
+    const message = (notif && notif.message) || meta.label;
     const el = document.createElement("div");
-    el.className = "toast align-items-center text-bg-warning border-0";
+    el.className = meta.cls;
     el.setAttribute("role", "alert");
-    el.innerHTML = `<div class="d-flex"><div class="toast-body"><strong>NDB</strong> — ${message}</div>
+    el.innerHTML = `<div class="d-flex"><div class="toast-body"><i class="bi ${meta.icon} me-1"></i><strong>${meta.label}</strong> — ${message}</div>
       <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
     container.appendChild(el);
     const t = new bootstrap.Toast(el, { delay: 8000 });
@@ -57,7 +86,10 @@
       } catch (e) {
         notif = { message: message.body };
       }
-      bumpBadge();
+      bumpBadge("adminNotifBadge");
+      if (notif.type === "PRODUIT_A_VALIDER") {
+        bumpBadges(".admin-pending-products-badge");
+      }
       showToast(notif);
     });
   };

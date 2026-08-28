@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Annonce soumise" %}{% endblock %}
+
+{% block content %}
+<section class="container page-wrap form-narrow text-center">
+  <div class="form-panel">
+    <p class="display-6 mb-3 text-success"><i class="bi bi-check-circle"></i></p>
+    <h1 class="page-title">{% trans "Annonce soumise" %}</h1>
+    <p>{% trans "Votre produit a été soumis et sera visible après validation par notre équipe." %}</p>
+    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+      <a class="btn-cta" href="{% url 'accounts:my_listings' %}">{% trans "Voir mes annonces" %}</a>
+      <a class="btn-cta-outline" href="{% url 'accounts:sell' %}">{% trans "Ajouter une autre annonce" %}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

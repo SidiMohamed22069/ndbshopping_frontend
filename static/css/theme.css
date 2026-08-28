@@ -433,6 +433,27 @@ textarea.form-control {
     color: var(--color-on-secondary) !important;
 }
 
+.header-sell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: transparent;
+    color: var(--color-text-white);
+    border: 2px solid var(--color-secondary);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    padding: 0.5rem 1.1rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.header-sell:hover,
+.header-sell:focus {
+    background: var(--color-secondary);
+    color: var(--color-on-secondary);
+}
+
 .header-login {
     color: var(--color-text-white);
     text-decoration: none;
@@ -509,7 +530,8 @@ textarea.form-control {
         padding: 0.65rem 0.5rem;
     }
 
-    .header-collapse .btn-cta {
+    .header-collapse .btn-cta,
+    .header-collapse .header-sell {
         display: inline-flex;
         width: 100%;
         margin-top: 0.5rem;
@@ -1231,10 +1253,28 @@ textarea.form-control {
 }
 
 .admin-nav-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--color-grey-mid);
     padding: 0.7rem 1.25rem;
     text-decoration: none;
+}
+
+.admin-nav-count {
+    margin-inline-start: auto;
+    background: var(--color-secondary) !important;
+    color: var(--color-on-secondary) !important;
+    font-size: 0.7rem;
+}
+
+.admin-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-grey-light);
 }
 
 .admin-nav-link:hover,

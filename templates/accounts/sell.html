@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Vendre un produit" %}{% endblock %}
+
+{% block content %}
+<section class="container page-wrap">
+  <h1 class="page-title">{% trans "Vendre un produit" %}</h1>
+  <p class="muted">{% trans "Votre annonce sera visible sur le catalogue après validation par notre équipe." %}</p>
+
+  <form method="post" enctype="multipart/form-data" class="form-panel">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label" for="nom">{% trans "Nom" %}</label>
+        <input class="form-control" id="nom" name="nom" required maxlength="255" value="{{ form.nom }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="categoryId">{% trans "Catégorie" %}</label>
+        <select class="form-select" id="categoryId" name="categoryId" required>
+          <option value="">{% trans "— Choisir —" %}</option>
+          {% for cat in nav_categories_flat %}
+            <option value="{{ cat.id }}" {% if form.categoryId == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="description">{% trans "Description" %}</label>
+        <textarea class="form-control" id="description" name="description" rows="4">{{ form.description }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="prix">{% trans "Prix (UM)" %}</label>
+        <input class="form-control" id="prix" name="prix" type="number" step="0.01" min="0" required value="{{ form.prix }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="stock">{% trans "Stock" %}</label>
+        <input class="form-control" id="stock" name="stock" type="number" min="0" value="{{ form.stock|default:0 }}">
+      </div>
+    </div>
+
+    <hr>
+    <h2 class="h6" id="product-image-heading">{% trans "Image du produit" %}</h2>
+    <div class="mb-3">
+      <input class="form-control" type="file" id="productImage" name="file" accept="image/jpeg,image/png,image/webp" aria-labelledby="product-image-heading">
+      <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
+    </div>
+
+    <hr>
+    <h2 class="h6">{% trans "Attributs de la catégorie" %}</h2>
+    {% trans "Chargement des attributs…" as msg_loading %}
+    {% trans "Choisissez une catégorie pour afficher les champs spécifiques (hôtel, voiture, etc.)." as msg_choose %}
+    {% trans "Impossible de charger les attributs." as msg_fail %}
+    {% trans "Aucun attribut spécifique pour cette catégorie." as msg_none %}
+    {% trans "Service temporairement indisponible." as msg_down %}
+    {% trans "Oui" as msg_yes %}
+    {% trans "Non" as msg_no %}
+    <div id="dynamicAttributes"
+         data-endpoint="{% url 'core:category_attributes' 999999 %}"
+         data-msg-loading="{{ msg_loading }}"
+         data-msg-choose="{{ msg_choose }}"
+         data-msg-fail="{{ msg_fail }}"
+         data-msg-none="{{ msg_none }}"
+         data-msg-down="{{ msg_down }}"
+         data-msg-yes="{{ msg_yes }}"
+         data-msg-no="{{ msg_no }}">
+      <p class="text-muted small">{% trans "Choisissez une catégorie pour charger les champs dynamiques." %}</p>
+    </div>
+
+    <button class="btn-cta" type="submit">{% trans "Soumettre l'annonce" %}</button>
+    <a class="btn btn-link" href="{% url 'accounts:my_listings' %}">{% trans "Mes annonces" %}</a>
+  </form>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  window.NDB_PRODUCT_ATTRS = {{ product_attrs_json|safe }};
+</script>
+<script src="{% static 'js/admin-product-form.js' %}"></script>
+{% endblock %}

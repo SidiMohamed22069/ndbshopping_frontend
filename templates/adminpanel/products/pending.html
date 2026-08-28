@@ -1,0 +1,59 @@
+{% extends "base_admin.html" %}
+{% load i18n ndb_tags %}
+
+{% block title %}{% trans "Produits à valider" %}{% endblock %}
+
+{% block content %}
+{% trans "Valider ce produit et le publier en ligne ?" as confirm_validate %}
+<h1 class="h4 mb-3">{% trans "Produits à valider" %}</h1>
+
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table align-middle mb-0">
+    <thead>
+      <tr>
+        <th>{% trans "Image" %}</th>
+        <th>{% trans "Nom" %}</th>
+        <th>{% trans "Catégorie" %}</th>
+        <th>{% trans "Prix" %}</th>
+        <th>{% trans "Soumis par" %}</th>
+        <th>{% trans "Date" %}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+        <tr>
+          <td>
+            {% with img=p.images.0 %}
+              {% include "includes/media_img.html" with src_path=img|image_path version=img.id alt=p.nom extra_class="admin-thumb" placeholder="img/placeholder-produit.png" %}
+            {% endwith %}
+          </td>
+          <td>{{ p.nom }}</td>
+          <td>{{ p.categoryNom }}</td>
+          <td>{{ p.prix|mru }}</td>
+          <td>{{ p.soumisParNom }}</td>
+          <td class="small text-muted">{{ p.createdAt }}</td>
+          <td class="text-nowrap">
+            <form class="d-inline" method="post" action="{% url 'adminpanel:product_validate' p.id %}" onsubmit="return confirm('{{ confirm_validate|escapejs }}');">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-success" type="submit">{% trans "Valider" %}</button>
+            </form>
+            <button class="btn btn-sm btn-outline-danger" type="button" data-bs-toggle="collapse" data-bs-target="#reject-{{ p.id }}" aria-expanded="false">{% trans "Rejeter" %}</button>
+            <div class="collapse mt-2" id="reject-{{ p.id }}">
+              <form method="post" action="{% url 'adminpanel:product_reject' p.id %}">
+                {% csrf_token %}
+                <label class="form-label small" for="raison-{{ p.id }}">{% trans "Raison du rejet" %}</label>
+                <textarea class="form-control form-control-sm mb-2" id="raison-{{ p.id }}" name="raison" rows="2" required></textarea>
+                <button class="btn btn-sm btn-danger" type="submit">{% trans "Confirmer le rejet" %}</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7" class="text-muted">{% trans "Aucun produit en attente de validation." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "includes/pagination.html" %}
+{% endblock %}
