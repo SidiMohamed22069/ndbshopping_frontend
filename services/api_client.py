@@ -8,12 +8,15 @@ transformées en ApiResult.ok=False pour que les templates affichent
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import Any
 
 import requests
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _lazy
+
+logger = logging.getLogger(__name__)
 
 # Timeout réseau : ne jamais laisser une vue bloquer indéfiniment.
 DEFAULT_TIMEOUT = getattr(settings, "API_TIMEOUT", 15)
@@ -84,18 +87,29 @@ def call(
 ) -> ApiResult:
     """Point d'entrée unique. `files` désactive Content-Type JSON (multipart)."""
     json_body = files is None
+    url = _url(path)
     try:
         response = requests.request(
             method=method.upper(),
-            url=_url(path),
+            url=url,
             headers=_headers(token, json_body=json_body),
             json=json if json_body else None,
             params=params,
             files=files,
             timeout=timeout,
         )
-        return _result(response)
+        result = _result(response)
+        if not result.ok:
+            logger.error(
+                "API %s %s → HTTP %s: %s",
+                method.upper(),
+                url,
+                result.status,
+                result.error,
+            )
+        return result
     except requests.exceptions.RequestException:
+        logger.exception("Échec appel API %s %s", method.upper(), url)
         return ApiResult(ok=False, status=0, data=None, error=UNAVAILABLE)
 
 

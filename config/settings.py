@@ -150,3 +150,32 @@ MESSAGE_TAGS = {
 }
 
 API_TIMEOUT = int(os.environ.get("API_TIMEOUT", "15"))
+
+# En production (DEBUG=False), Django n'envoie les erreurs qu'à mail_admins par défaut :
+# rien n'apparaît dans `docker logs`. On force la console (stdout du conteneur).
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {name} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "services.api_client": {"level": "ERROR", "handlers": ["console"], "propagate": False},
+        "core.views": {"level": "ERROR", "handlers": ["console"], "propagate": False},
+        "core.context_processors": {"level": "ERROR", "handlers": ["console"], "propagate": False},
+        "django.request": {"level": "ERROR", "handlers": ["console"], "propagate": False},
+    },
+}

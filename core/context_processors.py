@@ -1,21 +1,51 @@
+import logging
+
 from django.conf import settings
 
 from cart.utils import cart_quantity
 from core.utils import flatten_categories, normalize_category_image
 from services import api_client
 
+logger = logging.getLogger(__name__)
+
 
 def storefront(request):
     """Contexte partagé : nav, panier, URLs médias, auth session."""
-    categories_result = api_client.get_categories()
+    try:
+        categories_result = api_client.get_categories()
+    except Exception:
+        logger.exception("Échec GET /categories (contexte storefront)")
+        categories_result = api_client.ApiResult(ok=False, status=0, data=None, error=str(api_client.UNAVAILABLE))
+
+    if not categories_result.ok:
+        logger.error(
+            "GET /categories a échoué (status=%s): %s",
+            categories_result.status,
+            categories_result.error,
+        )
+
     categories = categories_result.data if categories_result.ok and isinstance(categories_result.data, list) else []
-    categories = [normalize_category_image(cat) for cat in categories if isinstance(cat, dict)]
+    try:
+        categories = [normalize_category_image(cat) for cat in categories if isinstance(cat, dict)]
+    except Exception:
+        logger.exception("Impossible de normaliser les catégories du storefront")
+        categories = []
 
     featured = []
     if not request.path.startswith("/admin-ndb/"):
-        featured_result = api_client.get_featured_publications()
-        if featured_result.ok and isinstance(featured_result.data, list):
-            featured = featured_result.data
+        try:
+            featured_result = api_client.get_featured_publications()
+        except Exception:
+            logger.exception("Échec GET /publications/mises-en-avant")
+        else:
+            if featured_result.ok and isinstance(featured_result.data, list):
+                featured = featured_result.data
+            elif not featured_result.ok:
+                logger.error(
+                    "GET /publications/mises-en-avant a échoué (status=%s): %s",
+                    featured_result.status,
+                    featured_result.error,
+                )
 
     return {
         "nav_categories": categories,
