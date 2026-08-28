@@ -1,0 +1,6 @@
+{% load static ndb_tags %}
+{% if src_path %}
+  <img src="{{ src_path|media_url:version }}" alt="{{ alt|default:'' }}"{% if extra_class %} class="{{ extra_class }}"{% endif %} data-fallback="{% static placeholder %}" onerror="this.onerror=null;this.src=this.dataset.fallback;">
+{% else %}
+  <img src="{% static placeholder %}" alt="{{ alt|default:'' }}"{% if extra_class %} class="{{ extra_class }}"{% endif %}>
+{% endif %}

@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
-from core.utils import page_from_request
+from core.utils import normalize_category_image, normalize_product_images, page_from_request
 from services import api_client
 
 
@@ -26,7 +26,7 @@ def product_list(request, category_id=None):
 
     products, pagination = [], None
     if result.ok and isinstance(result.data, dict):
-        products = result.data.get("content") or []
+        products = [normalize_product_images(p) for p in (result.data.get("content") or []) if isinstance(p, dict)]
         pagination = result.data
     elif not result.ok and result.status != 0:
         messages.error(request, result.error or api_client.UNAVAILABLE)
@@ -71,13 +71,18 @@ def product_detail(request, product_id):
             raise Http404("Produit introuvable")
         messages.error(request, result.error or api_client.UNAVAILABLE)
         return render(request, "catalog/product_detail.html", {"product": None})
-    return render(request, "catalog/product_detail.html", {"product": result.data})
+    return render(
+        request,
+        "catalog/product_detail.html",
+        {"product": normalize_product_images(result.data)},
+    )
 
 
 @require_GET
 def categories(request):
     result = api_client.get_categories()
     tree = result.data if result.ok and isinstance(result.data, list) else []
+    tree = [normalize_category_image(cat) for cat in tree if isinstance(cat, dict)]
     if not result.ok and result.status != 0:
         messages.error(request, result.error or api_client.UNAVAILABLE)
     return render(request, "catalog/categories.html", {"categories": tree})
@@ -126,8 +131,8 @@ def publication_detail(request, publication_id):
     linked_product = None
     if found.get("produitLieId"):
         prod = api_client.get_product(found["produitLieId"])
-        if prod.ok:
-            linked_product = prod.data
+        if prod.ok and isinstance(prod.data, dict):
+            linked_product = normalize_product_images(prod.data)
 
     return render(
         request,

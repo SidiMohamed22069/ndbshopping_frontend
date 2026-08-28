@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from cart.utils import cart_quantity
-from core.utils import flatten_categories
+from core.utils import flatten_categories, normalize_category_image
 from services import api_client
 
 
@@ -9,6 +9,7 @@ def storefront(request):
     """Contexte partagé : nav, panier, URLs médias, auth session."""
     categories_result = api_client.get_categories()
     categories = categories_result.data if categories_result.ok and isinstance(categories_result.data, list) else []
+    categories = [normalize_category_image(cat) for cat in categories if isinstance(cat, dict)]
 
     featured = []
     if not request.path.startswith("/admin-ndb/"):

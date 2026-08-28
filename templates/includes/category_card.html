@@ -1,11 +1,7 @@
 {% load i18n ndb_tags %}
 <article class="cat-card">
   <div class="cat-card-media">
-    {% if cat.imageUrl %}
-      <img src="{{ cat.imageUrl|media_url }}" alt="{{ cat.nom }}">
-    {% else %}
-      <div class="cat-card-placeholder"><i class="bi bi-images"></i></div>
-    {% endif %}
+    {% include "includes/media_img.html" with src_path=cat|image_path alt=cat.nom placeholder="img/placeholder-categorie.png" %}
     <span class="cat-badge" aria-hidden="true">
       {% if cat.type == "HOTEL" %}
         <i class="bi bi-building"></i>

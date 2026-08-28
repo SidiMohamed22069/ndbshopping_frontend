@@ -15,7 +15,7 @@
             <div class="carousel-inner">
               {% for img in product.images %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                  <img src="{{ img.url|media_url:img.id }}" class="d-block w-100" alt="{{ product.nom }}">
+                  {% include "includes/media_img.html" with src_path=img|image_path version=img.id alt=product.nom extra_class="d-block w-100" placeholder="img/placeholder-produit.png" %}
                 </div>
               {% endfor %}
             </div>
@@ -29,8 +29,8 @@
             {% endif %}
           </div>
         {% else %}
-          <div class="product-placeholder">
-            <i class="bi bi-image"></i>
+          <div class="product-gallery product-placeholder">
+            {% include "includes/media_img.html" with src_path="" alt=product.nom extra_class="d-block w-100" placeholder="img/placeholder-produit.png" %}
           </div>
         {% endif %}
       </div>

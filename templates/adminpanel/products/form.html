@@ -47,9 +47,9 @@
   <h2 class="h6" id="product-image-heading">{% trans "Image du produit" %}</h2>
   <div class="mb-3">
     {% with img=product.images.0 %}
-      {% if img %}
+      {% if img|image_path %}
         <div class="mb-2">
-          <img src="{{ img.url|media_url:img.id }}" alt="{{ product.nom }}" class="admin-image-preview">
+          <img src="{{ img|media_src }}" alt="{{ product.nom }}" class="admin-image-preview">
           <div class="form-text">{% trans "Image actuelle. Choisissez un fichier pour la remplacer." %}</div>
         </div>
       {% endif %}

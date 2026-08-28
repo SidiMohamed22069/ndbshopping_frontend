@@ -30,12 +30,14 @@
   </div>
   <div class="mb-3">
     <label class="form-label" for="image">{% trans "Image" %}</label>
-    {% if category.imageUrl %}
+    {% with path=category|image_path %}
+      {% if path %}
       <div class="mb-2">
-        <img src="{{ category.imageUrl|media_url }}" alt="{{ category.nom }}" class="admin-image-preview">
+        <img src="{{ path|media_url }}" alt="{{ category.nom }}" class="admin-image-preview">
         <div class="form-text">{% trans "Image actuelle. Choisissez un fichier pour la remplacer." %}</div>
       </div>
-    {% endif %}
+      {% endif %}
+    {% endwith %}
     <input class="form-control" type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
     <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
   </div>

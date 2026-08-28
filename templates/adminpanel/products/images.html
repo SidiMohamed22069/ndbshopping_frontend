@@ -11,7 +11,7 @@
 <div class="row g-3 mb-4">
   {% for img in product.images %}
     <div class="col-6 col-md-3">
-      <img src="{{ img.url|media_url:img.id }}" class="gallery-thumb mb-2" alt="">
+      <img src="{{ img|media_src }}" class="gallery-thumb mb-2" alt="">
       <form method="post" action="{% url 'adminpanel:product_image_delete' product.id img.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
         {% csrf_token %}
         <button class="btn btn-sm btn-outline-danger w-100" type="submit">{% trans "Supprimer" %}</button>

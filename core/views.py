@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
+from core.utils import normalize_product_images
 from services import api_client
 
 
@@ -11,7 +12,11 @@ def home(request):
 
     products = []
     if products_result.ok and isinstance(products_result.data, dict):
-        products = products_result.data.get("content") or []
+        products = [
+            normalize_product_images(p)
+            for p in (products_result.data.get("content") or [])
+            if isinstance(p, dict)
+        ]
     elif not products_result.ok and products_result.status != 0:
         from django.contrib import messages
 

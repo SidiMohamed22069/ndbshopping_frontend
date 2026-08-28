@@ -5,20 +5,40 @@ from django import template
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from core.utils import extract_image_path
+
 register = template.Library()
 
 
-@register.filter
-def media_url(path: str | None, version=None) -> str:
-    """Construit l'URL publique d'une image backend (/media/...) avec cache-busting."""
-    if not path:
+def _storage_relative(raw: str) -> str:
+    """products/12/uuid.jpg — sans préfixe /media, à partir des formes API."""
+    path = raw.strip().replace("\\", "/")
+    if path.startswith("http://") or path.startswith("https://"):
+        path = urlsplit(path).path
+    path = path.lstrip("/")
+    if path.lower().startswith("media/"):
+        path = path[6:]
+    return path.lstrip("/")
+
+
+def _join_media_url(path: str) -> str:
+    raw = str(path).strip()
+    if not raw:
         return ""
-    raw = str(path)
     if raw.startswith("http://") or raw.startswith("https://"):
-        url = raw
-    else:
-        base = settings.MEDIA_BACKEND_URL.rstrip("/")
-        url = f"{base}/{raw.lstrip('/')}"
+        return raw.replace("/media/media/", "/media/")
+    rel = _storage_relative(raw)
+    if not rel:
+        return ""
+    base = settings.MEDIA_BACKEND_URL.rstrip("/")
+    if base.lower().endswith("/media"):
+        return f"{base}/{rel}"
+    return f"{base}/media/{rel}"
+
+
+def _with_cache_bust(url: str, version=None) -> str:
+    if not url:
+        return ""
     token = "" if version in (None, "") else str(version).strip()
     if not token:
         token = urlsplit(url).path.rsplit("/", 1)[-1]
@@ -28,6 +48,31 @@ def media_url(path: str | None, version=None) -> str:
     query = dict(parse_qsl(parts.query, keep_blank_values=True))
     query["v"] = token
     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
+
+
+@register.filter
+def image_path(value) -> str:
+    """relative_path / url / imageUrl / image_url depuis un objet image ou une catégorie."""
+    return extract_image_path(value)
+
+
+@register.filter
+def media_url(path: str | None, version=None) -> str:
+    """MEDIA_BACKEND_URL + '/' + relative_path, sans /media/ dupliqué, avec ?v=."""
+    if not path:
+        return ""
+    return _with_cache_bust(_join_media_url(str(path)), version)
+
+
+@register.filter
+def media_src(value, version=None) -> str:
+    """URL complète depuis un objet image API (id utilisé pour le cache-busting si besoin)."""
+    path = extract_image_path(value)
+    if not path:
+        return ""
+    if version in (None, "") and isinstance(value, dict):
+        version = value.get("id")
+    return media_url(path, version)
 
 
 @register.filter
