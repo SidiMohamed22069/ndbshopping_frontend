@@ -7,17 +7,28 @@
 <section class="container page-wrap">
   <h1 class="page-title">{% if selected_category %}{{ selected_category.nom }}{% else %}{% trans "Catalogue" %}{% endif %}</h1>
 
-  <form class="search-bar mb-4" method="get" action="{% url 'catalog:product_list' %}" role="search">
-    <button class="search-submit" type="submit" aria-label="{% trans 'Rechercher' %}"><i class="bi bi-search"></i></button>
-    <select class="form-select" name="category" aria-label="{% trans 'Catégorie' %}">
-      <option value="">{% trans "Toutes les catégories" %}</option>
-      {% for cat in nav_categories_flat %}
-        <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
-      {% endfor %}
-    </select>
-    <input class="form-control" type="number" name="min_prix" value="{{ min_prix }}" placeholder="{% trans 'Prix min' %}" min="0" aria-label="{% trans 'Prix minimum' %}">
-    <input class="form-control" type="number" name="max_prix" value="{{ max_prix }}" placeholder="{% trans 'Prix max' %}" min="0" aria-label="{% trans 'Prix maximum' %}">
-    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="{% trans 'Recherche…' %}">
+  <form class="search-bar search-bar--filters mb-4" method="get" action="{% url 'catalog:product_list' %}" role="search">
+    <button class="search-submit" type="submit">
+      <i class="bi bi-search" aria-hidden="true"></i>
+      <span>{% trans "Rechercher" %}</span>
+    </button>
+    <div class="search-category">
+      <i class="bi bi-grid search-category-icon" aria-hidden="true"></i>
+      <select class="form-select" name="category" aria-label="{% trans 'Catégorie' %}">
+        <option value="">{% trans "Toutes les catégories" %}</option>
+        {% for cat in nav_categories_flat %}
+          <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
+        {% endfor %}
+      </select>
+      <i class="bi bi-chevron-down search-category-caret" aria-hidden="true"></i>
+    </div>
+    <span class="search-divider" aria-hidden="true"></span>
+    <input class="form-control search-price" type="number" name="min_prix" value="{{ min_prix }}" placeholder="{% trans 'Prix min' %}" min="0" aria-label="{% trans 'Prix minimum' %}">
+    <input class="form-control search-price" type="number" name="max_prix" value="{{ max_prix }}" placeholder="{% trans 'Prix max' %}" min="0" aria-label="{% trans 'Prix maximum' %}">
+    <div class="search-query">
+      <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="{% trans 'Rechercher un produit, une catégorie…' %}" aria-label="{% trans 'Recherche' %}">
+      <i class="bi bi-search search-query-icon" aria-hidden="true"></i>
+    </div>
   </form>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 product-grid">

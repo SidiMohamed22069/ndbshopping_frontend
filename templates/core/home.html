@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% load i18n ndb_tags %}
+{% load static i18n ndb_tags %}
 
 {% block title %}{% trans "Accueil" %}{% endblock %}
 
 {% block hero %}
-<section class="hero">
+{% static "img/hero-nouadhibou.png" as hero_photo %}
+<section class="hero hero--photo" style="--hero-photo: url('{{ hero_photo }}');">
   <div class="container">
     <div class="row align-items-center g-4">
       <div class="col-lg-6">
@@ -15,31 +16,31 @@
       <div class="col-lg-6">
         <div class="trust-panel">
           <div class="trust-item">
-            <span class="trust-icon" aria-hidden="true"><i class="bi bi-truck"></i></span>
-            <div>
-              <h3>{% trans "Livraison locale" %}</h3>
-              <p>{% trans "Livraison à Nouadhibou." %}</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon" aria-hidden="true"><i class="bi bi-phone"></i></span>
-            <div>
-              <h3>{% trans "Commande par SMS" %}</h3>
-              <p>{% trans "Nom, téléphone, puis code OTP." %}</p>
-            </div>
-          </div>
-          <div class="trust-item">
             <span class="trust-icon" aria-hidden="true"><i class="bi bi-cash-stack"></i></span>
             <div>
-              <h3>{% trans "Paiement à la livraison" %}</h3>
+              <h3>{% trans "Payez à la livraison" %}</h3>
               <p>{% trans "Vous réglez en recevant votre commande." %}</p>
             </div>
           </div>
           <div class="trust-item">
-            <span class="trust-icon" aria-hidden="true"><i class="bi bi-grid-3x3-gap"></i></span>
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
             <div>
-              <h3>{% trans "Catalogue varié" %}</h3>
-              <p>{% trans "Produits, hôtels, voitures et services." %}</p>
+              <h3>{% trans "Vendeurs vérifiés par notre équipe" %}</h3>
+              <p>{% trans "Chaque annonce est validée avant d'être en ligne." %}</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-lightning-charge"></i></span>
+            <div>
+              <h3>{% trans "Publication rapide" %}</h3>
+              <p>{% trans "Déposez une annonce en quelques minutes." %}</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><i class="bi bi-geo-alt"></i></span>
+            <div>
+              <h3>{% trans "Support local à Nouadhibou" %}</h3>
+              <p>{% trans "Livraison et accompagnement uniquement à Nouadhibou." %}</p>
             </div>
           </div>
         </div>
@@ -54,13 +55,21 @@
       <i class="bi bi-search" aria-hidden="true"></i>
       <span>{% trans "Rechercher" %}</span>
     </button>
-    <select class="form-select" name="category" aria-label="{% trans 'Catégorie' %}">
-      <option value="">{% trans "Toutes les catégories" %}</option>
-      {% for cat in nav_categories_flat %}
-        <option value="{{ cat.id }}">{{ cat.nom }}</option>
-      {% endfor %}
-    </select>
-    <input class="form-control" type="search" name="q" placeholder="{% trans 'Que recherchez-vous ?' %}" value="{{ request.GET.q }}" aria-label="{% trans 'Recherche' %}">
+    <div class="search-category">
+      <i class="bi bi-grid search-category-icon" aria-hidden="true"></i>
+      <select class="form-select" name="category" aria-label="{% trans 'Catégorie' %}">
+        <option value="">{% trans "Toutes les catégories" %}</option>
+        {% for cat in nav_categories_flat %}
+          <option value="{{ cat.id }}">{{ cat.nom }}</option>
+        {% endfor %}
+      </select>
+      <i class="bi bi-chevron-down search-category-caret" aria-hidden="true"></i>
+    </div>
+    <span class="search-divider" aria-hidden="true"></span>
+    <div class="search-query">
+      <input class="form-control" type="search" name="q" placeholder="{% trans 'Rechercher un produit, une catégorie…' %}" value="{{ request.GET.q }}" aria-label="{% trans 'Recherche' %}">
+      <i class="bi bi-search search-query-icon" aria-hidden="true"></i>
+    </div>
   </form>
 </div>
 {% endblock %}

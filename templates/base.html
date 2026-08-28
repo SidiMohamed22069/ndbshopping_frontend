@@ -132,25 +132,41 @@
 
   <aside class="cta-band">
     <div class="container cta-band-inner">
-      <p>{% trans "Vous vendez quelque chose ? Contactez-nous pour référencer vos produits." %}</p>
-      <a class="btn-cta" href="{% url 'accounts:login' %}">{% trans "Nous rejoindre" %}</a>
+      <div class="cta-band-brand">
+        <a class="site-logo-link site-logo-link--footer" href="{% url 'core:home' %}">
+          <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
+        </a>
+        <p>{% trans "Marketplace mauritanienne — Nouadhibou." %}</p>
+      </div>
+      <div class="cta-band-action">
+        <p class="cta-band-title">{% trans "Vous vendez quelque chose ?" %}</p>
+        <a class="btn-cta" href="{% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a>
+      </div>
     </div>
   </aside>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
+      <div class="footer-grid">
+        <div class="footer-col">
           <a class="site-logo-link site-logo-link--footer" href="{% url 'core:home' %}">
             <img src="{% static 'img/logo.png' %}" alt="NDB Shopping" class="site-logo">
           </a>
           <p>{% trans "Marketplace mauritanienne — Nouadhibou." %}</p>
+          <p class="footer-zone">{% trans "Livraison uniquement à Nouadhibou." %}</p>
         </div>
-        <a class="btn-cta" href="{% url 'catalog:product_list' %}">{% trans "Voir le catalogue" %}</a>
-        <div class="footer-social" aria-label="{% trans 'Parcourir' %}">
-          <a href="{% url 'catalog:product_list' %}" aria-label="{% trans 'Produits' %}"><i class="bi bi-grid"></i></a>
-          <a href="{% url 'catalog:categories' %}" aria-label="{% trans 'Catégories' %}"><i class="bi bi-folder"></i></a>
-          <a href="{% url 'catalog:publication_list' %}" aria-label="{% trans 'Actualités' %}"><i class="bi bi-newspaper"></i></a>
+        <div class="footer-col">
+          <h2 class="footer-heading">{% trans "Liens utiles" %}</h2>
+          <ul class="footer-links">
+            <li><a href="{% url 'core:home' %}">{% trans "Accueil" %}</a></li>
+            <li><a href="{% url 'catalog:categories' %}">{% trans "Catégories" %}</a></li>
+            <li><a href="{% url 'catalog:product_list' %}">{% trans "Produits" %}</a></li>
+            <li><a href="{% url 'catalog:publication_list' %}">{% trans "Actualités" %}</a></li>
+            <li><a href="{% url 'accounts:sell' %}">{% trans "Vendre un produit" %}</a></li>
+            {% if is_authenticated_api %}
+              <li><a href="{% url 'accounts:my_listings' %}">{% trans "Mes annonces" %}</a></li>
+            {% endif %}
+          </ul>
         </div>
       </div>
       <p class="footer-copy">© {% now "Y" %} NDB SHOPPING</p>

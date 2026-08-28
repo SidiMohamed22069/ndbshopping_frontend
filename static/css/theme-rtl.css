@@ -18,3 +18,12 @@
 [dir="rtl"] .section-heading {
     text-align: start;
 }
+
+[dir="rtl"] .hero--photo::after {
+    background: linear-gradient(
+        to left,
+        var(--color-dark) 0%,
+        color-mix(in srgb, var(--color-dark) 55%, transparent) 38%,
+        transparent 72%
+    );
+}

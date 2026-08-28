@@ -1393,13 +1393,17 @@ msgstr "تنقل الجوال"
 msgid "Service temporairement indisponible. Veuillez réessayer dans un instant."
 msgstr "الخدمة غير متاحة مؤقتًا. يرجى المحاولة بعد قليل."
 
-#: .\templates\base.html:135
-msgid "Vous vendez quelque chose ? Contactez-nous pour référencer vos produits."
-msgstr "هل تبيع شيئًا؟ تواصل معنا لإدراج منتجاتك."
+#: .\templates\base.html:142
+msgid "Vous vendez quelque chose ?"
+msgstr "هل لديك شيء للبيع؟"
 
-#: .\templates\base.html:136
-msgid "Nous rejoindre"
-msgstr "انضم إلينا"
+#: .\templates\base.html:156
+msgid "Livraison uniquement à Nouadhibou."
+msgstr "التوصيل في نواذيبو فقط."
+
+#: .\templates\base.html:159
+msgid "Liens utiles"
+msgstr "روابط مفيدة"
 
 #: .\templates\base.html:147
 msgid "Marketplace mauritanienne — Nouadhibou."
@@ -1542,41 +1546,45 @@ msgstr "سوقك في نواذيبو"
 msgid "Produits, hôtels, voitures et services — livrés à Nouadhibou."
 msgstr "منتجات وفنادق وسيارات وخدمات — تُسلَّم في نواذيبو."
 
-#: .\templates\core\home.html:20
-msgid "Livraison locale"
-msgstr "توصيل محلي"
+#: .\templates\core\home.html:21
+msgid "Payez à la livraison"
+msgstr "ادفع عند الاستلام"
 
-#: .\templates\core\home.html:21 .\templates\core\home.html:115
-msgid "Livraison à Nouadhibou."
-msgstr "التوصيل في نواذيبو."
-
-#: .\templates\core\home.html:27
-msgid "Commande par SMS"
-msgstr "طلب عبر الرسالة"
-
-#: .\templates\core\home.html:28
-msgid "Nom, téléphone, puis code OTP."
-msgstr "الاسم والهاتف ثم رمز التحقق."
-
-#: .\templates\core\home.html:34
-msgid "Paiement à la livraison"
-msgstr "الدفع عند الاستلام"
-
-#: .\templates\core\home.html:35
+#: .\templates\core\home.html:22
 msgid "Vous réglez en recevant votre commande."
 msgstr "تدفع عند استلام طلبك."
 
-#: .\templates\core\home.html:41
-msgid "Catalogue varié"
-msgstr "كتالوج متنوع"
+#: .\templates\core\home.html:28
+msgid "Vendeurs vérifiés par notre équipe"
+msgstr "بائعون موثّقون من فريقنا"
+
+#: .\templates\core\home.html:29
+msgid "Chaque annonce est validée avant d'être en ligne."
+msgstr "يتم التحقق من كل إعلان قبل نشره."
+
+#: .\templates\core\home.html:35
+msgid "Publication rapide"
+msgstr "نشر سريع"
+
+#: .\templates\core\home.html:36
+msgid "Déposez une annonce en quelques minutes."
+msgstr "أضف إعلانًا في دقائق."
 
 #: .\templates\core\home.html:42
-msgid "Produits, hôtels, voitures et services."
-msgstr "منتجات وفنادق وسيارات وخدمات."
+msgid "Support local à Nouadhibou"
+msgstr "دعم محلي في نواذيبو"
 
-#: .\templates\core\home.html:63
-msgid "Que recherchez-vous ?"
-msgstr "عمّ تبحث؟"
+#: .\templates\core\home.html:43
+msgid "Livraison et accompagnement uniquement à Nouadhibou."
+msgstr "التوصيل والمتابعة في نواذيبو فقط."
+
+#: .\templates\core\home.html:70 .\templates\catalog\product_list.html:29
+msgid "Rechercher un produit, une catégorie…"
+msgstr "ابحث عن منتج أو تصنيف…"
+
+#: .\templates\core\home.html:124
+msgid "Livraison à Nouadhibou."
+msgstr "التوصيل في نواذيبو."
 
 #: .\templates\core\home.html:73
 msgid "Parcourez le catalogue par univers"
