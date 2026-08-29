@@ -283,6 +283,10 @@ def admin_delete_category(token: str, category_id: int | str) -> ApiResult:
     return call("DELETE", f"/admin/categories/{category_id}", token=token)
 
 
+def admin_reorder_categories(token: str, ordre_ids: list) -> ApiResult:
+    return call("PATCH", "/admin/categories/reorder", token=token, json={"ordreIds": ordre_ids})
+
+
 def admin_upload_category_image(token: str, category_id: int | str, django_file) -> ApiResult:
     django_file.seek(0)
     files = {

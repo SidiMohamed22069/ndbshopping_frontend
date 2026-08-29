@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from core.decorators import admin_required_api
 from core.media_upload import json_error, json_ok, media_initial_json, upload_and_respond, validate_image, validate_video
-from core.utils import flatten_categories, normalize_product_images, page_from_request
+from core.utils import flatten_categories, normalize_category_image, normalize_product_images, page_from_request
 from services import api_client
 
 CATEGORY_TYPES = [
@@ -199,7 +199,30 @@ def category_list(request):
     tree = result.data if result.ok and isinstance(result.data, list) else []
     if not result.ok:
         messages.error(request, result.error or api_client.UNAVAILABLE)
+    tree = [normalize_category_image(cat) for cat in tree if isinstance(cat, dict)]
     return render(request, "adminpanel/categories/list.html", {"categories": tree})
+
+
+@admin_required_api
+@require_POST
+def category_reorder(request):
+    try:
+        payload = json.loads(request.body.decode() or "{}")
+    except json.JSONDecodeError:
+        return json_error(_("Données invalides."))
+    raw_ids = payload.get("ordreIds")
+    if not isinstance(raw_ids, list) or not raw_ids:
+        return json_error(_("La liste des catégories est vide."))
+    ordre_ids = []
+    for raw in raw_ids:
+        try:
+            ordre_ids.append(int(raw))
+        except (TypeError, ValueError):
+            return json_error(_("Données invalides."))
+    result = api_client.admin_reorder_categories(_token(request), ordre_ids)
+    if result.ok:
+        return json_ok()
+    return json_error(result.error or _("Impossible d'enregistrer l'ordre."), result.status or 400)
 
 
 def _category_payload(request) -> dict:

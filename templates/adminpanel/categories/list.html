@@ -1,43 +1,67 @@
 {% extends "base_admin.html" %}
-{% load i18n ndb_tags %}
+{% load i18n static ndb_tags %}
 
 {% block title %}{% trans "Catégories" %}{% endblock %}
 
 {% block content %}
 {% trans "Supprimer cette catégorie ?" as confirm_delete %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+{% trans "Ordre enregistré" as msg_order_ok %}
+{% trans "Impossible d'enregistrer l'ordre." as msg_order_fail %}
+{% trans "Déplacer" as msg_drag %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <h1 class="h4 mb-0">{% trans "Catégories" %}</h1>
   <a class="btn-cta" href="{% url 'adminpanel:category_create' %}">{% trans "Nouvelle catégorie" %}</a>
 </div>
 
-{% for cat in categories %}
-  <div class="card mb-2">
-    <div class="card-body d-flex flex-wrap justify-content-between gap-2">
-      <div>
-        <strong>{{ cat.nom }}</strong>
-        <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
-        {% if cat.children %}
-          <ul class="small mb-0 mt-1">
-            {% for child in cat.children %}
-              <li>{{ child.nom }}
-                <a href="{% url 'adminpanel:category_edit' child.id %}">{% trans "modifier" %}</a> ·
-                <a href="{% url 'adminpanel:category_attributes' child.id %}">{% trans "attributs" %}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-      <div class="btn-group btn-group-sm">
-        <a class="btn btn-outline-secondary" href="{% url 'adminpanel:category_attributes' cat.id %}">{% trans "Attributs" %}</a>
-        <a class="btn btn-outline-primary" href="{% url 'adminpanel:category_edit' cat.id %}">{% trans "Modifier" %}</a>
-        <form method="post" action="{% url 'adminpanel:category_delete' cat.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
-          {% csrf_token %}
-          <button class="btn btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
-        </form>
-      </div>
-    </div>
-  </div>
-{% empty %}
+{% if categories %}
+  <p class="form-text mb-3">{% trans "Glissez les catégories par la poignée pour changer leur ordre d'affichage sur le site." %}</p>
+  <ul class="category-sort-list"
+      id="categorySortList"
+      data-reorder-url="{% url 'adminpanel:category_reorder' %}"
+      data-msg-ok="{{ msg_order_ok }}"
+      data-msg-fail="{{ msg_order_fail }}">
+    {% csrf_token %}
+    {% for cat in categories %}
+      <li class="category-sort-item" data-category-id="{{ cat.id }}">
+        <button type="button" class="category-sort-handle" aria-label="{{ msg_drag }}">
+          <i class="bi bi-grip-vertical" aria-hidden="true"></i>
+        </button>
+        <div class="category-sort-thumb">
+          {% include "includes/media_img.html" with src_path=cat|image_path alt=cat.nom extra_class="" placeholder="img/placeholder-categorie.png" %}
+        </div>
+        <div class="category-sort-info">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <strong>{{ cat.nom }}</strong>
+            <span class="badge text-bg-light">{{ cat.type|statut_label }}</span>
+          </div>
+          {% if cat.children %}
+            <ul class="small mb-0 mt-1 category-sort-children">
+              {% for child in cat.children %}
+                <li>{{ child.nom }}
+                  <a href="{% url 'adminpanel:category_edit' child.id %}">{% trans "modifier" %}</a> ·
+                  <a href="{% url 'adminpanel:category_attributes' child.id %}">{% trans "attributs" %}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <div class="category-sort-actions btn-group btn-group-sm">
+          <a class="btn btn-outline-secondary" href="{% url 'adminpanel:category_attributes' cat.id %}">{% trans "Attributs" %}</a>
+          <a class="btn btn-outline-primary" href="{% url 'adminpanel:category_edit' cat.id %}">{% trans "Modifier" %}</a>
+          <form method="post" action="{% url 'adminpanel:category_delete' cat.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
   <p class="text-muted">{% trans "Aucune catégorie." %}</p>
-{% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="{% static 'js/admin-category-sort.js' %}"></script>
 {% endblock %}

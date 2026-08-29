@@ -1836,3 +1836,21 @@ msgstr "صور"
 
 msgid "Choisissez un fichier."
 msgstr "اختر ملفًا."
+
+msgid "Ordre enregistré"
+msgstr "تم حفظ الترتيب"
+
+msgid "Impossible d'enregistrer l'ordre."
+msgstr "تعذر حفظ الترتيب."
+
+msgid "Déplacer"
+msgstr "نقل"
+
+msgid "Glissez les catégories par la poignée pour changer leur ordre d'affichage sur le site."
+msgstr "اسحب التصنيفات من المقبض لتغيير ترتيب عرضها على الموقع."
+
+msgid "Données invalides."
+msgstr "بيانات غير صالحة."
+
+msgid "La liste des catégories est vide."
+msgstr "قائمة التصنيفات فارغة."
