@@ -8,12 +8,11 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from cart.utils import clear_cart, sync_if_authenticated, to_sync_payload
 from core.decorators import login_required_api
+from core.media_upload import json_error, json_ok, media_initial_json, upload_and_respond, validate_image, validate_video
 from core.utils import normalize_product_images, page_from_request, safe_next_url
 from services import api_client
 
 VILLE_LIVRAISON = "NOUADHIBOU"
-IMAGE_MAX_BYTES = 5 * 1024 * 1024
-IMAGE_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
 
 
 def _establish_session(request, token: str, user: dict, next_url: str | None):
@@ -181,23 +180,6 @@ def orders(request):
     )
 
 
-def _posted_file(request, field_name: str):
-    upload = request.FILES.get(field_name)
-    if upload and getattr(upload, "size", 0):
-        return upload
-    return None
-
-
-def _validate_image(upload) -> str | None:
-    if upload.size > IMAGE_MAX_BYTES:
-        return _("Image trop volumineuse (5 Mo maximum).")
-    content_type = (upload.content_type or "").lower()
-    name = (upload.name or "").lower()
-    if content_type not in IMAGE_CONTENT_TYPES and not name.endswith((".jpg", ".jpeg", ".png", ".webp")):
-        return _("Format non accepté. Utilisez JPG, PNG ou WebP.")
-    return None
-
-
 def _client_product_payload(request) -> dict:
     attributs = []
     for key in request.POST:
@@ -244,33 +226,92 @@ def sell(request):
         if not payload["nom"] or payload["categoryId"] is None:
             messages.error(request, _("Le nom et la catégorie sont obligatoires."))
         else:
-            upload = _posted_file(request, "file")
-            img_error = _validate_image(upload) if upload else None
-            if img_error:
-                messages.error(request, img_error)
-            else:
-                result = api_client.submit_product(request.jwt_token, payload)
-                if result.ok and isinstance(result.data, dict) and result.data.get("id"):
-                    entity_id = result.data["id"]
-                    if upload:
-                        upload.seek(0)
-                        img_result = api_client.upload_product_image(
-                            request.jwt_token, entity_id, upload
-                        )
-                        if not img_result.ok:
-                            messages.warning(
-                                request,
-                                _("Produit soumis, mais l'image n'a pas pu être enregistrée : ")
-                                + (img_result.error or ""),
-                            )
-                    request.session["product_submitted"] = True
-                    return redirect("accounts:sell_confirmation")
-                messages.error(request, result.error or _("Soumission impossible."))
+            result = api_client.submit_product(request.jwt_token, payload)
+            if result.ok and isinstance(result.data, dict) and result.data.get("id"):
+                return redirect("accounts:sell_media", product_id=result.data["id"])
+            messages.error(request, result.error or _("Soumission impossible."))
     return render(
         request,
         "accounts/sell.html",
         {"form": form, "product_attrs_json": "[]"},
     )
+
+
+def _load_own_product(request, product_id):
+    result = api_client.get_product(product_id, token=request.jwt_token)
+    if not result.ok or not isinstance(result.data, dict):
+        return None, result
+    product = normalize_product_images(result.data)
+    owner_id = product.get("soumisParUserId")
+    session_uid = request.session.get("user_id")
+    if owner_id is not None and session_uid is not None and str(owner_id) != str(session_uid):
+        if request.session.get("user_role") != "ADMIN":
+            return None, result
+    return product, result
+
+
+@login_required_api
+@require_http_methods(["GET", "POST"])
+def sell_media(request, product_id):
+    product, result = _load_own_product(request, product_id)
+    if product is None:
+        messages.error(request, (result.error if result else None) or _("Produit introuvable."))
+        return redirect("accounts:my_listings")
+    if request.method == "POST":
+        request.session["product_submitted"] = True
+        return redirect("accounts:sell_confirmation")
+    request.session["product_submitted"] = True
+    return render(
+        request,
+        "accounts/sell_media.html",
+        {
+            "product": product,
+            "media_url_ns": "accounts",
+            "media_initial_json": media_initial_json(product),
+        },
+    )
+
+
+@login_required_api
+@require_POST
+def sell_media_image_add(request, product_id):
+    product, result = _load_own_product(request, product_id)
+    if product is None:
+        return json_error((result.error if result else None) or _("Produit introuvable."), result.status if result else 404)
+    return upload_and_respond(request, product_id, "file", validate_image, api_client.upload_product_image)
+
+
+@login_required_api
+@require_POST
+def sell_media_image_delete(request, product_id, image_id):
+    product, result = _load_own_product(request, product_id)
+    if product is None:
+        return json_error((result.error if result else None) or _("Produit introuvable."), result.status if result else 404)
+    deleted = api_client.delete_product_image(request.jwt_token, product_id, image_id)
+    if deleted.ok:
+        return json_ok()
+    return json_error(deleted.error or _("Suppression impossible."), deleted.status or 400)
+
+
+@login_required_api
+@require_POST
+def sell_media_video_add(request, product_id):
+    product, result = _load_own_product(request, product_id)
+    if product is None:
+        return json_error((result.error if result else None) or _("Produit introuvable."), result.status if result else 404)
+    return upload_and_respond(request, product_id, "video", validate_video, api_client.upload_product_video)
+
+
+@login_required_api
+@require_POST
+def sell_media_video_delete(request, product_id, video_id):
+    product, result = _load_own_product(request, product_id)
+    if product is None:
+        return json_error((result.error if result else None) or _("Produit introuvable."), result.status if result else 404)
+    deleted = api_client.delete_product_video(request.jwt_token, product_id, video_id)
+    if deleted.ok:
+        return json_ok()
+    return json_error(deleted.error or _("Suppression impossible."), deleted.status or 400)
 
 
 @login_required_api

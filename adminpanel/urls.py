@@ -35,6 +35,26 @@ urlpatterns = [
         views.product_image_delete,
         name="product_image_delete",
     ),
+    path(
+        "produits/<int:product_id>/medias/images/",
+        views.product_media_image_add,
+        name="product_media_image_add",
+    ),
+    path(
+        "produits/<int:product_id>/medias/images/<int:image_id>/supprimer/",
+        views.product_media_image_delete,
+        name="product_media_image_delete",
+    ),
+    path(
+        "produits/<int:product_id>/medias/videos/",
+        views.product_media_video_add,
+        name="product_media_video_add",
+    ),
+    path(
+        "produits/<int:product_id>/medias/videos/<int:video_id>/supprimer/",
+        views.product_media_video_delete,
+        name="product_media_video_delete",
+    ),
     # Commandes
     path("commandes/", views.order_list, name="order_list"),
     path("commandes/<int:order_id>/", views.order_detail, name="order_detail"),

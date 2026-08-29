@@ -5,6 +5,12 @@
       {% with img=product.images.0 %}
         {% include "includes/media_img.html" with src_path=img|image_path version=img.id alt=product.nom placeholder="img/placeholder-produit.png" %}
       {% endwith %}
+      {% if product.aVideo %}
+        <span class="media-pill media-pill-video"><i class="bi bi-play-circle-fill" aria-hidden="true"></i> {% trans "Vidéo" %}</span>
+      {% endif %}
+      {% if product.images|length > 1 %}
+        <span class="media-pill media-pill-photos">+{{ product.images|length|add:"-1" }} {% trans "photos" %}</span>
+      {% endif %}
     </div>
     <span class="cat-badge" aria-hidden="true"><i class="bi bi-tag"></i></span>
     <div class="listing-card-body">

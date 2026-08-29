@@ -1345,6 +1345,112 @@ textarea.form-control {
     width: 100%;
 }
 
+.product-thumbs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    overflow-x: auto;
+    margin-top: 0.75rem;
+    padding-block: 0.15rem;
+    max-width: 100%;
+}
+
+.product-thumb {
+    flex: 0 0 4.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-grey-light);
+}
+
+.product-thumb.active {
+    border-color: var(--color-secondary);
+}
+
+.product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-videos,
+.product-media-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.product-media-videos {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.product-video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 420px;
+    background: var(--color-dark);
+    border-radius: var(--radius-md);
+}
+
+.product-media-form {
+    max-width: 100%;
+}
+
+.product-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.product-media-item img {
+    display: block;
+    width: 100%;
+    height: 7.5rem;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.product-media-item button,
+.product-media-video-item button {
+    width: 100%;
+    margin-top: 0.35rem;
+}
+
+.media-pill {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text-white);
+    background: color-mix(in srgb, var(--color-primary) 82%, transparent);
+}
+
+.media-pill-video {
+    inset-block-start: 0.5rem;
+    inset-inline-start: 0.5rem;
+}
+
+.media-pill-photos {
+    inset-block-end: 0.5rem;
+    inset-inline-end: 0.5rem;
+}
+
 .product-placeholder {
     height: 280px;
     background: var(--color-grey-card);

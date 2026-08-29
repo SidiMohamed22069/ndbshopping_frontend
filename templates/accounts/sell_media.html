@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Photos et vidéos" %}{% endblock %}
+
+{% block content %}
+<section class="container page-wrap">
+  <h1 class="page-title">{% trans "Photos et vidéos" %}</h1>
+  <p class="muted">{% trans "Ajoutez jusqu'à 6 images et 2 vidéos. Vous pourrez aussi terminer sans média." %}</p>
+  {% if product.nom %}
+    <p class="fw-bold">{{ product.nom }}</p>
+  {% endif %}
+
+  <div class="form-panel">
+    {% include "includes/product_media_form.html" %}
+    <hr>
+    <form method="post">
+      {% csrf_token %}
+      <button class="btn-cta" type="submit">{% trans "Terminer" %}</button>
+      <a class="btn btn-link" href="{% url 'accounts:my_listings' %}">{% trans "Mes annonces" %}</a>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/product-media.js' %}"></script>
+{% endblock %}

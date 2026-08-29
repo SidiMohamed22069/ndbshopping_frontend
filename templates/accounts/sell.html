@@ -8,7 +8,7 @@
   <h1 class="page-title">{% trans "Vendre un produit" %}</h1>
   <p class="muted">{% trans "Votre annonce sera visible sur le catalogue après validation par notre équipe." %}</p>
 
-  <form method="post" enctype="multipart/form-data" class="form-panel">
+  <form method="post" class="form-panel">
     {% csrf_token %}
     <div class="row g-3">
       <div class="col-md-8">
@@ -39,11 +39,8 @@
     </div>
 
     <hr>
-    <h2 class="h6" id="product-image-heading">{% trans "Image du produit" %}</h2>
-    <div class="mb-3">
-      <input class="form-control" type="file" id="productImage" name="file" accept="image/jpeg,image/png,image/webp" aria-labelledby="product-image-heading">
-      <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
-    </div>
+    <h2 class="h6">{% trans "Photos et vidéos" %}</h2>
+    <p class="form-text">{% trans "Vous pourrez ajouter photos et vidéos à l'étape suivante." %}</p>
 
     <hr>
     <h2 class="h6">{% trans "Attributs de la catégorie" %}</h2>

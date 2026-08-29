@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _lazy
 from django.views.decorators.http import require_http_methods, require_POST
 
 from core.decorators import admin_required_api
+from core.media_upload import json_error, json_ok, media_initial_json, upload_and_respond, validate_image, validate_video
 from core.utils import flatten_categories, normalize_product_images, page_from_request
 from services import api_client
 
@@ -132,27 +133,13 @@ def _upload_image_if_present(request, upload_fn, entity_id) -> str | None:
     return result.error or _("Impossible d'enregistrer l'image.")
 
 
-def _upload_product_image_if_present(request, product_id, existing_images=None) -> str | None:
-    """Upload multipart vers POST /admin/products/{id}/images. Remplace les images existantes."""
-    upload = _posted_file(request, "file")
-    if not upload or not product_id:
-        return None
-    error = _validate_image(upload)
-    if error:
-        return error
-    token = _token(request)
-    for img in existing_images or []:
-        img_id = img.get("id")
-        if not img_id:
-            continue
-        deleted = api_client.admin_delete_product_image(token, product_id, img_id)
-        if not deleted.ok:
-            return deleted.error or _("Impossible de remplacer l'image.")
-    upload.seek(0)
-    result = api_client.admin_upload_product_image(token, product_id, upload)
-    if _upload_ok_with_url(result):
-        return None
-    return result.error or _("Impossible d'enregistrer l'image.")
+def _media_form_extra(product) -> dict:
+    normalized = normalize_product_images(product) if isinstance(product, dict) else product
+    return {
+        "product": normalized,
+        "media_url_ns": "adminpanel",
+        "media_initial_json": media_initial_json(normalized if isinstance(normalized, dict) else None),
+    }
 
 
 def _find_in_tree(nodes, cid):
@@ -382,13 +369,16 @@ def _product_payload(request) -> dict:
 
 
 def _product_form_context(product, categories_flat) -> dict:
+    extra = _media_form_extra(product)
     return {
-        "product": product,
-        "source_url": _source_url_for_form(product if isinstance(product, dict) else None),
-        "product_attrs_json": json.dumps((product or {}).get("attributs") or []) if product else "[]",
+        "product": extra["product"],
+        "source_url": _source_url_for_form(extra["product"] if isinstance(extra["product"], dict) else None),
+        "product_attrs_json": json.dumps((extra["product"] or {}).get("attributs") or []) if extra["product"] else "[]",
         "categories_flat": categories_flat,
         "statuses": PRODUCT_STATUSES,
         "sources": PRODUCT_SOURCES,
+        "media_url_ns": extra["media_url_ns"],
+        "media_initial_json": extra["media_initial_json"],
     }
 
 
@@ -440,16 +430,7 @@ def product_create(request):
         result = api_client.admin_create_product(_token(request), payload)
         if result.ok and isinstance(result.data, dict):
             entity_id = result.data.get("id")
-            img_error = _upload_product_image_if_present(request, entity_id, existing_images=[])
-            if img_error:
-                messages.warning(
-                    request,
-                    _("Produit créé, mais l'image n'a pas pu être enregistrée : ") + img_error,
-                )
-            elif _posted_file(request, "file"):
-                messages.success(request, _("Produit créé. Image enregistrée."))
-            else:
-                messages.success(request, _("Produit créé."))
+            messages.success(request, _("Produit créé."))
             if entity_id:
                 return redirect("adminpanel:product_edit", product_id=entity_id)
         messages.error(request, result.error or _("Création impossible."))
@@ -474,17 +455,7 @@ def product_edit(request, product_id):
         payload = _product_payload(request)
         result = api_client.admin_update_product(token, product_id, payload)
         if result.ok:
-            existing = prod.data.get("images") if isinstance(prod.data, dict) else []
-            img_error = _upload_product_image_if_present(request, product_id, existing_images=existing)
-            if img_error:
-                messages.warning(
-                    request,
-                    _("Produit mis à jour, mais l'image n'a pas pu être enregistrée : ") + img_error,
-                )
-            elif _posted_file(request, "file"):
-                messages.success(request, _("Produit mis à jour. Image enregistrée."))
-            else:
-                messages.success(request, _("Produit mis à jour."))
+            messages.success(request, _("Produit mis à jour."))
             return redirect("adminpanel:product_edit", product_id=product_id)
         messages.error(request, result.error or _("Mise à jour impossible."))
     return render(
@@ -530,7 +501,42 @@ def product_images(request, product_id):
     if not prod.ok:
         messages.error(request, prod.error or _("Produit introuvable."))
         return redirect("adminpanel:product_list")
-    return render(request, "adminpanel/products/images.html", {"product": prod.data})
+    extra = _media_form_extra(prod.data if isinstance(prod.data, dict) else None)
+    return render(request, "adminpanel/products/images.html", extra)
+
+
+@admin_required_api
+@require_POST
+def product_media_image_add(request, product_id):
+    return upload_and_respond(
+        request, product_id, "file", validate_image, api_client.admin_upload_product_image
+    )
+
+
+@admin_required_api
+@require_POST
+def product_media_image_delete(request, product_id, image_id):
+    result = api_client.admin_delete_product_image(_token(request), product_id, image_id)
+    if result.ok:
+        return json_ok()
+    return json_error(result.error or _("Suppression impossible."), result.status or 400)
+
+
+@admin_required_api
+@require_POST
+def product_media_video_add(request, product_id):
+    return upload_and_respond(
+        request, product_id, "video", validate_video, api_client.upload_product_video
+    )
+
+
+@admin_required_api
+@require_POST
+def product_media_video_delete(request, product_id, video_id):
+    result = api_client.delete_product_video(_token(request), product_id, video_id)
+    if result.ok:
+        return json_ok()
+    return json_error(result.error or _("Suppression impossible."), result.status or 400)
 
 
 @admin_required_api

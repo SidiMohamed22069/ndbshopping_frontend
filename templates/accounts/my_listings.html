@@ -44,6 +44,11 @@
         {% if product.statut == "REJETE" and product.raisonRejet %}
           <p class="small text-danger mb-0">{% trans "Raison" %} : {{ product.raisonRejet }}</p>
         {% endif %}
+        {% if product.statut == "EN_ATTENTE" %}
+          <div class="listing-actions">
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'accounts:sell_media' product.id %}">{% trans "Photos et vidéos" %}</a>
+          </div>
+        {% endif %}
         {% if product.statut == "PUBLIE" %}
           <div class="listing-actions">
             <form method="post" action="{% url 'accounts:listing_mark_sold' product.id %}" onsubmit="return confirm('{{ confirm_sold|escapejs }}');">

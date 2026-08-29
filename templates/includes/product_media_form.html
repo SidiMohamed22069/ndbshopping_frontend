@@ -1,0 +1,54 @@
+{% load i18n %}
+{% trans "Limite de 6 images atteinte." as msg_img_limit %}
+{% trans "Limite de 2 vidéos atteinte." as msg_vid_limit %}
+{% trans "Image trop volumineuse (5 Mo maximum)." as msg_img_heavy %}
+{% trans "Vidéo trop volumineuse (20 Mo maximum)." as msg_vid_heavy %}
+{% trans "Format non accepté. Utilisez JPG, PNG ou WebP." as msg_img_fmt %}
+{% trans "Format non accepté. Utilisez MP4 ou WebM." as msg_vid_fmt %}
+{% trans "Supprimer cette image ?" as msg_del_img %}
+{% trans "Supprimer cette vidéo ?" as msg_del_vid %}
+{% trans "Impossible d'envoyer le fichier." as msg_send_fail %}
+{% trans "Suppression impossible." as msg_del_fail %}
+{% trans "Supprimer" as msg_delete %}
+<div class="product-media-form"
+     id="productMediaForm"
+     data-add-image-url="{% if media_url_ns == 'accounts' %}{% url 'accounts:sell_media_image_add' product.id %}{% else %}{% url 'adminpanel:product_media_image_add' product.id %}{% endif %}"
+     data-add-video-url="{% if media_url_ns == 'accounts' %}{% url 'accounts:sell_media_video_add' product.id %}{% else %}{% url 'adminpanel:product_media_video_add' product.id %}{% endif %}"
+     data-delete-image-url="{% if media_url_ns == 'accounts' %}{% url 'accounts:sell_media_image_delete' product.id 0 %}{% else %}{% url 'adminpanel:product_media_image_delete' product.id 0 %}{% endif %}"
+     data-delete-video-url="{% if media_url_ns == 'accounts' %}{% url 'accounts:sell_media_video_delete' product.id 0 %}{% else %}{% url 'adminpanel:product_media_video_delete' product.id 0 %}{% endif %}"
+     data-max-images="6"
+     data-max-videos="2"
+     data-max-image-bytes="5242880"
+     data-max-video-bytes="20971520"
+     data-msg-img-limit="{{ msg_img_limit }}"
+     data-msg-vid-limit="{{ msg_vid_limit }}"
+     data-msg-img-heavy="{{ msg_img_heavy }}"
+     data-msg-vid-heavy="{{ msg_vid_heavy }}"
+     data-msg-img-fmt="{{ msg_img_fmt }}"
+     data-msg-vid-fmt="{{ msg_vid_fmt }}"
+     data-msg-del-img="{{ msg_del_img }}"
+     data-msg-del-vid="{{ msg_del_vid }}"
+     data-msg-send-fail="{{ msg_send_fail }}"
+     data-msg-del-fail="{{ msg_del_fail }}"
+     data-msg-delete="{{ msg_delete }}">
+  {% csrf_token %}
+  <script type="application/json" id="productMediaInitial">{{ media_initial_json|safe }}</script>
+
+  <h2 class="h6" id="product-gallery-heading">{% trans "Galerie d'images" %}</h2>
+  <div class="product-media-alert alert alert-danger" id="productMediaAlert" hidden></div>
+  <div class="product-media-grid" id="productMediaImages" aria-labelledby="product-gallery-heading"></div>
+  <input type="file" id="productMediaImageInput" accept="image/jpeg,image/png,image/webp" hidden>
+  <button class="btn btn-outline-primary" type="button" id="productMediaAddImage">
+    <i class="bi bi-plus-lg"></i> {% trans "Ajouter une image" %}
+  </button>
+  <p class="form-text" id="productMediaImageHint">{% trans "JPG, PNG ou WebP — 5 Mo maximum, 6 images au total." %}</p>
+
+  <hr>
+  <h2 class="h6" id="product-video-heading">{% trans "Vidéo du produit (optionnel, max 20 Mo, 2 vidéos maximum)" %}</h2>
+  <div class="product-media-videos" id="productMediaVideos" aria-labelledby="product-video-heading"></div>
+  <input type="file" id="productMediaVideoInput" accept="video/mp4,video/webm" hidden>
+  <button class="btn btn-outline-primary" type="button" id="productMediaAddVideo">
+    <i class="bi bi-plus-lg"></i> {% trans "Ajouter une vidéo" %}
+  </button>
+  <p class="form-text" id="productMediaVideoHint">{% trans "MP4 ou WebM — 20 Mo maximum, 2 vidéos au total." %}</p>
+</div>

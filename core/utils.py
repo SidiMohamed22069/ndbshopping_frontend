@@ -30,7 +30,7 @@ def extract_image_path(value) -> str:
 
 
 def normalize_product_images(product: dict | None) -> dict | None:
-    """Uniformise product.images en [{id, url}] à partir du JSON API."""
+    """Uniformise product.images / videos à partir du JSON API."""
     if not isinstance(product, dict):
         return product
     raw = product.get("images")
@@ -43,8 +43,17 @@ def normalize_product_images(product: dict | None) -> dict | None:
             continue
         img_id = img.get("id") if isinstance(img, dict) else None
         images.append({"id": img_id, "url": path})
+    videos = []
+    for vid in product.get("videos") or []:
+        path = extract_image_path(vid)
+        if not path:
+            continue
+        vid_id = vid.get("id") if isinstance(vid, dict) else None
+        videos.append({"id": vid_id, "url": path})
     normalized = dict(product)
     normalized["images"] = images
+    normalized["videos"] = videos
+    normalized["aVideo"] = bool(product.get("aVideo") or videos)
     return normalized
 
 

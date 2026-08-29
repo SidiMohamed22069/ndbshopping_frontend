@@ -5,7 +5,7 @@
 
 {% block content %}
 <h1 class="h4 mb-3">{% if product %}{% trans "Modifier" %} {{ product.nom }}{% else %}{% trans "Nouveau produit" %}{% endif %}</h1>
-<form method="post" enctype="multipart/form-data" class="form-panel">
+<form method="post" class="form-panel">
   {% csrf_token %}
   <div class="row g-3">
     <div class="col-md-8">
@@ -44,19 +44,12 @@
   </div>
 
   <hr>
-  <h2 class="h6" id="product-image-heading">{% trans "Image du produit" %}</h2>
-  <div class="mb-3">
-    {% with img=product.images.0 %}
-      {% if img|image_path %}
-        <div class="mb-2">
-          <img src="{{ img|media_src }}" alt="{{ product.nom }}" class="admin-image-preview">
-          <div class="form-text">{% trans "Image actuelle. Choisissez un fichier pour la remplacer." %}</div>
-        </div>
-      {% endif %}
-    {% endwith %}
-    <input class="form-control" type="file" id="productImage" name="file" accept="image/jpeg,image/png,image/webp" aria-labelledby="product-image-heading">
-    <div class="form-text">{% trans "JPG, PNG ou WebP — 5 Mo maximum." %}</div>
-  </div>
+  {% if product.id %}
+    {% include "includes/product_media_form.html" %}
+  {% else %}
+    <h2 class="h6">{% trans "Galerie d'images" %}</h2>
+    <p class="form-text mb-0">{% trans "Enregistrez le produit pour ajouter des photos et des vidéos." %}</p>
+  {% endif %}
 
   <hr>
   <h2 class="h6">{% trans "Source" %}</h2>
@@ -107,4 +100,7 @@
   window.NDB_PRODUCT_ATTRS = {{ product_attrs_json|safe }};
 </script>
 <script src="{% static 'js/admin-product-form.js' %}"></script>
+{% if product.id %}
+<script src="{% static 'js/product-media.js' %}"></script>
+{% endif %}
 {% endblock %}

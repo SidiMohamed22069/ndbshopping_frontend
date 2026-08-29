@@ -11,7 +11,7 @@
     <div class="row g-4">
       <div class="col-lg-6">
         {% if product.images %}
-          <div id="productCarousel" class="carousel slide surface-card overflow-hidden product-gallery" data-bs-ride="carousel">
+          <div id="productCarousel" class="carousel slide surface-card overflow-hidden product-gallery" data-bs-ride="false">
             <div class="carousel-inner">
               {% for img in product.images %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -22,15 +22,37 @@
             {% if product.images|length > 1 %}
               <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">{% trans "Image précédente" %}</span>
               </button>
               <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">{% trans "Image suivante" %}</span>
               </button>
             {% endif %}
           </div>
+          {% if product.images|length > 1 %}
+            <div class="product-thumbs" role="tablist">
+              {% for img in product.images %}
+                <button type="button"
+                        class="product-thumb {% if forloop.first %}active{% endif %}"
+                        data-bs-target="#productCarousel"
+                        data-bs-slide-to="{{ forloop.counter0 }}"
+                        aria-label="{% blocktrans with n=forloop.counter %}Image {{ n }}{% endblocktrans %}">
+                  {% include "includes/media_img.html" with src_path=img|image_path version=img.id alt=product.nom placeholder="img/placeholder-produit.png" %}
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
         {% else %}
           <div class="product-gallery product-placeholder">
             {% include "includes/media_img.html" with src_path="" alt=product.nom extra_class="d-block w-100" placeholder="img/placeholder-produit.png" %}
+          </div>
+        {% endif %}
+        {% if product.videos %}
+          <div class="product-videos">
+            {% for vid in product.videos %}
+              <video class="product-video" controls preload="metadata" src="{{ vid|media_src }}"></video>
+            {% endfor %}
           </div>
         {% endif %}
       </div>
@@ -83,4 +105,18 @@
     {% endif %}
   {% endif %}
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const carousel = document.getElementById("productCarousel");
+  if (!carousel) return;
+  carousel.addEventListener("slid.bs.carousel", function (event) {
+    document.querySelectorAll(".product-thumb").forEach(function (btn, index) {
+      btn.classList.toggle("active", index === event.to);
+    });
+  });
+})();
+</script>
 {% endblock %}

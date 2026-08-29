@@ -1766,3 +1766,73 @@ msgstr "الإعلان التالي"
 #: .\templates\includes\publication_card.html:13
 msgid "Lire la suite"
 msgstr "اقرأ المزيد"
+
+msgid "Galerie d'images"
+msgstr "معرض الصور"
+
+msgid "Enregistrez le produit pour ajouter des photos et des vidéos."
+msgstr "احفظ المنتج لإضافة الصور ومقاطع الفيديو."
+
+msgid "Photos et vidéos"
+msgstr "الصور ومقاطع الفيديو"
+
+msgid "Vous pourrez ajouter photos et vidéos à l'étape suivante."
+msgstr "ستتمكن من إضافة الصور ومقاطع الفيديو في الخطوة التالية."
+
+msgid "Ajouter une image"
+msgstr "إضافة صورة"
+
+msgid "JPG, PNG ou WebP — 5 Mo maximum, 6 images au total."
+msgstr "JPG أو PNG أو WebP — 5 ميغابايت كحد أقصى، 6 صور إجمالًا."
+
+msgid "Vidéo du produit (optionnel, max 20 Mo, 2 vidéos maximum)"
+msgstr "فيديو المنتج (اختياري، 20 ميغابايت كحد أقصى، فيديوهان كحد أقصى)"
+
+msgid "Ajouter une vidéo"
+msgstr "إضافة فيديو"
+
+msgid "MP4 ou WebM — 20 Mo maximum, 2 vidéos au total."
+msgstr "MP4 أو WebM — 20 ميغابايت كحد أقصى، فيديوهان إجمالًا."
+
+msgid "Limite de 6 images atteinte."
+msgstr "تم بلوغ حد 6 صور."
+
+msgid "Limite de 2 vidéos atteinte."
+msgstr "تم بلوغ حد فيديوهين."
+
+msgid "Vidéo trop volumineuse (20 Mo maximum)."
+msgstr "الفيديو كبير جدًا (20 ميغابايت كحد أقصى)."
+
+msgid "Format non accepté. Utilisez MP4 ou WebM."
+msgstr "صيغة غير مقبولة. استخدم MP4 أو WebM."
+
+msgid "Supprimer cette vidéo ?"
+msgstr "حذف هذا الفيديو؟"
+
+msgid "Impossible d'envoyer le fichier."
+msgstr "تعذر إرسال الملف."
+
+msgid "Ajoutez jusqu'à 6 images et 2 vidéos. Vous pourrez aussi terminer sans média."
+msgstr "أضف حتى 6 صور وفيديوهين. يمكنك أيضًا الإنهاء دون وسائط."
+
+msgid "Terminer"
+msgstr "إنهاء"
+
+msgid "Image précédente"
+msgstr "الصورة السابقة"
+
+msgid "Image suivante"
+msgstr "الصورة التالية"
+
+#, python-format
+msgid "Image %(n)s"
+msgstr "الصورة %(n)s"
+
+msgid "Vidéo"
+msgstr "فيديو"
+
+msgid "photos"
+msgstr "صور"
+
+msgid "Choisissez un fichier."
+msgstr "اختر ملفًا."

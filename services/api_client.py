@@ -175,8 +175,8 @@ def get_products(
     return call("GET", "/products", params=params)
 
 
-def get_product(product_id: int | str) -> ApiResult:
-    return call("GET", f"/products/{product_id}")
+def get_product(product_id: int | str, token: str | None = None) -> ApiResult:
+    return call("GET", f"/products/{product_id}", token=token)
 
 
 def get_my_products(token: str, page: int = 0, size: int = 20) -> ApiResult:
@@ -193,6 +193,22 @@ def upload_product_image(token: str, product_id: int | str, django_file) -> ApiR
         "file": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
     }
     return call("POST", f"/products/{product_id}/images", token=token, files=files)
+
+
+def delete_product_image(token: str, product_id: int | str, image_id: int | str) -> ApiResult:
+    return call("DELETE", f"/products/{product_id}/images/{image_id}", token=token)
+
+
+def upload_product_video(token: str, product_id: int | str, django_file) -> ApiResult:
+    django_file.seek(0)
+    files = {
+        "video": (django_file.name, django_file.read(), django_file.content_type or "application/octet-stream"),
+    }
+    return call("POST", f"/products/{product_id}/videos", token=token, files=files, timeout=90)
+
+
+def delete_product_video(token: str, product_id: int | str, video_id: int | str) -> ApiResult:
+    return call("DELETE", f"/products/{product_id}/videos/{video_id}", token=token)
 
 
 def mark_product_sold(token: str, product_id: int | str) -> ApiResult:
