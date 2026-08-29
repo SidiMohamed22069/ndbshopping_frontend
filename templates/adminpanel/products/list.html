@@ -5,6 +5,9 @@
 
 {% block content %}
 {% trans "Supprimer ce produit ?" as confirm_delete %}
+{% trans "Marquer ce produit comme vendu ?" as confirm_sold %}
+{% trans "Archiver ce produit ? Il ne sera plus visible dans le catalogue." as confirm_archive %}
+{% trans "Remettre ce produit en ligne ?" as confirm_reactivate %}
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
   <h1 class="h4 mb-0">{% trans "Produits" %}</h1>
   <div class="btn-group">
@@ -55,14 +58,39 @@
           <td>{{ p.nom }}</td>
           <td>{{ p.categoryNom }}</td>
           <td>{{ p.prix|mru }}</td>
-          <td><span class="badge text-bg-{{ p.statut|statut_badge }}">{{ p.statut|statut_label }}</span></td>
-          <td class="text-nowrap">
-            <a class="btn btn-sm btn-outline-primary" href="{% url 'adminpanel:product_edit' p.id %}">{% trans "Modifier" %}</a>
-            <a class="btn btn-sm btn-outline-secondary" href="{% url 'adminpanel:product_images' p.id %}">{% trans "Images" %}</a>
-            <form class="d-inline" method="post" action="{% url 'adminpanel:product_delete' p.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
-              {% csrf_token %}
-              <button class="btn btn-sm btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
-            </form>
+          <td>
+            {% if p.statut == "VENDU" %}
+              <span class="badge badge-vendu">{% trans "Vendu" %}</span>
+            {% elif p.statut == "ARCHIVE" %}
+              <span class="badge badge-archive">{% trans "Archivé" %}</span>
+            {% else %}
+              <span class="badge text-bg-{{ p.statut|statut_badge }}">{{ p.statut|statut_label }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="d-flex flex-wrap gap-1">
+              {% if p.statut == "PUBLIE" %}
+                <form method="post" action="{% url 'adminpanel:product_mark_sold' p.id %}" onsubmit="return confirm('{{ confirm_sold|escapejs }}');">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-dark" type="submit">{% trans "Marquer comme vendu" %}</button>
+                </form>
+                <form method="post" action="{% url 'adminpanel:product_archive' p.id %}" onsubmit="return confirm('{{ confirm_archive|escapejs }}');">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-secondary" type="submit">{% trans "Archiver" %}</button>
+                </form>
+              {% elif p.statut == "VENDU" or p.statut == "ARCHIVE" %}
+                <form method="post" action="{% url 'adminpanel:product_reactivate' p.id %}" onsubmit="return confirm('{{ confirm_reactivate|escapejs }}');">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-success" type="submit">{% trans "Remettre en ligne" %}</button>
+                </form>
+              {% endif %}
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'adminpanel:product_edit' p.id %}">{% trans "Modifier" %}</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'adminpanel:product_images' p.id %}">{% trans "Images" %}</a>
+              <form method="post" action="{% url 'adminpanel:product_delete' p.id %}" onsubmit="return confirm('{{ confirm_delete|escapejs }}');">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" type="submit">{% trans "Supprimer" %}</button>
+              </form>
+            </div>
           </td>
         </tr>
       {% empty %}

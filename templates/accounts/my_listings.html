@@ -4,6 +4,9 @@
 {% block title %}{% trans "Mes annonces" %}{% endblock %}
 
 {% block content %}
+{% trans "Marquer cette annonce comme vendue ?" as confirm_sold %}
+{% trans "Archiver cette annonce ? Elle ne sera plus visible dans le catalogue." as confirm_archive %}
+{% trans "Remettre cette annonce en ligne ?" as confirm_reactivate %}
 <section class="container page-wrap">
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
     <h1 class="page-title mb-0">{% trans "Mes annonces" %}</h1>
@@ -26,6 +29,10 @@
             <span class="badge text-bg-success">{% trans "En ligne" %}</span>
           {% elif product.statut == "REJETE" %}
             <span class="badge text-bg-danger">{% trans "Refusé" %}</span>
+          {% elif product.statut == "VENDU" %}
+            <span class="badge badge-vendu">{% trans "Vendu" %}</span>
+          {% elif product.statut == "ARCHIVE" %}
+            <span class="badge badge-archive">{% trans "Archivé" %}</span>
           {% else %}
             <span class="badge text-bg-{{ product.statut|statut_badge }}">{{ product.statut|statut_label }}</span>
           {% endif %}
@@ -36,6 +43,25 @@
         <p class="listing-price mb-1">{{ product.prix|mru }}</p>
         {% if product.statut == "REJETE" and product.raisonRejet %}
           <p class="small text-danger mb-0">{% trans "Raison" %} : {{ product.raisonRejet }}</p>
+        {% endif %}
+        {% if product.statut == "PUBLIE" %}
+          <div class="listing-actions">
+            <form method="post" action="{% url 'accounts:listing_mark_sold' product.id %}" onsubmit="return confirm('{{ confirm_sold|escapejs }}');">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-dark" type="submit">{% trans "Marquer comme vendu" %}</button>
+            </form>
+            <form method="post" action="{% url 'accounts:listing_archive' product.id %}" onsubmit="return confirm('{{ confirm_archive|escapejs }}');">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-secondary" type="submit">{% trans "Archiver" %}</button>
+            </form>
+          </div>
+        {% elif product.statut == "VENDU" or product.statut == "ARCHIVE" %}
+          <div class="listing-actions">
+            <form method="post" action="{% url 'accounts:listing_reactivate' product.id %}" onsubmit="return confirm('{{ confirm_reactivate|escapejs }}');">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-success" type="submit">{% trans "Remettre en ligne" %}</button>
+            </form>
+          </div>
         {% endif %}
       </div>
     </article>

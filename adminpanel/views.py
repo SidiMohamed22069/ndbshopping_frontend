@@ -25,6 +25,14 @@ ATTR_TYPES = [
     ("BOOLEEN", _lazy("Oui / Non")),
 ]
 PRODUCT_STATUSES = [("BROUILLON", _lazy("Brouillon")), ("PUBLIE", _lazy("Publié"))]
+PRODUCT_FILTER_STATUSES = [
+    ("BROUILLON", _lazy("Brouillon")),
+    ("PUBLIE", _lazy("Publié")),
+    ("EN_ATTENTE", _lazy("En attente")),
+    ("REJETE", _lazy("Refusé")),
+    ("VENDU", _lazy("Vendu")),
+    ("ARCHIVE", _lazy("Archivé")),
+]
 PRODUCT_SOURCES = [
     ("MANUEL", _lazy("Manuel")),
     ("FACEBOOK", "Facebook"),
@@ -416,7 +424,7 @@ def product_list(request):
             "statut": statut,
             "category_id": category_id,
             "q": q,
-            "statuses": PRODUCT_STATUSES,
+            "statuses": PRODUCT_FILTER_STATUSES,
             "categories_flat": flatten_categories(cats.data if cats.ok else []),
         },
     )
@@ -583,6 +591,39 @@ def product_pending(request):
         "adminpanel/products/pending.html",
         {"products": products, "pagination": pagination, "page": page},
     )
+
+
+@admin_required_api
+@require_POST
+def product_mark_sold(request, product_id):
+    result = api_client.mark_product_sold(_token(request), product_id)
+    if result.ok:
+        messages.success(request, _("Produit marqué comme vendu."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("adminpanel:product_list")
+
+
+@admin_required_api
+@require_POST
+def product_archive(request, product_id):
+    result = api_client.archive_product(_token(request), product_id)
+    if result.ok:
+        messages.success(request, _("Produit archivé."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("adminpanel:product_list")
+
+
+@admin_required_api
+@require_POST
+def product_reactivate(request, product_id):
+    result = api_client.reactivate_product(_token(request), product_id)
+    if result.ok:
+        messages.success(request, _("Produit remis en ligne."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("adminpanel:product_list")
 
 
 @admin_required_api

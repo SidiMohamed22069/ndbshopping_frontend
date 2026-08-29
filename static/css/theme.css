@@ -1116,6 +1116,24 @@ textarea.form-control {
     margin: 0.35rem 0 0.75rem;
 }
 
+.listing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.65rem;
+}
+
+.badge-vendu {
+    background: var(--color-text-dark);
+    color: var(--color-text-white);
+}
+
+.badge-archive {
+    background: var(--color-grey-card);
+    color: var(--color-text-grey);
+    border: 1px solid var(--color-border);
+}
+
 .cat-card-body .btn-cta,
 .listing-card-body .btn-cta {
     width: 100%;

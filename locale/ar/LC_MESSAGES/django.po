@@ -98,6 +98,18 @@ msgstr "تم إرسال المنتج، لكن تعذر حفظ الصورة: "
 msgid "Soumission impossible."
 msgstr "تعذر الإرسال."
 
+#: .\accounts\views.py
+msgid "Annonce marquée comme vendue."
+msgstr "تم تعليم الإعلان كمباع."
+
+#: .\accounts\views.py
+msgid "Annonce archivée."
+msgstr "تم أرشفة الإعلان."
+
+#: .\accounts\views.py
+msgid "Annonce remise en ligne."
+msgstr "أُعيد نشر الإعلان."
+
 #: .\adminpanel\views.py:124 .\adminpanel\views.py:147
 msgid "Impossible d'enregistrer l'image."
 msgstr "تعذر حفظ الصورة."
@@ -215,6 +227,18 @@ msgid "Image supprimée."
 msgstr "تم حذف الصورة."
 
 #: .\adminpanel\views.py:590
+msgid "Produit marqué comme vendu."
+msgstr "تم تعليم المنتج كمباع."
+
+#: .\adminpanel\views.py
+msgid "Produit archivé."
+msgstr "تم أرشفة المنتج."
+
+#: .\adminpanel\views.py
+msgid "Produit remis en ligne."
+msgstr "أُعيد نشر المنتج."
+
+#: .\adminpanel\views.py
 msgid "Produit validé. Il est maintenant en ligne."
 msgstr "تم قبول المنتج. أصبح معروضًا الآن."
 
@@ -432,6 +456,18 @@ msgstr "منشور"
 msgid "Refusé"
 msgstr "مرفوض"
 
+#: .\core\templatetags\ndb_tags.py
+#: .\templates\accounts\my_listings.html
+#: .\templates\adminpanel\products\list.html
+msgid "Vendu"
+msgstr "مباع"
+
+#: .\core\templatetags\ndb_tags.py
+#: .\templates\accounts\my_listings.html
+#: .\templates\adminpanel\products\list.html
+msgid "Archivé"
+msgstr "مؤرشف"
+
 #: .\core\templatetags\ndb_tags.py:113
 #: .\templates\adminpanel\orders\detail.html:20 .\templates\cart\cart.html:17
 #: .\templates\catalog\product_detail.html:4
@@ -619,6 +655,30 @@ msgstr "بانتظار الموافقة"
 #: .\templates\accounts\my_listings.html:26
 msgid "En ligne"
 msgstr "معروض"
+
+#: .\templates\accounts\my_listings.html
+msgid "Marquer cette annonce comme vendue ?"
+msgstr "تعليم هذا الإعلان كمباع؟"
+
+#: .\templates\accounts\my_listings.html
+msgid "Archiver cette annonce ? Elle ne sera plus visible dans le catalogue."
+msgstr "أرشفة هذا الإعلان؟ لن يظهر بعد ذلك في الكتالوج."
+
+#: .\templates\accounts\my_listings.html
+msgid "Remettre cette annonce en ligne ?"
+msgstr "إعادة نشر هذا الإعلان؟"
+
+#: .\templates\accounts\my_listings.html
+msgid "Marquer comme vendu"
+msgstr "تعليم كمباع"
+
+#: .\templates\accounts\my_listings.html
+msgid "Archiver"
+msgstr "أرشفة"
+
+#: .\templates\accounts\my_listings.html
+msgid "Remettre en ligne"
+msgstr "إعادة النشر"
 
 #: .\templates\accounts\my_listings.html:38
 msgid "Raison"
@@ -1167,6 +1227,18 @@ msgstr "المنتجات"
 #: .\templates\adminpanel\products\list.html:7
 msgid "Supprimer ce produit ?"
 msgstr "حذف هذا المنتج؟"
+
+#: .\templates\adminpanel\products\list.html
+msgid "Marquer ce produit comme vendu ?"
+msgstr "تعليم هذا المنتج كمباع؟"
+
+#: .\templates\adminpanel\products\list.html
+msgid "Archiver ce produit ? Il ne sera plus visible dans le catalogue."
+msgstr "أرشفة هذا المنتج؟ لن يظهر بعد ذلك في الكتالوج."
+
+#: .\templates\adminpanel\products\list.html
+msgid "Remettre ce produit en ligne ?"
+msgstr "إعادة نشر هذا المنتج؟"
 
 #: .\templates\adminpanel\products\list.html:12
 msgid "Importer"

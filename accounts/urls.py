@@ -14,4 +14,7 @@ urlpatterns = [
     path("vendre/", views.sell, name="sell"),
     path("vendre/confirmation/", views.sell_confirmation, name="sell_confirmation"),
     path("mes-annonces/", views.my_listings, name="my_listings"),
+    path("mes-annonces/<int:product_id>/vendu/", views.listing_mark_sold, name="listing_mark_sold"),
+    path("mes-annonces/<int:product_id>/archiver/", views.listing_archive, name="listing_archive"),
+    path("mes-annonces/<int:product_id>/reactiver/", views.listing_reactivate, name="listing_reactivate"),
 ]

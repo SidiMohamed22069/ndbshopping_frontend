@@ -195,6 +195,18 @@ def upload_product_image(token: str, product_id: int | str, django_file) -> ApiR
     return call("POST", f"/products/{product_id}/images", token=token, files=files)
 
 
+def mark_product_sold(token: str, product_id: int | str) -> ApiResult:
+    return call("PATCH", f"/products/{product_id}/vendu", token=token)
+
+
+def archive_product(token: str, product_id: int | str) -> ApiResult:
+    return call("PATCH", f"/products/{product_id}/archiver", token=token)
+
+
+def reactivate_product(token: str, product_id: int | str) -> ApiResult:
+    return call("PATCH", f"/products/{product_id}/reactiver", token=token)
+
+
 def get_publications(page: int = 0, size: int = 20) -> ApiResult:
     return call("GET", "/publications", params={"page": page, "size": size})
 

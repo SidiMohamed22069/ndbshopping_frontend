@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 
 from cart.utils import clear_cart, sync_if_authenticated, to_sync_payload
 from core.decorators import login_required_api
@@ -299,3 +299,36 @@ def my_listings(request):
         "accounts/my_listings.html",
         {"products": products, "pagination": pagination, "page": page},
     )
+
+
+@login_required_api
+@require_POST
+def listing_mark_sold(request, product_id):
+    result = api_client.mark_product_sold(request.jwt_token, product_id)
+    if result.ok:
+        messages.success(request, _("Annonce marquée comme vendue."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("accounts:my_listings")
+
+
+@login_required_api
+@require_POST
+def listing_archive(request, product_id):
+    result = api_client.archive_product(request.jwt_token, product_id)
+    if result.ok:
+        messages.success(request, _("Annonce archivée."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("accounts:my_listings")
+
+
+@login_required_api
+@require_POST
+def listing_reactivate(request, product_id):
+    result = api_client.reactivate_product(request.jwt_token, product_id)
+    if result.ok:
+        messages.success(request, _("Annonce remise en ligne."))
+    else:
+        messages.error(request, result.error or _("Action impossible."))
+    return redirect("accounts:my_listings")

@@ -110,6 +110,8 @@ def statut_label(code: str | None) -> str:
         "BROUILLON": _("Brouillon"),
         "PUBLIE": _("Publié"),
         "REJETE": _("Refusé"),
+        "VENDU": _("Vendu"),
+        "ARCHIVE": _("Archivé"),
         "PRODUIT": _("Produit"),
         "HOTEL": _("Hôtel"),
         "VOITURE": _("Voiture"),
@@ -142,6 +144,8 @@ def statut_badge(code: str | None) -> str:
         "BROUILLON": "secondary",
         "PUBLIE": "success",
         "REJETE": "danger",
+        "VENDU": "dark",
+        "ARCHIVE": "light",
         "NOUVELLE_COMMANDE": "warning",
         "PRODUIT_A_VALIDER": "info",
     }
